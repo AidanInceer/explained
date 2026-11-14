@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Logos from './Logos'
 
 /* Name and logo options for the site. A working page for the owner, linked from the footer only. */
 
@@ -104,9 +105,11 @@ export default function Brand() {
     <main className="page brand">
       <h1>Name and logo options</h1>
       <p className="lead">
-        Four names, each with a mark and the domains that were looked up for it. The header uses the first mark now: the initials on a tile. To
-        change it, say which one you want.
+        Ten logos for the current name, then four names with the domains that were looked up for each. The header uses
+        the “de.” tile until you choose.
       </p>
+      <Logos />
+      <h2>Four names</h2>
       <div className="brand-grid">
         {OPTIONS.map((o) => (
           <article key={o.name} className="brand-card">

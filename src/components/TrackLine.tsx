@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { lessonsOf, trackById, type TrackId } from '../curriculum'
-import { useProgress } from '../lib/progress'
+import { setDone, useProgress } from '../lib/progress'
 
 /** One line drawn vertically with its lessons as stops. */
 export default function TrackLine({ track, current }: { track: TrackId; current?: string }) {
@@ -20,6 +20,18 @@ export default function TrackLine({ track, current }: { track: TrackId; current?
               </small>
             </span>
           </Link>
+          <button
+            type="button"
+            className="tl-check"
+            aria-pressed={done.has(l.id)}
+            aria-label={done.has(l.id) ? `${l.title}: understood. Select to undo` : `Mark “${l.title}” as understood`}
+            title={done.has(l.id) ? 'Understood. Select to undo' : 'Mark as understood'}
+            onClick={() => setDone(l.id, !done.has(l.id))}
+          >
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </li>
       ))}
     </ol>
