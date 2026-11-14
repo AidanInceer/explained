@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Home from './components/Home'
 import LessonPage from './components/LessonPage'
 import Glossary from './components/Glossary'
+import Toolkit from './components/Toolkit'
 import Sources from './components/Sources'
 
 function ScrollToTop() {
@@ -37,6 +38,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lesson/:id" element={<LessonPage />} />
+          <Route path="/toolkit" element={<Toolkit />} />
           <Route path="/glossary" element={<Glossary />} />
           <Route path="/sources" element={<Sources />} />
           <Route path="*" element={<NotFound />} />

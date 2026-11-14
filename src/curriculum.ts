@@ -191,7 +191,7 @@ export const TRACKS: Track[] = [
   { id: 'processing', name: 'Processing', blurb: 'Many machines, and data that never stops arriving.', color: '#D0356F' },
   { id: 'architecture', name: 'Architecture', blurb: 'How the parts fit into a platform, and who owns what.', color: '#D8472B' },
   { id: 'ops', name: 'Operations', blurb: 'How to run pipelines on a schedule and trust the output.', color: '#B97700' },
-  { id: 'designs', name: 'Worked designs', blurb: 'Whole systems drawn step by step, with the reasons for each choice.', color: '#4D7C0F' },
+  { id: 'designs', name: 'Worked designs', blurb: 'Six whole systems, each with a different shape, drawn step by step with the reasons for each choice.', color: '#4D7C0F' },
 ]
 
 export const BRANCH_TRACKS = TRACKS.filter((t) => t.id !== 'foundations')
@@ -413,13 +413,13 @@ export const LESSONS: Lesson[] = [
     refs: [['ddia', 'Ch. 10, Batch Processing'], ['fode', 'Ch. 8, “Batch Transformations”']],
   },
   {
-    id: 'query-engines', track: 'processing', level: 'deeper', minutes: 10, prereqs: ['distributed-processing'], at: [0, 1],
+    id: 'query-engines', track: 'processing', level: 'deeper', minutes: 10, prereqs: ['spark-job-anatomy'], at: [0, 2],
     title: 'How an engine runs a query',
     summary: 'The engine parses the SQL, makes a plan, and chooses a join method from table sizes. Reading the plan tells you why a query is slow.',
     refs: [['fode', 'Ch. 8, “The life of a query”, “The query optimizer”'], ['spark', 'Part II, structured API execution'], ['ddia', 'Ch. 10, “Reduce-Side Joins”, “Map-Side Joins”']],
   },
   {
-    id: 'spark-tuning', track: 'processing', level: 'deeper', minutes: 9, prereqs: ['query-engines'], at: [0, 2],
+    id: 'spark-tuning', track: 'processing', level: 'deeper', minutes: 9, prereqs: ['worked-slow-query'], at: [0, 4],
     title: 'Skew, shuffles and small files',
     summary: 'Most slow distributed jobs have one of four causes: a skewed key, too much shuffle, too little memory for a partition, or too many small files.',
     refs: [['spark', 'Part IV, performance tuning'], ['ddia', 'Ch. 10, “Handling skew”']],
@@ -468,19 +468,19 @@ export const LESSONS: Lesson[] = [
     refs: [['fode', 'Ch. 4, Choosing Technologies Across the Data Engineering Lifecycle'], ['reddit', 'Recurring threads: “What stack for a small team?”']],
   },
   {
-    id: 'governance-security', track: 'architecture', level: 'core', minutes: 8, prereqs: ['architecture-patterns'], at: [0, 2],
+    id: 'governance-security', track: 'architecture', level: 'core', minutes: 8, prereqs: ['designing-for-failure'], at: [0, 4],
     title: 'Governance and security',
     summary: 'Know what data you hold, who can see it, and how long you keep it. Give each user and job the least access that works.',
     refs: [['fode', 'Ch. 10, Security and Privacy'], ['fode', 'Ch. 2, “Data Management” undercurrent']],
   },
   {
-    id: 'data-for-ml', track: 'architecture', level: 'deeper', minutes: 9, prereqs: ['choosing-a-stack'], at: [1, 3],
+    id: 'data-for-ml', track: 'architecture', level: 'deeper', minutes: 9, prereqs: ['privacy-in-practice'], at: [0, 6],
     title: 'Data for machine learning and AI',
     summary: 'Models need point-in-time correct training data, the same features at training and at serving, and for language models a search index over documents.',
     refs: [['mlsys', 'Ch. 4, Training Data, and Ch. 5, Feature Engineering'], ['fode', 'Ch. 9, “Machine learning”']],
   },
   {
-    id: 'data-mesh', track: 'architecture', level: 'deeper', minutes: 8, prereqs: ['governance-security'], at: [0, 3],
+    id: 'data-mesh', track: 'architecture', level: 'deeper', minutes: 8, prereqs: ['governance-security'], at: [1, 5],
     title: 'Data mesh',
     summary: 'An organisation design, not a tool. The teams that produce data own it as a product, on a shared self-serve platform.',
     refs: [['mesh', 'Whole article'], ['fode', 'Ch. 3, “Data Mesh”']],
@@ -499,7 +499,7 @@ export const LESSONS: Lesson[] = [
     refs: [['fode', 'Ch. 2, “Infrastructure as code”, “Pipelines as code”'], ['accelerate', 'Ch. 4, technical practices']],
   },
   {
-    id: 'data-quality', track: 'ops', level: 'core', minutes: 8, prereqs: ['orchestration'], at: [0, 1],
+    id: 'data-quality', track: 'ops', level: 'core', minutes: 8, prereqs: ['scheduling-in-detail'], at: [0, 2],
     title: 'Data quality and testing',
     summary: 'Code tests check the logic. Data tests check the rows that arrived today. You need both, and the data tests must be able to stop the pipeline.',
     refs: [['fode', 'Ch. 2, “DataOps” undercurrent'], ['wiki', 'Concepts: Data quality']],
@@ -511,19 +511,19 @@ export const LESSONS: Lesson[] = [
     refs: [['accelerate', 'Ch. 4, continuous delivery'], ['dbt', 'Best practices'], ['fode', 'Ch. 2, “DataOps” undercurrent']],
   },
   {
-    id: 'observability-lineage', track: 'ops', level: 'deeper', minutes: 8, prereqs: ['data-quality'], at: [0, 2],
+    id: 'observability-lineage', track: 'ops', level: 'deeper', minutes: 8, prereqs: ['data-quality'], at: [0, 3],
     title: 'Observability, lineage and contracts',
     summary: 'Know when data is late or wrong before a user does, trace which tables are affected, and agree with producers on what will not change.',
     refs: [['fode', 'Ch. 2, “DataOps” and “Data Management”'], ['reddit', 'Recurring threads on data contracts']],
   },
   {
-    id: 'incidents-reliability', track: 'ops', level: 'deeper', minutes: 8, prereqs: ['observability-lineage'], at: [0, 3],
+    id: 'incidents-reliability', track: 'ops', level: 'deeper', minutes: 8, prereqs: ['debugging-pipelines'], at: [0, 5],
     title: 'SLAs, incidents and on-call',
     summary: 'Agree how fresh and how correct each dataset must be, measure it, and have a practised response for the day it fails.',
     refs: [['sre', 'Ch. 4, Service Level Objectives'], ['sre', 'Ch. 15, Postmortem Culture: Learning from Failure']],
   },
   {
-    id: 'cost-performance', track: 'ops', level: 'deeper', minutes: 9, prereqs: ['observability-lineage', 'clustering'], at: [1, 3],
+    id: 'cost-performance', track: 'ops', level: 'deeper', minutes: 9, prereqs: ['observability-lineage', 'clustering'], at: [1, 4],
     title: 'Cost and performance',
     summary: 'Cloud platforms charge for bytes scanned or for compute time. A small number of queries and tables cause most of the bill, and they can be found.',
     refs: [['fode', 'Ch. 4, “Cost optimization and business value”, “FinOps”'], ['reddit', 'Recurring threads on warehouse cost']],
@@ -553,7 +553,149 @@ export const LESSONS: Lesson[] = [
     summary: 'A card payment must be scored in less than a second. A streaming design with state for each card, and a batch path that trains the model.',
     refs: [['streaming', 'Ch. 2 and Ch. 7'], ['mlsys', 'Ch. 7, “Batch prediction versus online prediction”'], ['ddia', 'Ch. 11, Stream Processing']],
   },
+  {
+    id: 'cloud-basics', track: 'foundations', level: 'core', minutes: 9, prereqs: ['lifecycle'], at: [3, 2],
+    title: "Cloud basics",
+    summary: "A cloud is rented compute, storage and network, with an identity system in front. Four ideas explain most of the bill and most of the access errors.",
+    refs: [["fode","Ch. 4, “Location”, “Cost optimization”"],["fode","Ch. 6, Storage"]],
+  },
+  {
+    id: 'working-day', track: 'foundations', level: 'core', minutes: 9, prereqs: ['stakeholders-requirements'], at: [0, 3],
+    title: "The day-to-day work",
+    summary: "Most of the job is not new pipelines. It is requests, failed runs, backfills, reviews, small changes and the messages that explain them.",
+    refs: [["fode","Ch. 1, “Whom data engineers work with”"],["reddit","Recurring threads: “What does your day look like?”"],["sre","Ch. 5, Eliminating Toil"]],
+  },
+  {
+    id: 'ai-for-data-engineering', track: 'foundations', level: 'core', minutes: 10, prereqs: ['sdlc'], at: [4, 4],
+    title: "AI in data engineering work",
+    summary: "Language models write and explain SQL, draft tests and documentation, and read logs. They also make confident errors, so the review habits matter more, not less.",
+    refs: [["fode","Ch. 11, The Future of Data Engineering"],["reddit","Recurring threads on AI tools in data engineering work"]],
+  },
+  {
+    id: 'table-maintenance', track: 'storage', level: 'deeper', minutes: 8, prereqs: ['table-formats'], at: [0, 6],
+    title: "Table maintenance",
+    summary: "Tables in a lakehouse need regular care: compact small files, remove old snapshots, delete files that nothing refers to, and keep statistics current.",
+    refs: [["lakehouse","Section 3, metadata layers"],["wiki","Concepts: Open table formats"]],
+  },
+  {
+    id: 'modeling-worked', track: 'modeling', level: 'core', minutes: 11, prereqs: ['semantic-layer'], at: [1, 4],
+    title: "Worked example: model a subscription business",
+    summary: "From five source tables to facts, dimensions and three metrics: monthly recurring revenue, churn and retention. Each decision is shown with its reason.",
+    refs: [["kimball","Ch. 2, Kimball Dimensional Modeling Techniques Overview"],["kimball","Ch. 18, Dimensional Modeling Process and Tasks"]],
+  },
+  {
+    id: 'merge-patterns', track: 'pipelines', level: 'core', minutes: 9, prereqs: ['idempotency'], at: [1, 4],
+    title: "Merge, upsert and deduplicate",
+    summary: "Four SQL patterns do most of the loading work: overwrite a partition, delete and insert, merge by key, and keep the latest row for each key.",
+    refs: [["functional","Sections on immutable partitions"],["kimball","Ch. 19, ETL Subsystems and Techniques"]],
+  },
+  {
+    id: 'api-extract-worked', track: 'pipelines', level: 'deeper', minutes: 10, prereqs: ['merge-patterns'], at: [1, 5],
+    title: "Worked example: an API extract that survives",
+    summary: "A small Python extract with pagination, rate limits, retries, a saved cursor and an idempotent load. Each part exists because of one specific failure.",
+    refs: [["fode","Ch. 7, “APIs”, “Ingestion considerations”"]],
+  },
+  {
+    id: 'spark-job-anatomy', track: 'processing', level: 'core', minutes: 9, prereqs: ['distributed-processing'], at: [0, 1],
+    title: "Anatomy of a Spark job",
+    summary: "Transformations build a plan and do nothing. An action runs it as jobs, stages and tasks. A stage ends at each shuffle.",
+    refs: [["spark","Part II, structured APIs, and Ch. 15, How Spark Runs on a Cluster"],["ddia","Ch. 10, “Beyond MapReduce”"]],
+  },
+  {
+    id: 'worked-slow-query', track: 'processing', level: 'deeper', minutes: 10, prereqs: ['query-engines'], at: [0, 3],
+    title: "Worked example: a slow query made fast",
+    summary: "One report query, from 14 minutes to 20 seconds in four changes. Each change is read from the plan first, then made, then measured.",
+    refs: [["fode","Ch. 8, “Improving query performance”"],["spark","Part IV, performance tuning"]],
+  },
+  {
+    id: 'job-sizing', track: 'processing', level: 'deeper', minutes: 8, prereqs: ['spark-tuning'], at: [0, 5],
+    title: "Sizing a job: partitions, memory, cores",
+    summary: "Simple arithmetic gives a first cluster size: data volume to partitions, partitions to tasks, tasks to cores and memory. Then measure and adjust.",
+    refs: [["spark","Part IV, production applications and tuning"]],
+  },
+  {
+    id: 'worked-streaming-window', track: 'processing', level: 'deeper', minutes: 10, prereqs: ['stream-engines'], at: [1, 5],
+    title: "Worked example: one window, event by event",
+    summary: "Eight events, two of them late, go through a one-minute window. The state, the watermark and the output are shown after each event.",
+    refs: [["streaming","Ch. 2, The What, Where, When, and How of Data Processing"],["dataflow","Section 2"]],
+  },
+  {
+    id: 'event-driven', track: 'architecture', level: 'core', minutes: 9, prereqs: ['architecture-patterns'], at: [0, 2],
+    title: "Events, CDC and the outbox",
+    summary: "A service must change its database and tell other systems about it. Two separate writes can disagree. The outbox pattern and CDC make them one.",
+    refs: [["ddia","Ch. 11, “Keeping Systems in Sync”, “Event Sourcing”"],["log","Part two, data integration"]],
+  },
+  {
+    id: 'designing-for-failure', track: 'architecture', level: 'core', minutes: 10, prereqs: ['event-driven'], at: [0, 3],
+    title: "Designing for failure",
+    summary: "Every part will fail at some time. Retries with backoff, timeouts, dead-letter queues, replay and a recovery plan decide if a failure is an event or an incident.",
+    refs: [["ddia","Ch. 8, The Trouble with Distributed Systems"],["sre","Ch. 22, Addressing Cascading Failures"],["fode","Ch. 3, “Plan for failure”"]],
+  },
+  {
+    id: 'privacy-in-practice', track: 'architecture', level: 'deeper', minutes: 9, prereqs: ['governance-security'], at: [0, 5],
+    title: "Privacy in practice",
+    summary: "A person asks to be deleted. You must find their data in every layer, every backup and every export. The design decides if this takes an hour or a month.",
+    refs: [["fode","Ch. 10, Security and Privacy"],["ddia","Ch. 12, “Privacy and Tracking”"]],
+  },
+  {
+    id: 'lakehouse-or-warehouse', track: 'architecture', level: 'core', minutes: 10, prereqs: ['choosing-a-stack'], at: [1, 3],
+    title: "Warehouse or lakehouse: the decision",
+    summary: "The same six questions, answered for three companies, give three different platforms. The method matters more than the answer.",
+    refs: [["fode","Ch. 3, “Data warehouse”, “Data lake”, “Convergence”"],["lakehouse","Sections 1 and 2"]],
+  },
+  {
+    id: 'platform-evolution', track: 'architecture', level: 'deeper', minutes: 10, prereqs: ['lakehouse-or-warehouse'], at: [1, 4],
+    title: "How a platform grows, and how to migrate",
+    summary: "Platforms pass through four stages as a company grows. Moving between them is a migration, and migrations fail in known ways.",
+    refs: [["fode","Ch. 3, “Architect for scalability”, “Always be architecting”"],["ddia","Ch. 4, “Dataflow Through Databases”, on rolling changes"]],
+  },
+  {
+    id: 'scheduling-in-detail', track: 'ops', level: 'core', minutes: 9, prereqs: ['orchestration'], at: [0, 1],
+    title: "Scheduling in detail",
+    summary: "Logical dates, catch-up, sensors, dependencies between DAGs, pools and timeouts. These settings cause most of the confusion in an orchestrator.",
+    refs: [["fode","Ch. 2, “Orchestration” undercurrent"],["functional","Sections on reproducible, partitioned tasks"]],
+  },
+  {
+    id: 'debugging-pipelines', track: 'ops', level: 'core', minutes: 10, prereqs: ['observability-lineage'], at: [0, 4],
+    title: "How to debug a pipeline",
+    summary: "A number is wrong. Work backward along the lineage, halve the search at each step, and compare a good day with a bad day.",
+    refs: [["sre","Ch. 12, Effective Troubleshooting"],["fode","Ch. 2, “DataOps” undercurrent"]],
+  },
+  {
+    id: 'secrets-access', track: 'ops', level: 'core', minutes: 8, prereqs: ['testing-ci-cd'], at: [1, 2],
+    title: "Secrets and access for pipelines",
+    summary: "A pipeline needs credentials for every system it touches. Give each job its own identity, the least access that works, and no password in any file.",
+    refs: [["fode","Ch. 10, Security and Privacy"]],
+  },
+  {
+    id: 'case-clickstream', track: 'designs', level: 'core', minutes: 12, prereqs: ['design-method', 'streaming-basics'], at: [1, 1],
+    title: "Worked design: product analytics from clicks",
+    summary: "Events from a web and mobile application become sessions, funnels and a usage chart inside the product. One event stream serves batch and real-time users.",
+    refs: [["kimball","Ch. 15, Electronic Commerce, on clickstream data"],["ddia","Ch. 11, Stream Processing"]],
+  },
+  {
+    id: 'case-iot-telemetry', track: 'designs', level: 'deeper', minutes: 12, prereqs: ['design-method', 'windows-and-time'], at: [3, 1],
+    title: "Worked design: sensor data from machines",
+    summary: "Ten thousand machines send a reading each second, sometimes days late. A design with a gateway, a stream, downsampling and a time-series store.",
+    refs: [["streaming","Ch. 2 and Ch. 3, windows and watermarks"],["fode","Ch. 5, “IoT devices and edge”"]],
+  },
+  {
+    id: 'case-bank-reporting', track: 'designs', level: 'deeper', minutes: 12, prereqs: ['case-online-shop', 'scd'], at: [0, 2],
+    title: "Worked design: a regulatory report at a bank",
+    summary: "Nobody needs it fast. Everybody needs it exact, explained and repeatable two years later. A batch design built around audit, history and reconciliation.",
+    refs: [["kimball","Ch. 10, Financial Services"],["fode","Ch. 10, Security and Privacy"]],
+  },
+  {
+    id: 'first-project', track: 'designs', level: 'core', minutes: 11, prereqs: ['case-online-shop'], at: [1, 2],
+    title: 'Build one yourself: a first project',
+    summary: 'You cannot practise at company scale, and you do not need to. Choose something that annoys you, build a small pipeline for it, and keep it running.',
+    refs: [['reddit', 'Community wiki and recurring threads on portfolio projects'], ['wiki', 'Learning resources'], ['functional', 'Whole essay, for the habits to practise']],
+  },
 ]
+
+// Order inside each line: top of the map first.
+const trackOrder = TRACKS.map((t) => t.id)
+LESSONS.sort((a, b) => trackOrder.indexOf(a.track) - trackOrder.indexOf(b.track) || a.at[1] - b.at[1] || a.at[0] - b.at[0])
 
 export const lessonById = Object.fromEntries(LESSONS.map((l) => [l.id, l]))
 export const trackById = Object.fromEntries(TRACKS.map((t) => [t.id, t])) as Record<TrackId, Track>

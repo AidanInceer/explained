@@ -1,4 +1,15 @@
-The other lines of the map each explain one part. This line puts the parts together. It gives a method to design a complete pipeline, and then uses it on three systems: [an online shop](/lesson/case-online-shop), [a flight booking system](/lesson/case-flight-booking) and [payment fraud checks](/lesson/case-fraud-stream).
+The other lines of the map each explain one part. This line puts the parts together. It gives a method to design a complete pipeline, and then uses it on six systems with six different shapes:
+
+| Design | Shape |
+|---|---|
+| [An online shop](/lesson/case-online-shop) | Small team, plain batch ELT |
+| [A regulatory report at a bank](/lesson/case-bank-reporting) | Batch, built around audit and proof |
+| [Product analytics from clicks](/lesson/case-clickstream) | An event stream with a batch path and a fast path |
+| [A flight booking system](/lesson/case-flight-booking) | Change data capture into a lakehouse |
+| [Sensor data from machines](/lesson/case-iot-telemetry) | High-volume streaming with late data |
+| [Payment fraud checks](/lesson/case-fraud-stream) | Streaming, with a decision in milliseconds |
+
+After them, [build one yourself](/lesson/first-project).
 
 The method is useful for real projects and for system design interviews. In the two cases the common error is the same: to start with the tools. “We will use Kafka and Spark” is not a design. It is a list of products with no reason.
 
@@ -6,7 +17,7 @@ The method is useful for real projects and for system design interviews. In the 
 
 Data flows from the sources on the left to the users on the right. **Design in the opposite direction.** The users decide what tables are needed. The tables decide what must be extracted. The freshness decides how.
 
-::fig wb-method | A design drawn in seven steps. Use “Next step” to draw it in the order that you must think.
+::fig wb-method | A design drawn in nine steps. Use “Next step” to draw it in the order that you must think.
 
 ## The seven steps
 
@@ -95,7 +106,7 @@ The same seven steps give a structure for 45 minutes.
 4. **Go deeper** where the interviewer shows interest: the model, the ingestion of one difficult source, or the failure cases.
 5. **Name the compromises** and what you would change at ten times the scale.
 
-> **Pitfall.** One design for every problem. If your answer always contains the same five products, you are matching a pattern and not designing. The three worked examples that follow reach three very different designs from the same method.
+> **Pitfall.** One design for every problem. If your answer always contains the same five products, you are matching a pattern and not designing. The six worked examples that follow reach six very different designs from the same method.
 
 ## Remember
 

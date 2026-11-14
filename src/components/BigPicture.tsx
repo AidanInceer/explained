@@ -69,8 +69,8 @@ const ARROWS: Flow[] = [
   { from: 'rt', to: 'uops', step: 0, c: 'r', dot: 1.9 },
   { from: 'kafka', to: 'bronze', step: 0, c: 'b', dot: 2.2 },
   { from: 'load', to: 'bronze', step: 0, c: 'b', dot: 2.6 },
-  { from: 'bronze', to: 'silver', step: 0, c: 'b', dot: 1.6 },
-  { from: 'silver', to: 'gold', step: 0, c: 'b', dot: 1.6 },
+  { from: 'bronze', to: 'silver', step: 0, c: 'b', dot: 2.1 },
+  { from: 'silver', to: 'gold', step: 0, c: 'b', dot: 2.1 },
   { from: 'gold', to: 'mfin', step: 0, c: 'p', dot: 2 },
   { from: 'gold', to: 'mrev', step: 0, c: 'p', dot: 2.2 },
   { from: 'gold', to: 'mmkt', step: 0, c: 'p', dot: 2.4 },
@@ -80,7 +80,6 @@ const ARROWS: Flow[] = [
   { from: 'mmkt', to: 'ucrm', step: 0, c: 'o', dash: true },
   { from: 'dag', to: 'silver', step: 0, c: 'o', dash: true },
   { from: 'dq', to: 'gold', step: 0, c: 'r', dash: true },
-  { from: 'ci', to: 'dag', step: 0, dash: true },
 ]
 
 function line(a: Arrow) {
@@ -143,6 +142,12 @@ export default function BigPicture() {
             How we think about it
           </button>
         </div>
+        {!simple && !still && (
+          <p className="bp-key">
+            <span className="k stream" /> moves all the time: streaming
+            <span className="k batch" /> moves in bursts: a scheduled batch run
+          </p>
+        )}
         <button className="act ghost" onClick={() => setBig(!big)} aria-pressed={big}>
           {big ? 'Close (Esc)' : 'Expand'}
         </button>
@@ -212,11 +217,9 @@ export default function BigPicture() {
             </g>
 
             {!still && !simple && (
-              <g className="bp-dots">
+              <g className="bp-flows">
                 {ARROWS.filter((a) => a.dot).map((a, i) => (
-                  <circle key={i} r="4.5" fill={PEN[a.c ?? 'k']} stroke="#fff" strokeWidth="1.5">
-                    <animateMotion dur={`${a.dot}s`} begin={`-${(i * 0.37) % a.dot!}s`} repeatCount="indefinite" path={line(a).d} />
-                  </circle>
+                  <path key={i} className={`bp-flow ${a.dot! < 2 ? 'stream' : 'batch'}`} d={line(a).d} stroke={PEN[a.c ?? 'k']} />
                 ))}
               </g>
             )}

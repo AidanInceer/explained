@@ -6,7 +6,7 @@ The correct design here is intentionally plain. A large part of good engineering
 
 A company sells office supplies online. It has 80 employees and about 6,000 orders a day. Two people do all the data work. There is no data platform: the finance manager exports CSV files from the payment provider, and marketing looks at the charts of the shop software.
 
-::fig wb-shop | The design, drawn in the order of the method. Use “Next step”.
+::fig wb-shop | The design in ten steps, in the order of the method. Use “Next step”, or “Expand” for a larger view.
 
 ## Step 1: users and requirements
 

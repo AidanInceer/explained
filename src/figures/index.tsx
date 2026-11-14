@@ -7,7 +7,8 @@ import { Consumers, Delivery, Windows } from './streaming'
 import { Dag, Quality } from './ops'
 import { ChooseEngine, ChooseIngestion, ChooseLatency, ChooseStack } from './decide'
 import { BatchStream, QueueLog } from './motion'
-import { WbFlight, WbFraud, WbMethod, WbShop } from './whiteboard'
+import { WbFlight, WbFraud, WbMethod } from './whiteboard'
+import { WbBank, WbClicks, WbIot, WbShop } from './boards2'
 import { CiPipeline, DbtLayers, FactTypes, Joins, ModelLevels, Requirements, Sdlc, Skew, SqlOrder, ZoneMap } from './more'
 
 /** Names used by `::fig <name> | caption` lines in the lesson files. */
@@ -39,6 +40,9 @@ export const FIGURES: Record<string, ComponentType> = {
   'wb-shop': WbShop,
   'wb-flight': WbFlight,
   'wb-fraud': WbFraud,
+  'wb-clicks': WbClicks,
+  'wb-iot': WbIot,
+  'wb-bank': WbBank,
   requirements: Requirements,
   sdlc: Sdlc,
   'sql-order': SqlOrder,

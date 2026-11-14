@@ -172,6 +172,15 @@ button, input { font: inherit; color: inherit; }
 .bp-board { padding: 14px; }
 .bp-board svg { min-width: 980px; }
 .bp-detail { transition: opacity 0.35s ease; }
+/* Data in motion. Streaming arrows run without a stop. Batch arrows send a short burst, then wait. */
+.bp-flow { fill: none; stroke-width: 5; stroke-linecap: round; }
+.bp-flow.stream { stroke-dasharray: 0.1 14; animation: bp-run 0.8s linear infinite; }
+.bp-flow.batch { stroke-dasharray: 0.1 10 0.1 10 0.1 10 0.1 600; stroke-dashoffset: 34; animation: bp-burst 4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+@keyframes bp-run { to { stroke-dashoffset: -14.1; } }
+@keyframes bp-burst { 0% { stroke-dashoffset: 34; } 42%, 100% { stroke-dashoffset: -300; } }
+.bp-key { margin: 0 auto 12px 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; color: var(--ink-2); }
+.bp-key .k { display: inline-block; width: 34px; height: 6px; margin-left: 12px; background: radial-gradient(circle, var(--ink) 2.5px, transparent 3px) 0 0 / 11px 6px repeat-x; }
+.bp-key .k.batch { width: 22px; margin-right: 12px; }
 .bp-detail.faded { opacity: 0.2; }
 .bp-small { font-family: var(--sans); font-size: 11px; font-weight: 600; }
 .bp-stage { font-family: var(--sans); font-size: 27px; font-weight: 750; letter-spacing: -0.02em; }
@@ -354,6 +363,33 @@ mark.um.ul { text-decoration: underline; text-decoration-color: #d0356f; text-de
 .source-list p { margin: 6px 0 0; max-width: 42em; }
 .source-kind { color: var(--ink-3); font-size: 14px; }
 .source-by, .source-used { color: var(--ink-2); font-size: 15px; }
+
+/* toolkit */
+.toolkit { max-width: 1180px; }
+.toolkit h2 { font-size: 32px; font-weight: 740; letter-spacing: -0.025em; margin-top: 44px; }
+.tk-note { color: var(--ink-2); margin: 6px 0 0; max-width: 46em; }
+.tk-level { margin-top: 26px; }
+.tk-level h3 { font-size: 20px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.tk-level h3 small { font-size: 15px; font-weight: 450; color: var(--ink-2); letter-spacing: 0; }
+.tk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; margin-top: 12px; }
+.tk-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 20px; }
+.tk-card h4 { margin: 0; font-size: 21px; letter-spacing: -0.015em; }
+.tk-card > p { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
+.tk-card h5 { margin: 14px 0 4px; font-size: 13.5px; color: var(--ink-3); font-weight: 600; }
+.tk-card ul { margin: 0; padding-left: 1.15em; font-size: 15px; }
+.tk-card li { margin-bottom: 2px; }
+.tk-links a { color: #2456d6; text-underline-offset: 3px; }
+.tk-card .tk-lessons { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule-soft); font-size: 14px; }
+.tk-skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(430px, 1fr)); gap: 14px; margin-top: 16px; }
+.tk-skills section { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 20px; }
+.tk-skills h3 { font-size: 21px; }
+.tk-skills p { margin: 4px 0 10px; color: var(--ink-2); }
+.tk-skills ul { list-style: none; margin: 0; padding: 0; }
+.tk-skills li { padding: 9px 0; border-top: 1px solid var(--rule-soft); font-weight: 550; line-height: 1.35; }
+.tk-skills li span { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 3px; font-weight: 400; font-size: 14px; }
+.tk-skills li a { color: var(--ink-2); text-underline-offset: 3px; }
+.tk-skills li a:hover { color: var(--ink); }
+@media (max-width: 520px) { .tk-grid, .tk-skills { grid-template-columns: 1fr; } }
 
 .foot { border-top: 1px solid var(--rule); padding: 22px 28px 34px; color: var(--ink-2); font-size: 14px; }
 .foot p { max-width: 1184px; margin: 0 auto; }

@@ -30,7 +30,7 @@ interface Note {
   step: number
   c?: Pen
 }
-interface Board {
+export interface Board {
   w: number
   h: number
   steps: { title: string; note: string }[]
@@ -217,10 +217,12 @@ const METHOD: Board = {
     { title: 'Start at the right side: the users', note: 'Write each user and the decision they make. Next to each one write how fresh the data must be and at what level of detail. Everything to the left exists only to supply this column.' },
     { title: 'Draw the tables they will read', note: 'Name the fact and dimension tables and the grain of each fact. If you cannot name the grain, the requirement is not complete. Go back to the user.' },
     { title: 'Now the left side: the sources', note: 'For each source write what it is, who owns it, how much data it has and how it changes. You do not control these systems, so find their limits early.' },
+    { title: 'Put numbers on it', note: 'Rows each day times bytes for each row gives the daily volume. Find the peak rate, not the average, and the growth in a year. These numbers remove most options: at one gigabyte a day you do not need a cluster, and at fifty thousand events a second you cannot insert rows one by one.' },
     { title: 'Choose one ingestion method for each source', note: 'A database gets a query or CDC. A SaaS tool gets a connector. Files get a drop folder. The freshness from step 1 decides between batch and stream.' },
     { title: 'Land the data raw, and do not edit it', note: 'A raw copy lets you correct a transformation and build everything again without a new extract. Partition it by load date.' },
     { title: 'Transform in layers', note: 'Staging cleans one source table at a time. Models join them and apply the business rules. Each step is a small query that can be tested.' },
     { title: 'Last: how it runs, and how it fails', note: 'Add the orchestrator, the tests and the alerts. Then ask the failure questions for each arrow: what if it runs twice, runs late, or gets a bad file? A design is not finished before these have answers.' },
+    { title: 'Say what you gave up, and what comes next', note: 'Each choice has a price: fresher data against cost, a managed service against control, strict tests against availability. Write the important ones down with the reason. Then name the signal that will make you change the design, such as a nightly run that no longer finishes before the morning.' },
   ],
   nodes: [
     { id: 'u1', x: 640, y: 40, w: 112, label: 'Analyst', sub: 'daily, by 08:00', kind: 'who', step: 0 },
@@ -230,78 +232,31 @@ const METHOD: Board = {
     { id: 's1', x: 10, y: 40, w: 118, label: 'App database', sub: 'changes all day', kind: 'db', step: 2 },
     { id: 's2', x: 10, y: 135, w: 118, label: 'SaaS tools', sub: 'API, rate limits', step: 2 },
     { id: 's3', x: 10, y: 230, w: 118, label: 'Files, events', sub: 'partner or app', step: 2 },
-    { id: 'ing', x: 160, y: 125, w: 92, h: 74, label: 'Ingest', sub: 'per source', c: 'g', step: 3 },
-    { id: 'raw', x: 282, y: 125, w: 88, h: 74, label: 'Raw', sub: 'as it arrived', kind: 'db', c: 'b', step: 4 },
-    { id: 'tr', x: 400, y: 125, w: 92, h: 74, label: 'Transform', sub: 'SQL, in layers', c: 'g', step: 5 },
-    { id: 'orch', x: 160, y: 318, w: 452, h: 50, label: 'Orchestrator: schedule, retry, test, alert', c: 'o', step: 6 },
+    { id: 'ing', x: 160, y: 125, w: 92, h: 74, label: 'Ingest', sub: 'per source', c: 'g', step: 4 },
+    { id: 'raw', x: 282, y: 125, w: 88, h: 74, label: 'Raw', sub: 'as it arrived', kind: 'db', c: 'b', step: 5 },
+    { id: 'tr', x: 400, y: 125, w: 92, h: 74, label: 'Transform', sub: 'SQL, in layers', c: 'g', step: 6 },
+    { id: 'orch', x: 160, y: 318, w: 452, h: 50, label: 'Orchestrator: schedule, retry, test, alert', c: 'o', step: 7 },
   ],
   arrows: [
     { from: 'marts', to: 'u1', step: 1 },
     { from: 'marts', to: 'u2', step: 1 },
     { from: 'marts', to: 'u3', step: 1 },
-    { from: 's1', to: 'ing', step: 3 },
-    { from: 's2', to: 'ing', step: 3 },
-    { from: 's3', to: 'ing', step: 3 },
-    { from: 'ing', to: 'raw', step: 4 },
-    { from: 'raw', to: 'tr', step: 5 },
-    { from: 'tr', to: 'marts', step: 5 },
-    { from: 'orch', to: 'ing', step: 6, dash: true, c: 'o' },
-    { from: 'orch', to: 'tr', step: 6, dash: true, c: 'o' },
+    { from: 's1', to: 'ing', step: 4 },
+    { from: 's2', to: 'ing', step: 4 },
+    { from: 's3', to: 'ing', step: 4 },
+    { from: 'ing', to: 'raw', step: 5 },
+    { from: 'raw', to: 'tr', step: 6 },
+    { from: 'tr', to: 'marts', step: 6 },
+    { from: 'orch', to: 'ing', step: 7, dash: true, c: 'o' },
+    { from: 'orch', to: 'tr', step: 7, dash: true, c: 'o' },
   ],
   notes: [
+    { x: 150, y: 44, text: ['rows / day × bytes = volume', 'peak events / second?', 'growth in a year?'], step: 3, c: 'b' },
+    { x: 280, y: 250, text: ['fresher ↔ cheaper', 'managed ↔ control', 'next version when…?'], step: 8, c: 'p' },
     { x: 500, y: 24, text: ['what decision? how fresh? what grain?'], step: 0 },
     { x: 10, y: 316, text: ['who owns it?', 'how big? how does it change?'], step: 2 },
-    { x: 274, y: 226, text: ['never edited'], step: 4, c: 'b' },
-    { x: 626, y: 330, text: ['runs twice?', 'runs late?', 'bad file?'], step: 6 },
-  ],
-}
-
-const SHOP: Board = {
-  w: 760,
-  h: 440,
-  steps: [
-    { title: 'Three users, and none of them needs seconds', note: 'Finance wants revenue for each day, correct to the cent. Marketing wants to know which customers buy again. Operations wants a list of late shipments each morning. The freshest need is hourly.' },
-    { title: 'The tables', note: 'One fact table with one row for each order line, one for each shipment, and dimensions for customer, product and date. Refunds are rows with a negative amount, so that revenue is a simple sum.' },
-    { title: 'Four sources', note: 'The shop database has orders and customers. The payment provider has charges, refunds and fees. The courier has shipments. A spreadsheet has product cost prices, kept by a person.' },
-    { title: 'Buy the ingestion', note: 'A managed connector copies all four sources each hour. Two data people must not write and maintain API clients for a payment provider and a courier.' },
-    { title: 'One warehouse, ELT', note: 'The connector writes raw tables into the warehouse. dbt builds staging models, then the marts, as SQL in a Git repository. No other compute engine exists in this design.' },
-    { title: 'Tests that match the business', note: 'The sum of paid orders for a day must equal the sum of charges from the payment provider for that day. This one reconciliation test finds most defects. Freshness checks tell you when a connector has stopped.' },
-    { title: 'What to change when the company grows', note: 'Replace the connector for the shop database with CDC when hourly is too slow or when deleted rows matter. Add reverse ETL to send customer segments to the email tool. Add an orchestrator when the jobs outside dbt become more than a few.' },
-  ],
-  nodes: [
-    { id: 'fin', x: 640, y: 50, w: 112, label: 'Finance', sub: 'revenue, daily', kind: 'who', step: 0 },
-    { id: 'mkt', x: 640, y: 150, w: 112, label: 'Marketing', sub: 'repeat buyers', kind: 'who', step: 0 },
-    { id: 'ops', x: 640, y: 250, w: 112, label: 'Operations', sub: 'late shipments', kind: 'who', step: 0 },
-    { id: 'marts', x: 500, y: 130, w: 108, h: 92, label: 'Marts', sub: 'order lines, dims', c: 'p', step: 1 },
-    { id: 'db', x: 10, y: 40, w: 124, label: 'Shop database', sub: 'Postgres', kind: 'db', step: 2 },
-    { id: 'pay', x: 10, y: 125, w: 124, label: 'Payment provider', sub: 'charges, refunds', step: 2 },
-    { id: 'cour', x: 10, y: 210, w: 124, label: 'Courier', sub: 'shipments API', step: 2 },
-    { id: 'sheet', x: 10, y: 295, w: 124, label: 'Spreadsheet', sub: 'cost prices', step: 2 },
-    { id: 'conn', x: 164, y: 140, w: 100, h: 72, label: 'Connector', sub: 'managed, hourly', c: 'g', step: 3 },
-    { id: 'wh', x: 286, y: 92, w: 334, h: 168, label: 'Cloud warehouse', kind: 'zone', c: 'b', step: 4 },
-    { id: 'raw', x: 298, y: 140, w: 78, h: 72, label: 'Raw', sub: 'copies', kind: 'db', c: 'b', step: 4 },
-    { id: 'dbt', x: 398, y: 140, w: 80, h: 72, label: 'dbt', sub: 'SQL models', c: 'g', step: 4 },
-    { id: 'test', x: 306, y: 300, w: 264, h: 50, label: 'orders paid = charges settled?', c: 'r', step: 5 },
-    { id: 'crm', x: 640, y: 350, w: 112, label: 'Email tool', sub: 'segments', kind: 'who', c: 'o', step: 6 },
-  ],
-  arrows: [
-    { from: 'marts', to: 'fin', step: 1 },
-    { from: 'marts', to: 'mkt', step: 1 },
-    { from: 'marts', to: 'ops', step: 1 },
-    { from: 'db', to: 'conn', step: 3 },
-    { from: 'pay', to: 'conn', step: 3 },
-    { from: 'cour', to: 'conn', step: 3 },
-    { from: 'sheet', to: 'conn', step: 3 },
-    { from: 'conn', to: 'raw', step: 4 },
-    { from: 'raw', to: 'dbt', step: 4 },
-    { from: 'dbt', to: 'marts', step: 4 },
-    { from: 'test', to: 'dbt', step: 5, dash: true, c: 'r' },
-    { from: 'marts', to: 'crm', step: 6, dash: true, c: 'o', label: 'reverse ETL' },
-  ],
-  notes: [
-    { x: 470, y: 28, text: ['freshest need: hourly'], step: 0 },
-    { x: 150, y: 250, text: ['buy, do not build'], step: 3, c: 'g' },
-    { x: 10, y: 392, text: ['later: CDC for the shop database'], step: 6, c: 'o' },
+    { x: 274, y: 226, text: ['never edited'], step: 5, c: 'b' },
+    { x: 626, y: 330, text: ['runs twice?', 'runs late?', 'bad file?'], step: 7 },
   ],
 }
 
@@ -405,6 +360,5 @@ const FRAUD: Board = {
 }
 
 export const WbMethod = () => <Whiteboard board={METHOD} />
-export const WbShop = () => <Whiteboard board={SHOP} />
 export const WbFlight = () => <Whiteboard board={FLIGHT} />
 export const WbFraud = () => <Whiteboard board={FRAUD} />

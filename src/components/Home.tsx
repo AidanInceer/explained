@@ -9,9 +9,9 @@ import TrackLine from './TrackLine'
 const W = 1180
 const ROW = 100
 const WIDE = [200, 395, 590, 785, 980]
-const TIER1 = 550
-const TIER2 = 1230
-const TIER3 = 1810
+const TIER1 = 650
+const TIER2 = 1430
+const TIER3 = 2210
 const BAND: Record<TrackId, { x: number[]; y: number }> = {
   foundations: { x: WIDE, y: 70 },
   storage: { x: [44, 232], y: TIER1 },
@@ -22,7 +22,7 @@ const BAND: Record<TrackId, { x: number[]; y: number }> = {
   ops: { x: [824, 1012], y: TIER2 },
   designs: { x: WIDE, y: TIER3 },
 }
-const H = TIER3 + ROW + 96
+const H = TIER3 + 2 * ROW + 96
 
 const pos = (l: Lesson) => ({ x: BAND[l.track].x[l.at[0]], y: BAND[l.track].y + l.at[1] * ROW })
 

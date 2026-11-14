@@ -71,6 +71,7 @@ export default function Header() {
         <NavLink to="/" end>
           Map
         </NavLink>
+        <NavLink to="/toolkit">Toolkit</NavLink>
         <NavLink to="/glossary">Glossary</NavLink>
         <NavLink to="/sources">Sources</NavLink>
       </nav>
