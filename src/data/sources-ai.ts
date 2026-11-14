@@ -271,6 +271,26 @@ export const AI_SOURCES = {
     url: 'https://arxiv.org/abs/1909.08053',
     why: 'Tensor parallelism for transformers: each layer split across the GPUs of one server.',
   },
+  glorot: {
+    title: 'Understanding the Difficulty of Training Deep Feedforward Neural Networks',
+    by: 'Xavier Glorot and Yoshua Bengio, AISTATS, 2010',
+    kind: 'Paper',
+    url: 'https://proceedings.mlr.press/v9/glorot10a.html',
+    why: 'Why signals shrink or grow through layers, and an initialisation that keeps their variance steady.',
+  },
+  heinit: {
+    title: 'Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification',
+    by: 'Kaiming He, Xiangyu Zhang, Shaoqing Ren and Jian Sun, ICCV, 2015',
+    kind: 'Paper',
+    url: 'https://arxiv.org/abs/1502.01852',
+    why: 'The initialisation that suits ReLU networks.',
+  },
+  lstm: {
+    title: 'Long Short-Term Memory',
+    by: 'Sepp Hochreiter and Jürgen Schmidhuber, Neural Computation, 1997',
+    kind: 'Paper',
+    why: 'Gated memory cells that let recurrent networks keep information over long sequences.',
+  },
   karpathy: {
     title: 'Neural Networks: Zero to Hero',
     by: 'Andrej Karpathy',
