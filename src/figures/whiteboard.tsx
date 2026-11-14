@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-type Pen = 'k' | 'b' | 'r' | 'g' | 'p' | 'o'
-const PEN: Record<Pen, string> = { k: '#1d2a33', b: '#2456d6', r: '#c5372c', g: '#0b8a78', p: '#7a3fd1', o: '#a86a00' }
+export type Pen = 'k' | 'b' | 'r' | 'g' | 'p' | 'o'
+export const PEN: Record<Pen, string> = { k: '#1d2a33', b: '#2456d6', r: '#c5372c', g: '#0b8a78', p: '#7a3fd1', o: '#a86a00' }
 
-interface Node {
+export interface Node {
   id: string
   x: number
   y: number
@@ -15,7 +15,7 @@ interface Node {
   c?: Pen
   step: number
 }
-interface Arrow {
+export interface Arrow {
   from: string
   to: string
   label?: string
@@ -39,10 +39,10 @@ interface Board {
   notes?: Note[]
 }
 
-const H = (n: Node) => n.h ?? 54
+export const H = (n: Node) => n.h ?? 54
 
 /** Point where the line from the centre of `n` toward (tx, ty) leaves its rectangle. */
-function edge(n: Node, tx: number, ty: number) {
+export function edge(n: Node, tx: number, ty: number) {
   const cx = n.x + n.w / 2
   const cy = n.y + H(n) / 2
   const dx = tx - cx
@@ -51,7 +51,7 @@ function edge(n: Node, tx: number, ty: number) {
   return { x: cx + dx * k, y: cy + dy * k }
 }
 
-function Shape({ n }: { n: Node }) {
+export function Shape({ n }: { n: Node }) {
   const h = H(n)
   const col = PEN[n.c ?? 'k']
   const common = { fill: n.kind === 'zone' ? 'none' : '#fff', stroke: col, strokeWidth: 2.4, pathLength: 1 }
@@ -78,11 +78,23 @@ function Shape({ n }: { n: Node }) {
 export function Whiteboard({ board }: { board: Board }) {
   const last = board.steps.length - 1
   const [step, setStep] = useState(0)
+  const [big, setBig] = useState(false)
+
+  useEffect(() => {
+    if (!big) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setBig(false)
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [big])
   const byId = Object.fromEntries(board.nodes.map((n) => [n.id, n]))
   const fresh = (s: number) => (s === step ? 'wb-new' : '')
 
   return (
-    <div className="wb">
+    <div className={`wb ${big ? 'wb-full' : ''}`}>
       <div className="wb-ctl">
         <button className="act ghost" disabled={step === 0} onClick={() => setStep(step - 1)}>
           Back
@@ -95,6 +107,9 @@ export function Whiteboard({ board }: { board: Board }) {
         </span>
         <button className="link-btn" onClick={() => setStep(step === last ? 0 : last)}>
           {step === last ? 'Start again' : 'Show the whole board'}
+        </button>
+        <button className="act ghost" onClick={() => setBig(!big)} aria-pressed={big}>
+          {big ? 'Close (Esc)' : 'Expand'}
         </button>
       </div>
       <div className="wb-board">

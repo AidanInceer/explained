@@ -168,76 +168,118 @@ export function BatchStream() {
   )
 }
 
-const MSGS = [1, 2, 3, 4, 5, 6]
+type Cell = 'wait' | 'out' | 'gone'
+interface Snap {
+  cells: Cell[]
+  /** consumers: name, what it has processed, and for a log its offset */
+  who: { name: string; got: string; off?: number; flag?: string }[]
+  say: string
+}
+
+const QUEUE: Snap[] = [
+  { cells: ['wait', 'wait', 'wait', 'wait'], who: [{ name: 'Worker A', got: '' }, { name: 'Worker B', got: '' }], say: 'Four messages wait in the queue. Two workers are connected to it.' },
+  { cells: ['out', 'wait', 'wait', 'wait'], who: [{ name: 'Worker A', got: '', flag: 'has message 1' }, { name: 'Worker B', got: '' }], say: 'The broker gives message 1 to Worker A. The message is hidden from Worker B, but it is not deleted yet.' },
+  { cells: ['gone', 'wait', 'wait', 'wait'], who: [{ name: 'Worker A', got: '1' }, { name: 'Worker B', got: '' }], say: 'Worker A confirms that the work is done. The broker deletes message 1. Nobody can read it again.' },
+  { cells: ['gone', 'out', 'out', 'wait'], who: [{ name: 'Worker A', got: '1', flag: 'has message 3' }, { name: 'Worker B', got: '', flag: 'has message 2' }], say: 'The workers share the load. B gets message 2 and A gets message 3, at the same time. This is why you add workers to a queue.' },
+  { cells: ['gone', 'gone', 'gone', 'wait'], who: [{ name: 'Worker A', got: '1, 3' }, { name: 'Worker B', got: '2' }], say: 'The two workers confirm. Three of the four messages are now deleted.' },
+  { cells: ['gone', 'gone', 'gone', 'out'], who: [{ name: 'Worker A', got: '1, 3' }, { name: 'Worker B', got: '2' }, { name: 'Analytics (new)', got: '', flag: 'has message 4' }], say: 'A new consumer, Analytics, connects. To the queue it is one more worker. It gets message 4 only. Messages 1 to 3 no longer exist, and A and B will never see message 4.' },
+]
+
+const LOG: Snap[] = [
+  { cells: ['wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '', off: 0 }, { name: 'Analytics', got: '', off: 0 }], say: 'Four messages are in the log, at offsets 0 to 3. Each consumer has its own position, shown by its marker.' },
+  { cells: ['wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2 }, { name: 'Analytics', got: '', off: 0 }], say: 'Billing reads messages 0 and 1 and saves its position: 2. The messages stay in the log.' },
+  { cells: ['wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2 }, { name: 'Analytics', got: '0', off: 1 }], say: 'Analytics reads message 0, the same message that Billing read. The two consumers do not affect each other.' },
+  { cells: ['wait', 'wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2 }, { name: 'Analytics', got: '0', off: 1 }], say: 'The producer appends message 4 at the end. Messages that exist are never changed.' },
+  { cells: ['wait', 'wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2 }, { name: 'Analytics', got: '0', off: 1 }, { name: 'Search (new)', got: '0, 1, 2, 3, 4', off: 5 }], say: 'A new consumer, Search, connects a week later. It starts at offset 0 and reads the whole history. With a queue this is not possible.' },
+  { cells: ['wait', 'wait', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2, flag: 'restarted' }, { name: 'Analytics', got: '0', off: 1 }, { name: 'Search (new)', got: '0, 1, 2, 3, 4', off: 5 }], say: 'Billing stops and starts again. It continues from its saved position, 2. Nothing is lost and nothing is skipped.' },
+  { cells: ['gone', 'gone', 'wait', 'wait', 'wait'], who: [{ name: 'Billing', got: '0, 1', off: 2 }, { name: 'Analytics', got: '0', off: 2, flag: 'missed message 1' }, { name: 'Search (new)', got: '0, 1, 2, 3, 4', off: 5 }], say: 'After the retention period the oldest messages are removed, read or not. Analytics was too slow: it never read message 1. This is why you monitor consumer lag.' },
+]
+
+const WHO_COLORS = ['#b97700', '#2456d6', '#0b8a78']
 
 export function QueueLog() {
-  const [taken, setTaken] = useState<number[]>([]) // worker index for each delivered message
-  const [offs, setOffs] = useState<Record<string, number>>({ Billing: 0, Analytics: 0 })
-  const names = Object.keys(offs)
-  const read = (k: string) => setOffs({ ...offs, [k]: Math.min(MSGS.length, offs[k] + 1) })
+  const [kind, setKind] = useState<'queue' | 'log'>('queue')
+  const [i, setI] = useState(0)
+  const steps = kind === 'queue' ? QUEUE : LOG
+  const s = steps[i]
+  const isLog = kind === 'log'
+  const pick = (k: 'queue' | 'log') => {
+    setKind(k)
+    setI(0)
+  }
   return (
     <div className="ql">
-      <div>
-        <h4>Queue</h4>
-        <div className="ql-row">
-          {MSGS.map((m, i) => (
-            <span key={m} className={`ql-msg ${i < taken.length ? 'gone' : ''}`}>
-              {m}
-            </span>
-          ))}
-        </div>
-        <div className="ql-readers">
-          {['Worker A', 'Worker B'].map((w, wi) => (
-            <p key={w}>
-              <b>{w}</b> got: {taken.map((x, i) => (x === wi ? MSGS[i] : null)).filter(Boolean).join(', ') || 'nothing yet'}
-            </p>
-          ))}
-        </div>
-        <div className="ql-btns">
-          <button className="act" disabled={taken.length >= MSGS.length} onClick={() => setTaken([...taken, taken.length % 2])}>
-            Deliver the next message
+      <div className="ql-top">
+        <div className="seg">
+          <button aria-pressed={!isLog} onClick={() => pick('queue')}>
+            Queue
           </button>
-          <button className="act ghost" onClick={() => setTaken([])}>
-            Reset
+          <button aria-pressed={isLog} onClick={() => pick('log')}>
+            Log
           </button>
         </div>
-        <p className="ql-note">Each message goes to one worker and is then deleted. More workers means the work is shared.</p>
+        <div className="ql-nav">
+          <button className="act ghost" disabled={i === 0} onClick={() => setI(i - 1)}>
+            Back
+          </button>
+          <button className="act" disabled={i === steps.length - 1} onClick={() => setI(i + 1)}>
+            Next step
+          </button>
+          <span>
+            {i + 1} of {steps.length}
+          </span>
+        </div>
       </div>
-      <div>
-        <h4>Log</h4>
-        <div className="ql-row">
-          {MSGS.map((m, i) => (
-            <span key={m} className="ql-msg kept">
-              {m}
-              {names.map((k, ki) => offs[k] === i && <i key={k} className={`ql-ptr p${ki}`} title={`${k} reads this next`} />)}
-            </span>
-          ))}
+
+      <div className="ql-stage">
+        <div className="ql-end">
+          <b>Producer</b>
+          <small>sends messages</small>
         </div>
-        <div className="ql-readers">
-          {names.map((k, ki) => (
-            <p key={k}>
-              <i className={`ql-ptr p${ki} inline`} /> <b>{k}</b> has read {offs[k]} of {MSGS.length}
-            </p>
-          ))}
-        </div>
-        <div className="ql-btns">
-          {names.map((k) => (
-            <button key={k} className="act" disabled={offs[k] >= MSGS.length} onClick={() => read(k)}>
-              {k} reads one
-            </button>
-          ))}
-          {names.length < 3 ? (
-            <button className="act ghost" onClick={() => setOffs({ ...offs, 'New reader': 0 })}>
-              Add a new reader
-            </button>
-          ) : (
-            <button className="act ghost" onClick={() => setOffs({ Billing: 0, Analytics: 0 })}>
-              Reset
-            </button>
+        <span className="ql-arrow" aria-hidden="true">
+          →
+        </span>
+        <div className="ql-mid">
+          <b>{isLog ? 'Log: every message is kept, in order' : 'Queue: a message leaves when the work is done'}</b>
+          <div className="ql-cells">
+            {s.cells.map((c, n) => (
+              <span key={n} className={`ql-cell ${c} ${isLog ? 'log' : ''}`}>
+                {isLog ? n : n + 1}
+                {c === 'gone' && <i>{isLog ? 'expired' : 'deleted'}</i>}
+                {c === 'out' && <i>in work</i>}
+              </span>
+            ))}
+          </div>
+          {isLog && (
+            <div className="ql-marks">
+              {s.who.map((w, k) => (
+                <span key={w.name} className="ql-mark" style={{ transform: `translateX(${(w.off ?? 0) * 48}px)`, color: WHO_COLORS[k] }}>
+                  ▲ {w.name.replace(' (new)', '')}
+                </span>
+              ))}
+            </div>
           )}
         </div>
-        <p className="ql-note">Nothing is deleted. Each reader keeps its own position, and a new reader starts from the first message.</p>
+        <span className="ql-arrow" aria-hidden="true">
+          →
+        </span>
+        <div className="ql-who">
+          {s.who.map((w, k) => (
+            <div key={w.name} className="ql-con" style={{ borderColor: isLog ? WHO_COLORS[k] : undefined }}>
+              <b>{w.name}</b>
+              <small>
+                {w.got ? `processed: ${w.got}` : 'processed: nothing yet'}
+                {isLog && `. Next offset: ${w.off}`}
+              </small>
+              {w.flag && <em>{w.flag}</em>}
+            </div>
+          ))}
+        </div>
       </div>
+
+      <p className="stat" role="status">
+        <b>Step {i + 1}.</b> {s.say}
+      </p>
     </div>
   )
 }

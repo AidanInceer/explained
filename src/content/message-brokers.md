@@ -2,7 +2,7 @@ A **message broker** is a system that takes messages from producers and gives th
 
 There are two designs, and they behave very differently. Many problems come from using one where the other was needed.
 
-::fig queue-log | Deliver messages in the queue and read from the log. Then add a new reader to the log.
+::fig queue-log | Choose queue or log, then use “Next step”. Each step says what the broker does and why.
 
 ## Queues
 

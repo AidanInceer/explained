@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LESSONS, TRACKS, lessonById, lessonsOf, trackById, type Lesson, type TrackId } from '../curriculum'
 import { nextUp, resetProgress, useProgress } from '../lib/progress'
+import BigPicture from './BigPicture'
 import TrackLine from './TrackLine'
 
 /* Map geometry. Every lesson sits below all of its prerequisites, so every line runs downward. */
@@ -25,21 +26,32 @@ const H = TIER3 + ROW + 96
 
 const pos = (l: Lesson) => ({ x: BAND[l.track].x[l.at[0]], y: BAND[l.track].y + l.at[1] * ROW })
 
+const BUS = 30
+const R = 14
+
+/** Lines inside a subject run down, across above the lower lesson's label, then down. Other lines curve. */
+function route(a: { x: number; y: number }, b: { x: number; y: number }, same: boolean) {
+  if (same) {
+    if (a.x === b.x) return `M${a.x} ${a.y} V${b.y}`
+    const y = b.y - BUS
+    const s = b.x > a.x ? 1 : -1
+    return `M${a.x} ${a.y} V${y - R} Q${a.x} ${y} ${a.x + s * R} ${y} H${b.x - s * R} Q${b.x} ${y} ${b.x} ${y + R} V${b.y}`
+  }
+  if (Math.abs(a.x - b.x) < 1) {
+    // Same column in another subject: bow out to the side, so the line does not lie on the column.
+    const cx = a.x - 48
+    return `M${a.x} ${a.y} C${cx} ${a.y + 70} ${cx} ${b.y - 70} ${b.x} ${b.y}`
+  }
+  const y0 = a.y + 52
+  const ym = (y0 + b.y) / 2
+  return `M${a.x} ${a.y} V${y0} C${a.x} ${ym} ${b.x} ${ym} ${b.x} ${b.y}`
+}
+
 const EDGES = LESSONS.flatMap((l) =>
   l.prereqs.map((p) => {
     const from = lessonById[p]
-    const a = pos(from)
-    const b = pos(l)
-    // Run straight down past the label of the upper lesson before the line turns.
-    const y0 = a.y + Math.min(52, (b.y - a.y) / 2)
-    const ym = (y0 + b.y) / 2
-    return {
-      key: `${p}>${l.id}`,
-      to: l.id,
-      same: from.track === l.track,
-      color: trackById[from.track].color,
-      d: a.x === b.x ? `M${a.x} ${a.y} V${b.y}` : `M${a.x} ${a.y} V${y0} C${a.x} ${ym} ${b.x} ${ym} ${b.x} ${b.y}`,
-    }
+    const same = from.track === l.track
+    return { key: `${p}>${l.id}`, to: l.id, same, color: trackById[from.track].color, d: route(pos(from), pos(l), same) }
   }),
 )
 
@@ -56,7 +68,6 @@ export default function Home() {
   const shown = hover ? lessonById[hover] : null
   const wrap = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
-  const [low, setLow] = useState(false)
 
   useEffect(() => {
     const el = wrap.current
@@ -67,6 +78,8 @@ export default function Home() {
   }, [])
 
   const started = done.size > 0
+  // New readers get the whole system first. Returning readers get the map first.
+  const [intro, setIntro] = useState(!started)
   const cta = next ? (
     <Link className="btn primary" to={`/lesson/${next.id}`}>
       {started ? `Continue with “${next.title}”` : 'Start with the first lesson'}
@@ -79,14 +92,54 @@ export default function Home() {
 
   return (
     <main className="home">
+      {intro ? (
+        <section className="hero">
+          <h1>A customer books a flight. Follow the data.</h1>
+          <p className="lead">
+            In the next hour, pricing, finance, marketing and the control room all need to know about that booking, and
+            each one needs it in a different form. This is the kind of system an airline builds to make that happen.
+          </p>
+          <BigPicture />
+          <div className="hero-after">
+            <div>
+              <h2>Looks complicated? It is {LESSONS.length} small ideas.</h2>
+              <p>
+                Each box in the drawing is a lesson on the map below. Select “How we think about it” to see the five
+                stages that every data platform has. Then start with the basics. At the end you can design this system
+                yourself, and say why each part is there.
+              </p>
+            </div>
+            <div className="hero-go">
+              {cta}
+              <Link className="link-btn" to="/lesson/case-flight-booking">
+                Go directly to the flight booking design
+              </Link>
+              {started && (
+                <button className="link-btn" onClick={() => setIntro(false)}>
+                  Hide this introduction
+                </button>
+              )}
+            </div>
+          </div>
+          <p className="hero-fine">The airline is an invented example. The parts and the practices are the ones that real companies use.</p>
+        </section>
+      ) : null}
+
       <section className="home-top">
         <div>
-          <h1>Data engineering, explained</h1>
+          {intro ? <h2 className="map-title">The map</h2> : <h1>Data engineering, explained</h1>}
           <p className="lead">
-            A map of the core ideas, from first principles to whole system designs. Start at the top if you are new. If
-            you already do this work, go to the lesson you want to refresh.
+            The core ideas, from first principles to whole system designs. Start at the top if you are new. If you
+            already do this work, go to the lesson you want to refresh.
           </p>
-          {cta}
+          {intro ? null : (
+            <div className="hero-go row">
+              {cta}
+              <button className="link-btn" onClick={() => setIntro(true)}>
+                Show the whole system again
+              </button>
+            </div>
+          )}
         </div>
         <aside className="board">
           <h2>
@@ -149,7 +202,7 @@ export default function Home() {
           </svg>
 
           {PILLS.map(({ t, x, y }) => (
-            <span key={t.id} className="line-name" style={{ left: x, top: y, background: t.color }}>
+            <span key={t.id} className={`line-name ${shown && shown.track !== t.id ? 'dim' : ''}`} style={{ left: x, top: y, background: t.color }}>
               {t.name}
             </span>
           ))}
@@ -160,6 +213,7 @@ export default function Home() {
             const isPre = !!shown?.prereqs.includes(l.id)
             const cls = [
               'station',
+              (l.track === 'foundations' || l.track === 'designs') && 'wide',
               l.level,
               isDone && 'done',
               next?.id === l.id && 'next',
@@ -178,17 +232,13 @@ export default function Home() {
                   // Keyboard focus only. A mouse press must not light the map.
                   if (!e.currentTarget.matches(':focus-visible')) return
                   setHover(l.id)
-                  setLow(e.currentTarget.getBoundingClientRect().top > window.innerHeight - 250)
                 }}
                 onBlur={() => setHover(null)}
               >
                 <span
                   className="dot"
                   aria-hidden="true"
-                  onMouseEnter={(e) => {
-                    setHover(l.id)
-                    setLow(e.currentTarget.getBoundingClientRect().top > window.innerHeight - 250)
-                  }}
+                  onMouseEnter={() => setHover(l.id)}
                   onMouseLeave={() => setHover(null)}
                 />
                 <span className="label">
@@ -204,21 +254,6 @@ export default function Home() {
         </div>
       </div>
 
-      {shown && (
-        <aside className={`hover-card ${low ? 'at-top' : ''}`}aria-live="polite" style={{ ['--line' as string]: trackById[shown.track].color }}>
-          <p className="hover-line">
-            <span className="pill">{trackById[shown.track].name}</span> {shown.minutes} min
-            {shown.level === 'deeper' ? ', goes deeper' : ''}
-          </p>
-          <h2>{shown.title}</h2>
-          <p>{shown.summary}</p>
-          <p className="hover-pre">
-            {shown.prereqs.length > 0
-              ? `Helps to know first: ${shown.prereqs.map((p) => lessonById[p].title).join(', ')}.`
-              : 'No earlier lesson is needed.'}
-          </p>
-        </aside>
-      )}
     </main>
   )
 }

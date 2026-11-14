@@ -1,4 +1,5 @@
 import { marked } from 'marked'
+import { LESSON_TECH, TECH } from '../tech'
 
 export interface QuizQuestion {
   q: string
@@ -24,12 +25,42 @@ const raw = import.meta.glob('../content/*.md', { query: '?raw', import: 'defaul
 
 const inline = (s: string) => marked.parseInline(s, { async: false }) as string
 
-function parse(src: string): Segment[] {
+/** Turn the first mention of each technology group into a term that opens its side note. */
+function linkTech(html: string, keys: string[], used: Set<string>): string {
+  const todo = keys.filter((k) => !used.has(k))
+  if (!todo.length || typeof DOMParser === 'undefined') return html
+  const doc = new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html')
+  const root = doc.body.firstElementChild!
+  for (const key of todo) {
+    const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    while (walker.nextNode()) {
+      const n = walker.currentNode as Text
+      if (!n.parentElement || n.parentElement.closest('a,code,pre,h1,h2,h3,h4,th,button')) continue
+      const m = TECH[key].match.exec(n.data)
+      if (!m) continue
+      const range = doc.createRange()
+      range.setStart(n, m.index)
+      range.setEnd(n, m.index + m[0].length)
+      const b = doc.createElement('button')
+      b.type = 'button'
+      b.className = 'tech'
+      b.dataset.tech = key
+      range.surroundContents(b)
+      used.add(key)
+      break
+    }
+  }
+  return root.innerHTML
+}
+
+function parse(src: string, id: string): Segment[] {
+  const keys = LESSON_TECH[id] ?? []
+  const used = new Set<string>()
   const out: Segment[] = []
   let buf: string[] = []
   const flush = () => {
     const text = buf.join('\n').trim()
-    if (text) out.push({ type: 'md', html: marked.parse(text, { async: false }) as string })
+    if (text) out.push({ type: 'md', html: linkTech(marked.parse(text, { async: false }) as string, keys, used) })
     buf = []
   }
   const lines = src.replace(/\r\n/g, '\n').split('\n')
@@ -91,7 +122,7 @@ export function lessonContent(id: string): Segment[] | null {
   if (cache.has(id)) return cache.get(id)!
   const key = Object.keys(raw).find((k) => k.endsWith(`/${id}.md`))
   if (!key) return null
-  const segs = parse(raw[key])
+  const segs = parse(raw[key], id)
   cache.set(id, segs)
   return segs
 }

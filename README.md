@@ -48,3 +48,11 @@ To add a figure, export a React component from a file in `src/figures/` and regi
 ## Sources
 
 Lessons summarise *Fundamentals of Data Engineering* (Reis, Housley), *Designing Data-Intensive Applications* (Kleppmann), *The Data Warehouse Toolkit* (Kimball, Ross), *Streaming Systems* (Akidau, Chernyak, Lax), the Data Engineering Wiki, r/dataengineering, and the papers and essays listed on the Sources page.
+
+## Reader features (all stored in the browser, no server)
+
+- **Progress**: localStorage key `dee.progress.v1`.
+- **Highlights and underlines**: select text in a lesson. Stored under `dee.marks.v1` as text offsets in each block of the lesson.
+- **Technology notes**: `src/tech.ts` holds the groups of tools and which lessons show them. The first mention of a group in a lesson becomes a marked term. `src/toolUrls.ts` holds the link for each tool. Logos come from the `simple-icons` package; tools without an icon get initials.
+- **Opening drawing**: `src/components/BigPicture.tsx`.
+
