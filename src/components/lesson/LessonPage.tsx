@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { lessonById, lessonsOf } from '../../data/curriculum'
 import { TECH } from '../../data/tech'
+import { subjectById } from '../../data/subjects'
 import { trackById } from '../../data/tracks'
 import { useLessonContent } from '../../lessons/load'
 import { paint, useMarks } from '../../lib/marks'
@@ -79,7 +80,7 @@ export default function LessonPage() {
       <main className="page narrow">
         <h1>No lesson at this address</h1>
         <p>
-          <Link to="/">Go to the map</Link> and choose a lesson from there.
+          <Link to="/">Go to the home page</Link>, choose a subject, and find the lesson on its map.
         </p>
       </main>
     )
@@ -130,8 +131,8 @@ export default function LessonPage() {
         <a className="skip" href="#lesson-title">
           Skip the lesson list
         </a>
-        <Link to="/" className="back">
-          All lines
+        <Link to={subjectById[lesson.subject].path} className="back">
+          {subjectById[lesson.subject].name}: all lines
         </Link>
         <h2>{track.name}</h2>
         <p>{track.blurb}</p>

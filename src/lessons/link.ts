@@ -28,12 +28,16 @@ export function before(id: string): Set<string> {
   return seen
 }
 
-/** Glossary terms that need a definition in this lesson: all terms except those taught on its path, and common words. */
+/**
+ * Glossary terms that need a definition in this lesson: the terms of its subject, except those taught on its path,
+ * and common words. A term of another subject is not offered: the same word can mean something else there.
+ */
 export function termsFor(id: string): TermRule[] {
   const known = before(id)
   known.add(id)
+  const subject = lessonById[id]?.subject ?? 'data'
   const taught = new Set(TERMS.filter((t) => !t.basic && known.has(t.lesson)).map((t) => t.base.toLowerCase()))
-  return TERMS.filter((t) => !t.skip && !taught.has(t.base.toLowerCase()))
+  return TERMS.filter((t) => !t.skip && !taught.has(t.base.toLowerCase()) && (lessonById[t.lesson]?.subject ?? 'data') === subject)
 }
 
 /** Wrap the first text match of `re` under `root` in a button. Skips text inside the elements in `skip`. */

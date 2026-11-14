@@ -29,9 +29,13 @@ test('checkPlan finds mistakes', () => {
 })
 
 test('addresses belong to the right subject', () => {
-  expect(subjectOfPath('/').id).toBe('data')
-  expect(subjectOfPath('/lesson/cdc').id).toBe('data')
-  expect(subjectOfPath('/software').id).toBe('software')
-  expect(subjectOfPath('/ai').id).toBe('ai')
-  expect(subjectOfPath('/aim').id).toBe('data')
+  expect(subjectOfPath('/')).toBeNull()
+  expect(subjectOfPath('/data')?.id).toBe('data')
+  expect(subjectOfPath('/lesson/cdc')?.id).toBe('data')
+  expect(subjectOfPath('/software')?.id).toBe('software')
+  expect(subjectOfPath('/ai')?.id).toBe('ai')
+  expect(subjectOfPath('/aim')?.id).toBe('data')
+  expect(subjectOfPath('/software/glossary')?.id).toBe('software')
+  expect(subjectOfPath('/ai/toolkit')?.id).toBe('ai')
+  expect(subjectOfPath('/toolkit')?.id).toBe('data')
 })

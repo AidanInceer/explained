@@ -7,6 +7,7 @@ import '@fontsource-variable/jetbrains-mono'
 import './styles.css'
 import './figures/figures.css'
 import './figures/figures-more.css'
+import './figures/figures-subjects.css'
 import App from './App'
 
 createRoot(document.getElementById('root')!).render(

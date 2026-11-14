@@ -73,7 +73,9 @@ type BoardProps = {
   parcel?: { i: number; key: string; onArrive: () => void } | null
 }
 
-type Glyph = 'app' | 'db' | 'api' | 'file' | 'log' | 'cdc' | 'plug' | 'cpu' | 'table' | 'person' | 'model' | 'mail'
+export type Glyph =
+  | 'app' | 'db' | 'api' | 'file' | 'log' | 'cdc' | 'plug' | 'cpu' | 'table' | 'person' | 'model' | 'mail'
+  | 'phone' | 'server' | 'lock' | 'bolt' | 'search' | 'git' | 'net' | 'chat' | 'check' | 'gauge'
 const GLYPH: Record<string, Glyph> = {
   ev: 'app', book: 'db', pay: 'api', ops: 'file', crm: 'api', kafka: 'log', cdc: 'cdc', load: 'plug', flink: 'cpu', rt: 'db',
   bronze: 'table', silver: 'table', gold: 'table', mfin: 'table', mrev: 'table', mmkt: 'table', uml: 'model', ucrm: 'mail',
@@ -92,6 +94,17 @@ export const GLYPH_D: Record<Glyph, string> = {
   person: 'M7.2 7a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0-5.6 0 M4.5 16.5a5.5 4.5 0 0 1 11 0',
   model: 'M4 15l4-6 3 3 5-7 M14 5h2v2',
   mail: 'M4 6h12v9H4z M4 6l6 5 6-5',
+  // Used by the drawings of the planned subjects (PlanSystem.tsx).
+  phone: 'M7 3.5h6v13H7z M9.2 14.2h1.6',
+  server: 'M4.5 4.5h11v4.5h-11z M4.5 11h11v4.5h-11z M7 6.75h.01 M7 13.25h.01',
+  lock: 'M6 9h8v7H6z M7.5 9V7a2.5 2.5 0 0 1 5 0v2',
+  bolt: 'M11 3.5 6 11h4l-1 5.5 5-7.5h-4z',
+  search: 'M4.5 9a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M11.5 12l4 4',
+  git: 'M7 4.5v11 M13 7.5v1c0 2.5-6 2.5-6 5 M11.5 6a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0',
+  net: 'M10 4v4 M10 8l-5 4 M10 8l5 4 M10 8v4 M3.5 12.5h3v3h-3z M8.5 12.5h3v3h-3z M13.5 12.5h3v3h-3z',
+  chat: 'M4 5h12v8H9l-3 3v-3H4z',
+  check: 'M5 10.5l3 3 7-7',
+  gauge: 'M4.5 14a5.5 5.5 0 1 1 11 0 M10 14l3-4',
 }
 // Tiers have a real meaning, so they keep a colour mark: raw, clean, modelled.
 const TIER: Record<string, string> = { bronze: '#a8703f', silver: '#8e989d', gold: '#c39a12' }
@@ -105,7 +118,7 @@ const COUNT: Record<string, { start: number; unit: string; per: [number, number]
 }
 const fmt = (n: number) => Math.round(n).toLocaleString('en-GB')
 
-function Icon({ g, x, y, size = 20 }: { g: Glyph; x: number; y: number; size?: number }) {
+export function Icon({ g, x, y, size = 20 }: { g: Glyph; x: number; y: number; size?: number }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${size / 20})`} className="fd-icon">
       <rect width="20" height="20" rx="3.5" className="fd-ibox" />
@@ -115,7 +128,7 @@ function Icon({ g, x, y, size = 20 }: { g: Glyph; x: number; y: number; size?: n
 }
 
 /** Square marks on the four corners of a frame. */
-function Corners({ x, y, w, h, s = 7, className = 'fd-corner' }: { x: number; y: number; w: number; h: number; s?: number; className?: string }) {
+export function Corners({ x, y, w, h, s = 7, className = 'fd-corner' }: { x: number; y: number; w: number; h: number; s?: number; className?: string }) {
   return (
     <>
       {[
@@ -132,8 +145,11 @@ function Corners({ x, y, w, h, s = 7, className = 'fd-corner' }: { x: number; y:
 
 /** Lines run across and down with rounded bends, like a circuit, instead of straight across the page. */
 function route(a: Flow) {
-  const f = BY[a.from] as Node
-  const t = BY[a.to] as Node
+  return routeNodes(BY[a.from] as Node, BY[a.to] as Node)
+}
+
+/** The path of a line from one part to another. Also used by the drawings of the planned subjects. */
+export function routeNodes(f: Node, t: Node) {
   const fh = H(f)
   const th = H(t)
   const sideways = t.x >= f.x + f.w - 2 || t.x + t.w <= f.x + 2

@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LESSONS, lessonById, lessonsOf, type Lesson } from '../data/curriculum'
-import { TRACKS, trackById, type TrackId } from '../data/tracks'
+import { lessonById, lessonsIn, lessonsOf, type Lesson } from '../data/curriculum'
+import { DATA_TRACKS as TRACKS, trackById, type DataTrackId } from '../data/tracks'
 import { nextUp, resetProgress, useProgress } from '../lib/progress'
 import { quizText, useQuizScores } from '../lib/quizStore'
 import SystemDrawing, { GLYPH_D } from './system/SystemDrawing'
 import TrackLine from './TrackLine'
 import Corners from './Corners'
 import { BAND, H, W, WIDE, pos, route } from '../map/layout'
+
+/** The written data engineering lessons. This page is their map. */
+const LESSONS = lessonsIn('data')
 
 const EDGES = LESSONS.flatMap((l) =>
   l.prereqs.map((p) => {
@@ -58,7 +61,7 @@ const PILLS = TRACKS.map((t) => {
 export default function Home() {
   const done = useProgress()
   const quiz = useQuizScores()
-  const next = nextUp(done)
+  const next = nextUp(done, LESSONS)
   const [hover, setHover] = useState<string | null>(null)
   const shown = hover ? lessonById[hover] : null
   const wrap = useRef<HTMLDivElement>(null)
@@ -72,7 +75,7 @@ export default function Home() {
     return () => ro.disconnect()
   }, [])
 
-  const started = done.size > 0
+  const started = LESSONS.some((l) => done.has(l.id))
   // The drawing is open for new readers. Returning readers open it when they want it.
   const [intro, setIntro] = useState(!started)
   const cta = next ? (
@@ -166,7 +169,7 @@ export default function Home() {
           </div>
           <div className="board-body">
             <p className="board-count">
-              <b>{done.size}</b> of {LESSONS.length} lessons understood
+              <b>{LESSONS.filter((l) => done.has(l.id)).length}</b> of {LESSONS.length} lessons understood
             </p>
             {/* One row of squares for each subject. A square fills in the subject's colour when you mark the lesson as understood. */}
             <ul className="board-rows" aria-label="Progress in each subject">
@@ -257,7 +260,7 @@ export default function Home() {
             const isPre = !!shown?.prereqs.includes(l.id)
             const cls = [
               'station',
-              BAND[l.track].x === WIDE && 'wide',
+              BAND[l.track as DataTrackId].x === WIDE && 'wide',
               l.level,
               isDone && 'done',
               next?.id === l.id && 'next',
