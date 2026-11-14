@@ -5,6 +5,10 @@ import { Scd } from './modeling'
 import { EtlElt, Idempotency } from './pipelines'
 import { Consumers, Delivery, Windows } from './streaming'
 import { Dag, Quality } from './ops'
+import { ChooseEngine, ChooseIngestion, ChooseLatency, ChooseStack } from './decide'
+import { BatchStream, QueueLog } from './motion'
+import { WbFlight, WbFraud, WbMethod, WbShop } from './whiteboard'
+import { CiPipeline, DbtLayers, FactTypes, Joins, ModelLevels, Requirements, Sdlc, Skew, SqlOrder, ZoneMap } from './more'
 
 /** Names used by `::fig <name> | caption` lines in the lesson files. */
 export const FIGURES: Record<string, ComponentType> = {
@@ -25,4 +29,24 @@ export const FIGURES: Record<string, ComponentType> = {
   delivery: Delivery,
   dag: Dag,
   quality: Quality,
+  'choose-ingestion': ChooseIngestion,
+  'choose-engine': ChooseEngine,
+  'choose-latency': ChooseLatency,
+  'choose-stack': ChooseStack,
+  'batch-stream': BatchStream,
+  'queue-log': QueueLog,
+  'wb-method': WbMethod,
+  'wb-shop': WbShop,
+  'wb-flight': WbFlight,
+  'wb-fraud': WbFraud,
+  requirements: Requirements,
+  sdlc: Sdlc,
+  'sql-order': SqlOrder,
+  zonemap: ZoneMap,
+  'model-levels': ModelLevels,
+  'fact-types': FactTypes,
+  'dbt-layers': DbtLayers,
+  joins: Joins,
+  skew: Skew,
+  ci: CiPipeline,
 }

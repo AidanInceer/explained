@@ -10,6 +10,12 @@ export type Segment =
   | { type: 'md'; html: string }
   | { type: 'fig'; name: string; caption: string }
   | { type: 'quiz'; questions: QuizQuestion[] }
+  | { type: 'scenario'; items: ScenarioItem[] }
+
+export interface ScenarioItem {
+  q: string
+  options: { text: string; why: string; verdict: 'best' | 'ok' | 'poor' }[]
+}
 
 const raw = import.meta.glob('../content/*.md', { query: '?raw', import: 'default', eager: true }) as Record<
   string,
@@ -51,6 +57,26 @@ function parse(src: string): Segment[] {
         }
       }
       out.push({ type: 'quiz', questions })
+    } else if (line.trim() === '::scenario') {
+      flush()
+      const items: ScenarioItem[] = []
+      let cur: ScenarioItem | null = null
+      for (i++; i < lines.length && lines[i].trim() !== '::end'; i++) {
+        const l = lines[i].trim()
+        if (!l) continue
+        if (l[0] === '?') {
+          cur = { q: inline(l.slice(1).trim()), options: [] }
+          items.push(cur)
+        } else if (cur && '+~-'.includes(l[0])) {
+          const [text, ...why] = l.slice(1).split('|')
+          cur.options.push({
+            text: inline(text.trim()),
+            why: inline(why.join('|').trim()),
+            verdict: l[0] === '+' ? 'best' : l[0] === '~' ? 'ok' : 'poor',
+          })
+        }
+      }
+      out.push({ type: 'scenario', items })
     } else {
       buf.push(line)
     }

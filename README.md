@@ -1,6 +1,6 @@
 # Data Engineering Explained
 
-A local website that teaches the core concepts of data engineering as a map of lessons. Seven lines (Foundations, Storage, Modeling, Pipelines, Processing, Operations, Architecture), 26 lessons, 17 figures of which 10 are interactive. No login. Progress is saved in the browser.
+A local website that teaches the core concepts of data engineering as a map of lessons. Eight lines (Foundations, Storage, Modeling, Pipelines, Processing, Architecture, Operations, Worked designs), 58 lessons and 37 figures. The figures include decision helpers, an animated batch and streaming comparison, and four step-by-step whiteboard designs. Lessons can also contain `::scenario` blocks (`?` situation, then `+` best, `~` workable, `-` poor options, each as `option | reason`). Each lesson has a place on the map (`at: [column, row]` in `src/curriculum.ts`) and must be below all of its prerequisites. No login. Progress is saved in the browser.
 
 ## Run
 

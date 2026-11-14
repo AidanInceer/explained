@@ -4,6 +4,7 @@ import { lessonContent } from '../lib/content'
 import { setDone, useProgress } from '../lib/progress'
 import { FIGURES } from '../figures'
 import Quiz from './Quiz'
+import Scenario from './Scenario'
 import TrackLine from './TrackLine'
 
 export default function LessonPage() {
@@ -28,11 +29,9 @@ export default function LessonPage() {
   const isDone = done.has(lesson.id)
   const line = lessonsOf(lesson.track)
   const idx = line.indexOf(lesson)
-  const onward = line[idx + 1]
-  const branches =
-    lesson.id === 'oltp-olap'
-      ? LESSONS.filter((l) => l.prereqs.includes('oltp-olap'))
-      : dependents(lesson.id).filter((l) => l.id !== onward?.id)
+  const leads = dependents(lesson.id)
+  const onward = leads.find((l) => l.track === lesson.track)
+  const branches = leads.filter((l) => l.id !== onward?.id)
   const elsewhere =
     !onward && branches.length === 0
       ? LESSONS.filter((l) => !done.has(l.id) && l.id !== lesson.id && l.prereqs.every((p) => done.has(p) || p === lesson.id)).slice(0, 3)
@@ -90,6 +89,7 @@ export default function LessonPage() {
             segs.map((s, i) => {
               if (s.type === 'md') return <div key={i} dangerouslySetInnerHTML={{ __html: s.html }} />
               if (s.type === 'quiz') return <Quiz key={i} questions={s.questions} />
+              if (s.type === 'scenario') return <Scenario key={i} items={s.items} />
               const F = FIGURES[s.name]
               return (
                 <figure key={i} className="fig">
@@ -118,7 +118,7 @@ export default function LessonPage() {
             )}
             {branches.length > 0 && (
               <div className="onward-branches">
-                <h2>{lesson.id === 'oltp-olap' ? 'Choose a line' : 'This lesson also leads to'}</h2>
+                <h2>{onward ? 'This lesson also leads to' : 'This lesson leads to'}</h2>
                 <ul>
                   {branches.map((b) => (
                     <li key={b.id}>
