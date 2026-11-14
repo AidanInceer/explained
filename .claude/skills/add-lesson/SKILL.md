@@ -25,9 +25,16 @@ Read `CONTRIBUTING.md` sections "Lessons" and "Writing style" first. They are th
    `/` and find the lesson on the map, then open `/lesson/<id>` and open each part. Check the quiz.
 6. **Commit and open a pull request into `develop`**, with a screenshot of the map around the lesson.
 
-## Planned lessons (software engineering, AI)
+## Software engineering and AI lessons
 
-These subjects are plans in `src/data/plans/`, with no lesson files yet. To change a plan, follow "Planned subjects"
-in `CONTRIBUTING.md`, then run `npm run check`. To write one, first ask the
-maintainer how the subject should be split into its own content folder and map. Do not put them in
-`src/content/`: that folder is the data engineering map.
+These subjects take their map from the plans in `src/data/plans/`. To write a planned lesson, follow "Write a planned
+lesson" in `CONTRIBUTING.md`:
+
+1. Find the lesson's id, title and prerequisites in `src/data/plans/<subject>.ts`. Read the lessons on its path that
+   already have text, so the new one does not repeat them.
+2. Write `src/content/<subject>/<id>.md` with only `minutes`, `tech` and `refs` in the YAML block.
+3. Add sources to `src/data/sources-<subject>.ts` and terms to `src/data/glossary-<subject>.ts`.
+4. Link only to lessons that have text. Name a planned lesson by its title in quotes.
+5. `npm run check`, then open `/<subject>` and `/lesson/<id>` in the dev server.
+
+Do not put these files in `src/content/` itself: that folder is the data engineering map.

@@ -1,9 +1,14 @@
 /**
  * Books, papers and websites that lessons cite. A lesson lists them under `refs` in its file,
- * as `- <source id>: <where in the source>`. The Sources page lists all of them.
+ * as `- <source id>: <where in the source>`. Data engineering sources are here. Software engineering and AI
+ * sources are in sources-software.ts and sources-ai.ts. Each subject's Sources page lists the sources that its
+ * lessons cite, and the sources of its own file.
  */
+import { AI_SOURCES } from './sources-ai.ts'
+import { SOFTWARE_SOURCES } from './sources-software.ts'
+import type { SubjectId } from './tracks.ts'
 
-export type SourceId =
+type DataSourceId =
   | 'fode'
   | 'ddia'
   | 'kimball'
@@ -35,7 +40,7 @@ export interface Source {
   why: string
 }
 
-export const SOURCES: Record<SourceId, Source> = {
+const DATA_SOURCES: Record<DataSourceId, Source> = {
   fode: {
     title: 'Fundamentals of Data Engineering',
     by: 'Joe Reis and Matt Housley, O’Reilly, 2022',
@@ -166,4 +171,14 @@ export const SOURCES: Record<SourceId, Source> = {
     kind: 'Book',
     why: 'What machine learning needs from data: training data, features, and the difference between training and serving.',
   },
+}
+
+export type SourceId = DataSourceId | keyof typeof SOFTWARE_SOURCES | keyof typeof AI_SOURCES
+export const SOURCES: Record<SourceId, Source> = { ...DATA_SOURCES, ...SOFTWARE_SOURCES, ...AI_SOURCES }
+
+/** The sources that belong to each subject. A lesson may also cite a source of another subject. */
+export const SOURCES_OF: Record<SubjectId, SourceId[]> = {
+  data: Object.keys(DATA_SOURCES) as SourceId[],
+  software: Object.keys(SOFTWARE_SOURCES) as SourceId[],
+  ai: Object.keys(AI_SOURCES) as SourceId[],
 }

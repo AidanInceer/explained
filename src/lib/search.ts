@@ -1,5 +1,6 @@
 import { LESSONS, lessonById } from '../data/curriculum'
 import { GLOSSARY } from '../data/glossary'
+import { subjectById } from '../data/subjects'
 import { trackById } from '../data/tracks'
 
 export interface Hit {
@@ -18,7 +19,7 @@ export function search(q: string): Hit[] {
     key: 'l' + l.id,
     to: `/lesson/${l.id}`,
     title: l.title,
-    sub: `Lesson on the ${trackById[l.track].name} line`,
+    sub: `${subjectById[l.subject].name}: ${trackById[l.track].name} line`,
     color: trackById[l.track].color,
   }))
   const terms: Hit[] = GLOSSARY.filter((g) => g.term.toLowerCase().includes(s)).map((g) => ({

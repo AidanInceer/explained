@@ -11,7 +11,7 @@ export const SOFTWARE_PLAN: PlanLine[] = [
   {
     name: 'Foundations',
     blurb: 'What is under every program: the machine, the operating system and the network.',
-    color: '#132029',
+    color: 'var(--line-ink)',
     tier: 0,
     lessons: [
       l('how-computers-work', 'How computers work', 'CPU, memory, storage, and the connections between them.'),
@@ -184,7 +184,7 @@ export const SOFTWARE_PLAN: PlanLine[] = [
       l('cloud', 'Cloud basics', 'Compute, storage and networks that you rent by the hour.', ['networks']),
       l('cd', 'Continuous delivery and deployment', 'Every merged change ready to release, or released.', ['ci']),
       l('infrastructure-as-code', 'Infrastructure as code', 'Servers and networks described in files and reviewed like code.', ['cloud']),
-      l('orchestration', 'Running containers at scale', 'What an orchestrator does, and when you need one.', ['containers'], 'deeper'),
+      l('container-orchestration', 'Running containers at scale', 'What an orchestrator does, and when you need one.', ['containers'], 'deeper'),
       l('observability', 'Logs, metrics and traces', 'How to see what a running system is doing.', ['cd']),
       l('feature-flags', 'Feature flags and safe rollouts', 'Release to a few users first, and turn it off fast.', ['cd'], 'deeper'),
       l('cloud-cost', 'Cloud cost', 'Why the bill grows, and how to keep it small.', ['cloud'], 'deeper'),

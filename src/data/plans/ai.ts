@@ -29,8 +29,8 @@ export const AI_PLAN: PlanLine[] = [
     color: '#7A3FD1',
     tier: 0,
     lessons: [
-      l('functions', 'Functions and graphs', 'Input in, output out, and the shape between.'),
-      l('derivatives', 'Derivatives', 'How fast the output changes when the input moves.', ['functions']),
+      l('math-functions', 'Functions and graphs', 'Input in, output out, and the shape between.'),
+      l('derivatives', 'Derivatives', 'How fast the output changes when the input moves.', ['math-functions']),
       l('partial-derivatives', 'Partial derivatives', 'Change one input and hold the rest still.', ['derivatives']),
       l('chain-rule', 'The chain rule', 'Rates of change through a chain of functions.', ['derivatives']),
       l('gradients', 'Gradients', 'The steepest direction uphill, for many inputs at once.', ['partial-derivatives']),
@@ -100,10 +100,10 @@ export const AI_PLAN: PlanLine[] = [
   {
     name: 'Machine learning',
     blurb: 'How a program learns a rule from examples instead of being told it.',
-    color: '#132029',
+    color: 'var(--line-ink)',
     tier: 2,
     lessons: [
-      l('what-is-ml', 'What learning from data means', 'A model, its parameters, and a measure of how wrong it is.', ['functions']),
+      l('what-is-ml', 'What learning from data means', 'A model, its parameters, and a measure of how wrong it is.', ['math-functions']),
       l('kinds-of-learning', 'Supervised, unsupervised, reinforcement', 'Three kinds of signal to learn from.', ['what-is-ml']),
       l('features', 'Features and representations', 'What the model sees, and why it matters most.', ['what-is-ml', 'vectors']),
       l('loss-functions', 'Loss functions', 'One number for how bad the answers are.', ['what-is-ml', 'cross-entropy']),
@@ -113,7 +113,7 @@ export const AI_PLAN: PlanLine[] = [
       l('overfitting', 'Overfitting, bias and variance', 'A model that remembers is not a model that understands.', ['train-test']),
       l('metrics', 'Measuring a model', 'Accuracy, precision, recall, and which one matters.', ['train-test']),
       l('trees', 'Decision trees and forests', 'Questions in a tree, and many trees that vote.', ['kinds-of-learning'], 'deeper'),
-      l('clustering', 'Clustering and dimension reduction', 'Find groups and shapes in data with no labels.', ['kinds-of-learning', 'eigen'], 'deeper'),
+      l('clustering-ml', 'Clustering and dimension reduction', 'Find groups and shapes in data with no labels.', ['kinds-of-learning', 'eigen'], 'deeper'),
       l('regularisation', 'Regularisation', 'Penalise complexity so the model generalises.', ['overfitting']),
       l('cross-validation', 'Cross-validation', 'Use all the data for testing, one part at a time.', ['metrics'], 'deeper'),
     ],
@@ -144,9 +144,9 @@ export const AI_PLAN: PlanLine[] = [
     lessons: [
       l('datasets', 'Where datasets come from', 'Collected, scraped, bought or made.', ['features']),
       l('labelling', 'Labels and labelling', 'People, rules and models that make the answers.', ['datasets']),
-      l('data-quality', 'Data quality and leakage', 'Duplicates, noise, and test answers hidden in the training data.', ['labelling']),
-      l('data-bias', 'Bias in data', 'The model learns the world as the data shows it.', ['data-quality']),
-      l('augmentation', 'Augmentation and synthetic data', 'More examples from the ones that you have.', ['data-quality'], 'deeper'),
+      l('ml-data-quality', 'Data quality and leakage', 'Duplicates, noise, and test answers hidden in the training data.', ['labelling']),
+      l('data-bias', 'Bias in data', 'The model learns the world as the data shows it.', ['ml-data-quality']),
+      l('augmentation', 'Augmentation and synthetic data', 'More examples from the ones that you have.', ['ml-data-quality'], 'deeper'),
     ],
   },
   {

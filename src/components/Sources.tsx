@@ -1,32 +1,38 @@
 import { Link } from 'react-router-dom'
-import { LESSONS } from '../data/curriculum'
-import { SOURCES, type SourceId } from '../data/sources'
+import { lessonsIn } from '../data/curriculum'
+import { SOURCES, SOURCES_OF, type SourceId } from '../data/sources'
+import type { Subject } from '../data/subjects'
 
 const KINDS = ['Book', 'Paper', 'Essay', 'Website', 'Community']
 const PLURAL: Record<string, string> = { Book: 'Books', Paper: 'Papers', Essay: 'Essays', Website: 'Websites', Community: 'Community' }
 
-export default function Sources() {
+export default function Sources({ subject }: { subject: Subject }) {
+  const lessons = lessonsIn(subject.id)
+  // The subject's own sources, and any other source that its lessons cite.
+  const ids = [...new Set<SourceId>([...SOURCES_OF[subject.id], ...lessons.flatMap((l) => l.refs.map(([r]) => r))])]
+  const of = (k: string) => ids.filter((id) => SOURCES[id].kind === k)
   return (
     <main className="page narrow">
+      <p className="page-kicker">{subject.name}</p>
       <h1>Sources</h1>
       <p className="lead">
         The lessons summarise these books, papers and community references in new words. When a lesson and a source
         disagree, trust the source.
       </p>
       <nav className="src-kinds" aria-label="Kinds of source">
-        {KINDS.filter((k) => Object.values(SOURCES).some((s) => s.kind === k)).map((k) => (
+        {KINDS.filter((k) => of(k).length).map((k) => (
           <a key={k} href={`#src-${k}`}>
-            {PLURAL[k]} <span>{Object.values(SOURCES).filter((s) => s.kind === k).length}</span>
+            {PLURAL[k]} <span>{of(k).length}</span>
           </a>
         ))}
       </nav>
-      {KINDS.filter((k) => Object.values(SOURCES).some((s) => s.kind === k)).map((kind) => (
+      {KINDS.filter((k) => of(k).length).map((kind) => (
       <section key={kind} id={`src-${kind}`} className="src-group">
         <h2>{PLURAL[kind]}</h2>
       <ul className="source-list">
-        {(Object.keys(SOURCES) as SourceId[]).filter((id) => SOURCES[id].kind === kind).map((id) => {
+        {of(kind).map((id) => {
           const s = SOURCES[id]
-          const used = LESSONS.filter((l) => l.refs.some(([r]) => r === id))
+          const used = lessons.filter((l) => l.refs.some(([r]) => r === id))
           return (
             <li key={id}>
               <div className="source-head">
@@ -35,6 +41,7 @@ export default function Sources() {
               </div>
               <div className="source-body">
               <p>{s.why}</p>
+              {used.length > 0 && (
               <details className="source-used">
                 <summary>Used in {used.length} {used.length === 1 ? 'lesson' : 'lessons'}</summary>
                 <ul>
@@ -45,6 +52,7 @@ export default function Sources() {
                   ))}
                 </ul>
               </details>
+              )}
               </div>
             </li>
           )

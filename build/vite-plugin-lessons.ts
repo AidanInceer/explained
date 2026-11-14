@@ -1,5 +1,6 @@
 /**
- * Reads the lesson files in src/content at build time.
+ * Reads the lesson files in src/content at build time: data engineering at the top, and software engineering and AI in
+ * src/content/software and src/content/ai.
  *
  * - `virtual:lessons` is the list of lessons, from the YAML block of each file. The map and the lists use it, so it
  *   is small and in the first download.
@@ -8,17 +9,22 @@
  *
  * Every start and build checks all lesson files. A problem stops the build and shows on the page in development.
  */
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
 import { normalizePath, type Plugin, type ViteDevServer } from 'vite'
 import { parseLessonBody, splitLessonFile } from '../src/lessons/format.ts'
-import { checkGlossary, checkLessons } from '../src/lessons/validate.ts'
+import { checkGlossary, checkLessons, fileOf } from '../src/lessons/validate.ts'
+import type { PlanSubjectId, SubjectId } from '../src/data/tracks.ts'
 
 const VIRTUAL = 'virtual:lessons'
 const RESOLVED = '\0' + VIRTUAL
 const QUERY = '?lesson'
 
-export function readLessonFiles(dir: string) {
+/** Folders of src/content that hold the lessons of a planned subject. Data engineering lessons are at the top. */
+const SUBJECT_DIRS: PlanSubjectId[] = ['software', 'ai']
+
+function readDir(dir: string, subject: SubjectId) {
+  if (!existsSync(dir)) return []
   return readdirSync(dir)
     .filter((f) => f.endsWith('.md'))
     .sort()
@@ -26,11 +32,16 @@ export function readLessonFiles(dir: string) {
       const id = basename(f, '.md')
       const path = join(dir, f)
       try {
-        return { id, path, file: splitLessonFile(readFileSync(path, 'utf8')) }
+        return { id, path, subject, file: splitLessonFile(readFileSync(path, 'utf8')) }
       } catch (e) {
-        throw new Error(`src/content/${f}: ${(e as Error).message}`)
+        throw new Error(`${fileOf(id, subject)}: ${(e as Error).message}`)
       }
     })
+}
+
+/** Every lesson file: data engineering in src/content, the other subjects in src/content/<subject>. */
+export function readLessonFiles(dir: string) {
+  return [readDir(dir, 'data'), ...SUBJECT_DIRS.map((s) => readDir(join(dir, s), s))].flat()
 }
 
 export default function lessons(): Plugin {

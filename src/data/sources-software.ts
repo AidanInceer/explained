@@ -1,0 +1,157 @@
+/**
+ * Sources for software engineering lessons. A lesson can also cite any source in src/data/sources.ts.
+ * Add a source here before a lesson cites it.
+ */
+import type { Source } from './sources.ts'
+
+export const SOFTWARE_SOURCES = {
+  csapp: {
+    title: 'Computer Systems: A Programmer’s Perspective, 3rd edition',
+    by: 'Randal E. Bryant and David R. O’Hallaron, Pearson, 2015',
+    kind: 'Book',
+    why: 'How a program becomes machine code and runs: data representation, memory, linking, processes and the network, from the programmer’s side.',
+  },
+  ostep: {
+    title: 'Operating Systems: Three Easy Pieces',
+    by: 'Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, 2018',
+    kind: 'Book',
+    url: 'https://pages.cs.wisc.edu/~remzi/OSTEP/',
+    why: 'Free and clear. Processes, scheduling, memory, concurrency and file systems, each from the problem it solves.',
+  },
+  kurose: {
+    title: 'Computer Networking: A Top-Down Approach, 8th edition',
+    by: 'James F. Kurose and Keith W. Ross, Pearson, 2021',
+    kind: 'Book',
+    why: 'The internet from the application down to the wire: HTTP, DNS, TCP, IP and routing.',
+  },
+  sicp: {
+    title: 'Structure and Interpretation of Computer Programs, 2nd edition',
+    by: 'Harold Abelson and Gerald Jay Sussman with Julie Sussman, MIT Press, 1996',
+    kind: 'Book',
+    url: 'https://mitpress.mit.edu/9780262510875/',
+    why: 'Programs as a way to control complexity: abstraction, state, and how an interpreter evaluates code.',
+  },
+  clrs: {
+    title: 'Introduction to Algorithms, 4th edition',
+    by: 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein, MIT Press, 2022',
+    kind: 'Book',
+    why: 'The reference for data structures, algorithm analysis, sorting, graphs and dynamic programming.',
+  },
+  pragprog: {
+    title: 'The Pragmatic Programmer, 20th anniversary edition',
+    by: 'David Thomas and Andrew Hunt, Addison-Wesley, 2019',
+    kind: 'Book',
+    why: 'Habits of a working programmer: tools, debugging, small steps, and code that is easy to change.',
+  },
+  progit: {
+    title: 'Pro Git, 2nd edition',
+    by: 'Scott Chacon and Ben Straub, Apress, 2014',
+    kind: 'Book',
+    url: 'https://git-scm.com/book/en/v2',
+    why: 'Free. How Git stores history, and how branches, merges and remotes work.',
+  },
+  mdn: {
+    title: 'MDN Web Docs',
+    by: 'Mozilla and contributors',
+    kind: 'Website',
+    url: 'https://developer.mozilla.org',
+    why: 'The reference for HTML, CSS, JavaScript, HTTP and the browser’s APIs, with guides for each.',
+  },
+  rfc9110: {
+    title: 'RFC 9110: HTTP Semantics',
+    by: 'R. Fielding, M. Nottingham and J. Reschke (editors), IETF, 2022',
+    kind: 'Paper',
+    url: 'https://www.rfc-editor.org/rfc/rfc9110',
+    why: 'The standard that defines HTTP methods, status codes, headers and caching rules.',
+  },
+  hpbn: {
+    title: 'High Performance Browser Networking',
+    by: 'Ilya Grigorik, O’Reilly, 2013',
+    kind: 'Book',
+    url: 'https://hpbn.co',
+    why: 'Free. Why the network decides how fast a page loads: latency, TCP, TLS and HTTP/2.',
+  },
+  wcag: {
+    title: 'Web Content Accessibility Guidelines (WCAG) 2.2',
+    by: 'W3C, 2023',
+    kind: 'Website',
+    url: 'https://www.w3.org/TR/WCAG22/',
+    why: 'The standard for accessible web content, with a reason and a test for each rule.',
+  },
+  aposd: {
+    title: 'A Philosophy of Software Design, 2nd edition',
+    by: 'John Ousterhout, Yaknyam Press, 2021',
+    kind: 'Book',
+    why: 'Complexity is the enemy. Deep modules, simple interfaces, and how to tell good design from bad.',
+  },
+  refactoring: {
+    title: 'Refactoring, 2nd edition',
+    by: 'Martin Fowler, Addison-Wesley, 2018',
+    kind: 'Book',
+    why: 'How to change the structure of code in small, safe steps, and the smells that say when to do it.',
+  },
+  gof: {
+    title: 'Design Patterns: Elements of Reusable Object-Oriented Software',
+    by: 'Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides, Addison-Wesley, 1994',
+    kind: 'Book',
+    why: 'The book that named the common patterns. Read it to know the names, then use them with care.',
+  },
+  ddd: {
+    title: 'Domain-Driven Design',
+    by: 'Eric Evans, Addison-Wesley, 2003',
+    kind: 'Book',
+    why: 'Model the business in the code, with one shared language and clear boundaries between parts.',
+  },
+  goos: {
+    title: 'Growing Object-Oriented Software, Guided by Tests',
+    by: 'Steve Freeman and Nat Pryce, Addison-Wesley, 2009',
+    kind: 'Book',
+    why: 'Test-driven development on a real system, including mocks and end-to-end tests.',
+  },
+  seag: {
+    title: 'Software Engineering at Google',
+    by: 'Titus Winters, Tom Manshreck and Hyrum Wright (editors), O’Reilly, 2020',
+    kind: 'Book',
+    url: 'https://abseil.io/resources/swe-book',
+    why: 'Free. Programming over time: testing, code review, dependencies and large-scale change.',
+  },
+  cdbook: {
+    title: 'Continuous Delivery',
+    by: 'Jez Humble and David Farley, Addison-Wesley, 2010',
+    kind: 'Book',
+    why: 'The deployment pipeline: every change built, tested and ready to release.',
+  },
+  twelve: {
+    title: 'The Twelve-Factor App',
+    by: 'Adam Wiggins, 2011',
+    kind: 'Essay',
+    url: 'https://12factor.net',
+    why: 'Short rules for services that are easy to deploy: config in the environment, stateless processes, logs as streams.',
+  },
+  k8s: {
+    title: 'Kubernetes documentation',
+    by: 'The Kubernetes authors',
+    kind: 'Website',
+    url: 'https://kubernetes.io/docs/',
+    why: 'Concepts and tutorials for running containers on a cluster.',
+  },
+  owasp: {
+    title: 'OWASP Top 10',
+    by: 'OWASP Foundation',
+    kind: 'Website',
+    url: 'https://owasp.org/www-project-top-ten/',
+    why: 'The most common web application security risks, with how to prevent each one.',
+  },
+  seceng: {
+    title: 'Security Engineering, 3rd edition',
+    by: 'Ross Anderson, Wiley, 2020',
+    kind: 'Book',
+    why: 'How systems fail under attack, and how to design them so they do not. Wide and practical.',
+  },
+  mythical: {
+    title: 'The Mythical Man-Month, anniversary edition',
+    by: 'Frederick P. Brooks Jr., Addison-Wesley, 1995',
+    kind: 'Book',
+    why: 'Why adding people to a late project makes it later, and other lasting lessons about software teams.',
+  },
+} satisfies Record<string, Source>

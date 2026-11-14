@@ -135,9 +135,33 @@ The site is for readers whose first language may not be English, and for new and
 - **Technology notes** (`src/data/tech.ts`): groups of tools. `match` is the words in a lesson that open the note. Add the home page of each tool to `src/data/tool-urls.ts`. Logos come from the [simple-icons](https://simpleicons.org) package; a tool with no logo shows its initials.
 - **Sources** (`src/data/sources.ts`): add a source here before a lesson cites it.
 
-## Planned subjects
+## Software engineering and AI
 
-Software engineering and AI are plans: maps of lesson titles with no text yet. They are in `src/data/plans/software.ts` and `src/data/plans/ai.ts`. You do not set map places: the layout (`src/map/plan-layout.ts`) places each lesson from its order and prerequisites.
+These subjects start from a plan: a map of lesson titles in `src/data/plans/software.ts` and `src/data/plans/ai.ts`. You do not set map places: the layout (`src/map/plan-layout.ts`) places each lesson from its order and prerequisites. A planned lesson with no text shows as a dashed stop.
+
+### Write a planned lesson
+
+Create `src/content/software/<id>.md` or `src/content/ai/<id>.md`, where `<id>` is the lesson's id in the plan. The title, summary, line, level and prerequisites come from the plan, so the YAML block has only three keys:
+
+```yaml
+---
+minutes: 7
+tech: []
+refs:
+  - mml: Ch. 2, “Linear Algebra”
+---
+```
+
+The text follows the same rules as data engineering: `##` parts, callouts, a quiz, the writing style below.
+
+- Lesson ids are unique across all subjects, because every lesson's address is `/lesson/<id>`. The build stops on a duplicate.
+- Link only to lessons that have text. To name a planned lesson, write its title in quotes.
+- Sources go in `src/data/sources-software.ts` or `src/data/sources-ai.ts`. A lesson can cite a source of any subject.
+- Terms go in `src/data/glossary-software.ts` or `src/data/glossary-ai.ts`, with the lesson that explains them. A lesson only offers notes for terms of its own subject.
+- Figures go in `src/figures/software/` or `src/figures/ai/`. Register each one in that folder's `index.ts`, with a name that starts with `sw-` or `ai-`.
+- The Toolkit page of each subject is in `src/data/toolkit-software.ts` and `src/data/toolkit-ai.ts`.
+
+### Change a plan
 
 ```ts
 {
