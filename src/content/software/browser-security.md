@@ -29,7 +29,7 @@ This one rule stops a huge class of attacks. It is also why your own front end o
 Access-Control-Allow-Origin: https://app.example
 ```
 
-and the browser lets the script read the response. For requests that could change data, such as a `PUT` or a JSON `POST`, the browser first sends a **preflight** `OPTIONS` request to ask permission.
+and the browser lets the script read the response. For requests that a plain HTML form could not send, such as a `PUT` or a `POST` with a JSON body, the browser first sends a **preflight** `OPTIONS` request to ask permission.
 
 > **Pitfall.** A CORS error is reported by the browser, but the fix is on the server. And `Access-Control-Allow-Origin: *` with credentials is not allowed, for good reason: it would let any site read your users' private data.
 
@@ -43,7 +43,7 @@ Because the browser sends cookies automatically, they need careful settings:
 
 - `HttpOnly`: scripts cannot read the cookie, so an injected script cannot steal the session.
 - `Secure`: sent only over HTTPS.
-- `SameSite=Lax` or `Strict`: not sent on requests that other sites start, which blocks most **cross-site request forgery** (CSRF), where a hostile page makes your browser send a request that acts as you.
+- `SameSite=Lax` or `Strict`: not sent on requests that other sites start (`Lax` still sends it when the user follows a link to your site), which blocks most **cross-site request forgery** (CSRF), where a hostile page makes your browser send a request that acts as you.
 
 ## Cross-site scripting
 

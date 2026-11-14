@@ -9,7 +9,7 @@ Some problems break into smaller problems that **overlap**: the same small probl
 
 ## The waste
 
-[Recursion](/lesson/recursion) showed the Fibonacci function, where each number is the sum of the two before it. `fib(5)` calls `fib(4)` and `fib(3)`. But `fib(4)` also calls `fib(3)`. Lower down, `fib(2)` is computed many times over. The number of calls roughly doubles with each step up, so `fib(50)` would take hours.
+[Recursion](/lesson/recursion) showed the Fibonacci function, where each number is the sum of the two before it. `fib(5)` calls `fib(4)` and `fib(3)`. But `fib(4)` also calls `fib(3)`. Lower down, `fib(2)` is computed many times over. The number of calls grows about 1.6 times with each step up, so `fib(50)` would take hours.
 
 Yet there are only 51 different questions: `fib(0)` to `fib(50)`.
 

@@ -46,7 +46,7 @@ The parts are not a little faster or slower than each other. They differ by orde
 | Another computer in the same data centre | About 0.5 milliseconds | 500,000 times slower |
 | A computer on another continent | About 150 milliseconds | 150 million times slower |
 
-The CPU keeps small, fast **caches** of recently used memory, because a read from main memory makes it wait for about a hundred of its steps. The same idea repeats at every level: keep the data that you use often close to the place where you use it.
+The CPU keeps small, fast **caches** of recently used memory, because a read from main memory makes it wait for a few hundred of its steps. The same idea repeats at every level: keep the data that you use often close to the place where you use it.
 
 > **Rule of thumb.** When code is slow, the cause is usually waiting for data, not doing arithmetic. Ask first: how many times does it go to storage or to the network?
 

@@ -26,7 +26,7 @@ For each behaviour, think about:
 
 - **The normal case**: two items, as above.
 - **Edges**: an empty basket, one item, a quantity of zero, the largest allowed value.
-- **Errors**: a negative price should raise an error. Test that it does.
+- **Errors**: a negative quantity should raise an error. Test that it does.
 
 ```python
 import pytest

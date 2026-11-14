@@ -34,7 +34,7 @@ The method says what the client wants:
 
 "Safe to repeat" is called **idempotent**. It matters because networks fail. If a `PUT` times out, the client can send it again. If a `POST` times out, the order may or may not exist, and sending it again may create a second one.
 
-> **Pitfall.** Never make a `GET` change anything. Browsers, crawlers and caches send `GET` requests freely, for example to preload links. A "delete" link that uses `GET` will be clicked by a robot.
+> **Pitfall.** Never make a `GET` change anything. Browsers, crawlers and caches send `GET` requests freely, for example to preload links. A "delete" link that uses `GET` will be followed by a robot.
 
 ## A response
 

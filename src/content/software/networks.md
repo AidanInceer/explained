@@ -3,7 +3,7 @@ minutes: 9
 tech: []
 refs:
   - kurose: Ch. 1, “Computer Networks and the Internet”
-  - kurose: Ch. 3, “Transport Layer”, and Ch. 4, “The Network Layer”
+  - kurose: Ch. 3, “Transport Layer”, and Ch. 4, “The Network Layer: Data Plane”
 ---
 Almost all software today talks to other computers: a phone app to a server, a server to a database, one service to another. The network decides how fast and how reliably this works. You do not need to build a network to write software, but you need to know what it can and cannot promise.
 

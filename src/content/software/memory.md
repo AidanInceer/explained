@@ -11,7 +11,7 @@ Each value that a program uses lives somewhere in memory, for some time. Where i
 
 When a function is called, it gets a **stack frame**: a small block of memory for its local variables and for the place to return to. When the function returns, its frame is removed. A function that calls another adds a frame on top, so frames pile up like plates. That pile is the **stack**.
 
-The stack is fast and simple. Creating a frame is one addition to a pointer. Freeing it is one subtraction. Nobody has to remember to clean up.
+The stack is fast and simple. Creating a frame moves one pointer by the size of the frame. Freeing it moves the pointer back. Nobody has to remember to clean up.
 
 But the stack has limits. A value in a frame disappears when the function returns. And the stack is small, often a few megabytes, so a function that calls itself too deeply causes a **stack overflow**.
 

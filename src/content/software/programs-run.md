@@ -49,7 +49,7 @@ A program uses code from many places: your files, the standard library, other pa
 - The linker joins your code with the libraries it uses.
 
 ::quiz
-? A Python program has a typo in a function that only runs on the first day of each month. When do you find the error?
+? A Python program has a misspelled variable name in a function that only runs on the first day of each month. When do you find the error?
 - When you install Python
 + When that function first runs, on the first day of the month
 - When you save the file

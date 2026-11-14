@@ -50,7 +50,7 @@ The compiler checks every call against the declared types. The mistake shows up 
 
 ## Gradual typing
 
-Python and JavaScript now allow **type hints**: optional types that a separate checker (mypy or Pyright for Python, the TypeScript compiler for JavaScript) reads. The program runs the same with or without them. Teams add them to the most important code first.
+Python now allows **type hints**: optional types that a separate checker, such as mypy or Pyright, reads. The program runs the same with or without them. Teams add them to the most important code first. JavaScript has no type hints of its own. TypeScript adds them, and the TypeScript compiler can also check types written in JavaScript comments.
 
 ```python
 def total(prices: list[float]) -> float:
@@ -68,10 +68,10 @@ A separate question is how strictly a language treats types while it runs. Pytho
 - Static types are checked before the program runs. Dynamic types are checked while it runs.
 - Static types find many mistakes early, document code, and make large changes safe.
 - Types say what kind of value something is, not whether the value is correct.
-- Type hints add gradual static checking to Python and JavaScript.
+- Type hints add gradual static checking to Python. TypeScript does the same for JavaScript.
 
 ::quiz
-? A team renames a parameter in a function used in 300 places. Which helps most to find every caller that must change?
+? A team adds a required parameter to a function used in 300 places. Which helps most to find every caller that must change?
 + A static type checker
 - More comments
 - A faster CPU
