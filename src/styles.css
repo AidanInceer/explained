@@ -870,3 +870,49 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 /* The lesson count in the header is plain text: no box, no bar. */
 .top-progress, .top-progress:hover { border: 0; background: none; padding: 6px 2px; font-size: 13.5px; color: var(--ink-3); }
 .top-progress:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- the logo: four soft bounces, then a jump where the pieces swap places with a flip and land in order ---------- */
+.sm-p { transform-box: fill-box; transform-origin: center; animation: 7s cubic-bezier(0.45, 0, 0.35, 1) infinite; }
+.sm-tl { animation-name: sm-tl; }
+.sm-blue { animation-name: sm-blue, sm-pulse; animation-duration: 7s, 2.4s; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1), ease-in-out; }
+.sm-br { animation-name: sm-br; }
+.sm-bl { animation-name: sm-bl; }
+/* Each piece goes to the next place clockwise (top left, blue, bottom right, bottom left), then comes home. */
+@keyframes sm-tl {
+  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
+  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
+  58% { transform: translate(0, -11px) rotate(0deg); }
+  70% { transform: translate(37px, -14px) rotate(180deg); }
+  84% { transform: translate(0, -6px) rotate(360deg); }
+  92% { transform: translate(0, 1.5px) rotate(360deg); }
+  96%, 100% { transform: translate(0, 0) rotate(360deg); }
+}
+@keyframes sm-blue {
+  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
+  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
+  58% { transform: translate(0, -11px) rotate(0deg); }
+  70% { transform: translate(-4px, 35px) rotate(180deg); }
+  84% { transform: translate(0, -6px) rotate(360deg); }
+  92% { transform: translate(0, 1.5px) rotate(360deg); }
+  96%, 100% { transform: translate(0, 0) rotate(360deg); }
+}
+@keyframes sm-br {
+  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
+  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
+  58% { transform: translate(0, -11px) rotate(0deg); }
+  70% { transform: translate(-33px, -6px) rotate(-180deg); }
+  84% { transform: translate(0, -6px) rotate(-360deg); }
+  92% { transform: translate(0, 1.5px) rotate(-360deg); }
+  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
+}
+@keyframes sm-bl {
+  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
+  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
+  58% { transform: translate(0, -11px) rotate(0deg); }
+  70% { transform: translate(0, -39px) rotate(-180deg); }
+  84% { transform: translate(0, -6px) rotate(-360deg); }
+  92% { transform: translate(0, 1.5px) rotate(-360deg); }
+  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
+}
+@keyframes sm-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
+@media (prefers-reduced-motion: reduce) { .sm-p { animation: none; } }
