@@ -12,7 +12,7 @@ const store = createStore<Theme | null>(readJSON<Theme | null>(KEY, null), (v) =
 
 function apply(t: Theme) {
   document.documentElement.dataset.theme = t
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t === 'dark' ? '#0f171c' : '#132029')
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t === 'dark' ? '#0b0b0c' : '#132029')
 }
 
 if (typeof document !== 'undefined') {

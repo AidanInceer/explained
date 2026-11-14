@@ -1,20 +1,20 @@
 /* Colours. Light is the default; [data-theme='dark'] below changes them. Set by src/lib/theme.ts and index.html. */
 :root {
   color-scheme: light;
-  --paper: #edf1f0;
+  --paper: #f5f6f8;
   --surface: #ffffff;
-  --surface-2: #f1f4f2;
-  --canvas: #fbfcfb;
-  --ink: #132029;
-  --ink-hover: #24343f;
+  --surface-2: #f1f3f5;
+  --canvas: #fbfbfc;
+  --ink: #0e141a;
+  --ink-hover: #252d36;
   --on-ink: #ffffff;
-  --ink-2: #47565f;
-  --ink-3: #5d6b73;
-  --rule: #cdd6d5;
-  --rule-soft: #dfe6e5;
-  --line-1: #c4ccc8;
-  --line-2: #9eaaa5;
-  --dot: #d9dfdc;
+  --ink-2: #3c4551;
+  --ink-3: #58616d;
+  --rule: #d7dbe0;
+  --rule-soft: #e7eaee;
+  --line-1: #ccd2d9;
+  --line-2: #9ea7b2;
+  --dot: #dadfe5;
   --accent: #2f6bff;
   --accent-text: #2456d6;
   --accent-tint: #eef3ff;
@@ -26,7 +26,7 @@
   --warn-text: #8a5a00;
   --note-bg: #fffdf2;
   --note-line: #e3dcb8;
-  --code-bg: #132029;
+  --code-bg: #0e141a;
   --code-ink: #e4ecea;
   --code-rule: #33444e;
   /* The darkest line colour on the maps. In dark mode it becomes a lighter slate, so it shows on the page. */
@@ -798,35 +798,36 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 /* ---------- dark colours ---------- */
 [data-theme='dark'] {
   color-scheme: dark;
-  --paper: #0e1519;
-  --surface: #151f25;
-  --surface-2: #1b272e;
-  --canvas: #121b20;
-  --ink: #e3eaed;
-  --ink-hover: #c6d2d7;
-  --on-ink: #0e1519;
-  --ink-2: #b0bcc2;
-  --ink-3: #8f9da4;
-  --rule: #2b383f;
-  --rule-soft: #222e35;
-  --line-1: #33424a;
-  --line-2: #4c5c64;
-  --dot: #26333a;
+  /* Neutral near-black greys, with no blue cast. */
+  --paper: #0b0b0c;
+  --surface: #151516;
+  --surface-2: #1c1c1e;
+  --canvas: #111112;
+  --ink: #ececed;
+  --ink-hover: #cfcfd1;
+  --on-ink: #0b0b0c;
+  --ink-2: #b5b5b8;
+  --ink-3: #8f8f94;
+  --rule: #2b2b2e;
+  --rule-soft: #202022;
+  --line-1: #343437;
+  --line-2: #4e4e53;
+  --dot: #262628;
   --accent: #6b97ff;
   --accent-text: #8db0ff;
-  --accent-tint: #1a2744;
+  --accent-tint: #1a1f2e;
   --good: #4cc38a;
-  --good-tint: #12291f;
+  --good-tint: #10231a;
   --bad: #ff8a80;
-  --bad-tint: #33191a;
-  --warn-tint: #2e2611;
+  --bad-tint: #2c1616;
+  --warn-tint: #2a2310;
   --warn-text: #f0c46a;
-  --note-bg: #1f1d14;
-  --note-line: #4a4430;
-  --code-bg: #0a1014;
-  --code-ink: #dbe4e7;
-  --code-rule: #26343c;
-  --line-ink: #64798a;
+  --note-bg: #1c1b16;
+  --note-line: #46412f;
+  --code-bg: #050505;
+  --code-ink: #e3e3e4;
+  --code-rule: #2a2a2c;
+  --line-ink: #7d8087;
   --line-text: color-mix(in srgb, var(--line) 55%, #fff);
 }
 [data-theme='dark'] mark.um.hl { color: #132029; }
@@ -836,9 +837,9 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 /* Lesson figures keep the light colours in dark mode: they are drawings on paper, made for a light background. */
 [data-theme='dark'] .fig-frame {
   color-scheme: light;
-  --paper: #edf1f0; --surface: #ffffff; --surface-2: #f1f4f2; --canvas: #fbfcfb;
-  --ink: #132029; --ink-hover: #24343f; --on-ink: #ffffff; --ink-2: #47565f; --ink-3: #5d6b73;
-  --rule: #cdd6d5; --rule-soft: #dfe6e5; --line-1: #c4ccc8; --line-2: #9eaaa5; --dot: #d9dfdc;
+  --paper: #f5f6f8; --surface: #ffffff; --surface-2: #f1f3f5; --canvas: #fbfbfc;
+  --ink: #0e141a; --ink-hover: #252d36; --on-ink: #ffffff; --ink-2: #3c4551; --ink-3: #58616d;
+  --rule: #d7dbe0; --rule-soft: #e7eaee; --line-1: #ccd2d9; --line-2: #9ea7b2; --dot: #dadfe5;
   --accent: #2f6bff; --accent-text: #2456d6; --accent-tint: #eef3ff;
   --good: #0b7a4b; --good-tint: #e6f4ec; --bad: #b3261e; --bad-tint: #fbeae8;
   --line-ink: #132029; --line-text: color-mix(in srgb, var(--line) 74%, #000);
