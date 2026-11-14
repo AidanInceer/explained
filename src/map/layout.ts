@@ -5,7 +5,7 @@
  * A lesson's `at: [column, row]` picks a column of its band and a row below the band's top.
  * Every lesson must sit below all of its prerequisites, so every line on the map runs downward.
  */
-import type { TrackId } from '../data/tracks.ts'
+import type { DataTrackId } from '../data/tracks.ts'
 import type { Lesson } from '../lessons/types.ts'
 
 export const W = 1180
@@ -15,7 +15,7 @@ const TIER1 = 650
 const TIER2 = 1430
 const TIER3 = 2210
 const TIER4 = 2600
-export const BAND: Record<TrackId, { x: number[]; y: number }> = {
+export const BAND: Record<DataTrackId, { x: number[]; y: number }> = {
   foundations: { x: WIDE, y: 70 },
   storage: { x: [44, 232], y: TIER1 },
   modeling: { x: [434, 622], y: TIER1 },
@@ -28,7 +28,11 @@ export const BAND: Record<TrackId, { x: number[]; y: number }> = {
 }
 export const H = TIER4 + 2 * ROW + 96
 
-export const pos = (l: Pick<Lesson, 'track' | 'at'>) => ({ x: BAND[l.track].x[l.at[0]], y: BAND[l.track].y + l.at[1] * ROW })
+/** Place of a data engineering lesson on its map. */
+export const pos = (l: Pick<Lesson, 'track' | 'at'>) => {
+  const b = BAND[l.track as DataTrackId]
+  return { x: b.x[l.at[0]], y: b.y + l.at[1] * ROW }
+}
 
 const BUS = 30
 const R = 14

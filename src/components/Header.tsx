@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { LESSONS } from '../data/curriculum'
+import { lessonsIn } from '../data/curriculum'
+import { useTheme } from '../lib/theme'
 import { SITE_NAME } from '../data/site'
-import { SUBJECTS, subjectOfPath } from '../data/subjects'
+import { countsOf, SUBJECTS, subjectOfPath } from '../data/subjects'
 import { search } from '../lib/search'
 import { useProgress } from '../lib/progress'
 import { useQuizScores } from '../lib/quizStore'
@@ -69,9 +70,12 @@ export default function Header() {
   const navEl = useRef<HTMLElement>(null)
   const done = useProgress()
   const scores = useQuizScores()
-  const quizzes = Object.values(scores).filter((s) => s.correct === s.total).length
   const onLesson = loc.pathname.startsWith('/lesson/')
   const subject = subjectOfPath(loc.pathname)
+  const here = subject ? lessonsIn(subject.id) : []
+  const mine = { done: here.filter((l) => done.has(l.id)).length, total: here.length }
+  const quizzes = here.filter((l) => scores[l.id] && scores[l.id].correct === scores[l.id].total).length
+  const [theme, toggleTheme] = useTheme()
 
   useEffect(() => {
     setOpen(false)
@@ -102,34 +106,48 @@ export default function Header() {
           <Link
             key={s.id}
             to={s.path}
-            className={[s.id === subject.id ? 'active' : '', s.status].join(' ')}
-            aria-current={s.id === subject.id ? 'true' : undefined}
-            title={s.status === 'planned' ? `${s.name}: planned, no lesson text yet` : s.name}
+            className={[s.id === subject?.id ? 'active' : '', countsOf(s).written ? '' : 'planned'].join(' ')}
+            aria-current={s.id === subject?.id ? 'true' : undefined}
+            title={countsOf(s).written ? s.name : `${s.name}: planned, no lesson text yet`}
           >
             {s.short}
           </Link>
         ))}
       </nav>
-      <nav className="top-nav" aria-label="Main" ref={navEl}>
-        <NavLink to="/" end className={({ isActive }) => (isActive || onLesson ? 'active' : '')}>
-          Lessons
-        </NavLink>
-        <NavLink to="/toolkit">Toolkit</NavLink>
-        <NavLink to="/glossary">Glossary</NavLink>
-        <NavLink to="/sources">Sources</NavLink>
-        <NavFlow nav={navEl} path={loc.pathname} />
-      </nav>
-      <Link to="/" className="top-progress" title={`${done.size} ${done.size === 1 ? 'lesson' : 'lessons'} marked as understood. ${quizzes} ${quizzes === 1 ? 'quiz' : 'quizzes'} with all answers correct.`}>
-        {/* Ten small squares, one for each tenth of the lessons, like the progress rows on the map. */}
-        <span className="top-meter" aria-hidden="true">
-          {Array.from({ length: 10 }, (_, k) => (
-            <i key={k} className={done.size > 0 && k < Math.max(1, Math.round((done.size / LESSONS.length) * 10)) ? 'on' : ''} />
-          ))}
-        </span>
-        <span>
-          {done.size} of {LESSONS.length}
-        </span>
-      </Link>
+      {subject && (
+        <nav className="top-nav" aria-label={`${subject.name} pages`} ref={navEl}>
+          <NavLink to={subject.path} end className={({ isActive }) => (isActive || onLesson ? 'active' : '')}>
+            Lessons
+          </NavLink>
+          <NavLink to={`${subject.path}/toolkit`}>Toolkit</NavLink>
+          <NavLink to={`${subject.path}/glossary`}>Glossary</NavLink>
+          <NavLink to={`${subject.path}/sources`}>Sources</NavLink>
+          <NavFlow nav={navEl} path={loc.pathname} />
+        </nav>
+      )}
+      {subject && mine.total > 0 && (
+        <Link to={subject.path} className="top-progress" title={`${mine.done} of ${mine.total} ${subject.name} lessons marked as understood. ${quizzes} ${quizzes === 1 ? 'quiz' : 'quizzes'} with all answers correct.`}>
+          {mine.done} of {mine.total}
+        </Link>
+      )}
+      <button
+        type="button"
+        className="theme-toggle"
+        onClick={toggleTheme}
+        aria-label={theme === 'dark' ? 'Use light colours' : 'Use dark colours'}
+        title={theme === 'dark' ? 'Use light colours' : 'Use dark colours'}
+      >
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          {theme === 'dark' ? (
+            <>
+              <circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.8" />
+              <path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </>
+          ) : (
+            <path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+          )}
+        </svg>
+      </button>
       <div className="search" onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}>
         <svg className="search-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
           <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" strokeWidth="2" />

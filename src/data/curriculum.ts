@@ -1,10 +1,11 @@
 /**
- * The lessons and the links between them. Lesson data comes from the YAML block at the top of each file in
- * src/content (see build/vite-plugin-lessons.ts). To add or change a lesson, edit its file, not this one.
+ * The lessons and the links between them, for every subject. Lesson data comes from the YAML block at the top of
+ * each file in src/content (see build/vite-plugin-lessons.ts). For software engineering and AI, the title, line and
+ * prerequisites come from the plan. To add or change a lesson, edit its file or plan, not this one.
  */
 import ALL from 'virtual:lessons'
 import type { Lesson } from '../lessons/types'
-import { TRACKS, type TrackId } from './tracks'
+import { TRACKS, type SubjectId } from './tracks'
 
 export type { Lesson }
 
@@ -16,9 +17,13 @@ export const LESSONS: Lesson[] = [...ALL].sort(
 
 export const lessonById: Record<string, Lesson> = Object.fromEntries(LESSONS.map((l) => [l.id, l]))
 
-const byTrack = new Map<TrackId, Lesson[]>(TRACKS.map((t) => [t.id, LESSONS.filter((l) => l.track === t.id)]))
-/** The lessons of one line, top of the map first. */
-export const lessonsOf = (t: TrackId): Lesson[] => byTrack.get(t) ?? []
+const bySubject = new Map<SubjectId, Lesson[]>((['data', 'software', 'ai'] as SubjectId[]).map((s) => [s, LESSONS.filter((l) => l.subject === s)]))
+/** The written lessons of one subject, in map order. */
+export const lessonsIn = (s: SubjectId): Lesson[] => bySubject.get(s) ?? []
+
+const byTrack = new Map<string, Lesson[]>(TRACKS.map((t) => [t.id, LESSONS.filter((l) => l.track === t.id)]))
+/** The written lessons of one line, top of the map first. */
+export const lessonsOf = (t: string): Lesson[] => byTrack.get(t) ?? []
 
 const leadsTo = new Map<string, Lesson[]>(LESSONS.map((l) => [l.id, LESSONS.filter((x) => x.prereqs.includes(l.id))]))
 /** Lessons that have this lesson as a prerequisite. */

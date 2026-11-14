@@ -1,15 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { lessonById, lessonsIn } from '../data/curriculum'
 import { PROPOSE_LESSON_URL } from '../data/site'
-import type { Subject } from '../data/subjects'
-import { layoutPlan, type PlanMapLayout } from '../map/plan-layout'
+import { countsOf, type Subject } from '../data/subjects'
+import { layoutPlan, type PlanMapLayout, type PlacedLesson } from '../map/plan-layout'
+import { nextUp, useProgress } from '../lib/progress'
+import { quizText, useQuizScores } from '../lib/quizStore'
 import Corners from './Corners'
+import PlanSystem from './system/PlanSystem'
 
-/** The planned map, drawn like the data engineering map. Stops are not links yet: the lessons have no text. */
-function PlanMap({ map }: { map: PlanMapLayout }) {
+/**
+ * The map of a subject whose lines come from a plan (software engineering, AI). A lesson with text is a link,
+ * drawn like the data engineering map. A lesson with no text yet is a dashed stop.
+ */
+function PlanMap({ map, next }: { map: PlanMapLayout; next?: string }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hover, setHover] = useState<string | null>(null)
+  const done = useProgress()
+  const quiz = useQuizScores()
   const shown = hover ? map.byId[hover] : null
 
   useEffect(() => {
@@ -19,6 +28,62 @@ function PlanMap({ map }: { map: PlanMapLayout }) {
     ro.observe(el)
     return () => ro.disconnect()
   }, [map.W])
+
+  const stop = (l: PlacedLesson) => {
+    const written = lessonById[l.id]
+    const isPre = !!shown?.prereqs?.includes(l.id)
+    const isDone = !!written && done.has(l.id)
+    const cls = [
+      'station',
+      !written && 'planned',
+      l.wide && 'wide',
+      l.level ?? 'core',
+      isDone && 'done',
+      next === l.id && 'next',
+      isPre && 'prereq',
+      hover === l.id && 'hovered',
+    ]
+      .filter(Boolean)
+      .join(' ')
+    const status = isPre
+      ? 'Helps to know first'
+      : !written
+        ? l.level === 'deeper'
+          ? 'Planned, deeper'
+          : 'Planned'
+        : isDone
+          ? 'Understood'
+          : next === l.id
+            ? 'Next for you'
+            : `${written.minutes} min${l.level === 'deeper' ? ', deeper' : ''}`
+    const inner = (
+      <>
+        <span className="dot" aria-hidden="true" onMouseEnter={() => setHover(l.id)} onMouseLeave={() => setHover(null)} />
+        <span className="label">
+          <b>{l.title}</b>
+          <small>
+            {status}
+            {written && quiz[l.id] && !isPre && <span className="st-quiz">{quizText(quiz[l.id])}</span>}
+          </small>
+        </span>
+      </>
+    )
+    const common = {
+      className: cls,
+      style: { left: l.x, top: l.y, ['--line' as string]: l.line.color },
+      onFocus: () => setHover(l.id),
+      onBlur: () => setHover(null),
+    }
+    return written ? (
+      <Link key={l.id} to={`/lesson/${l.id}`} {...common} title={l.summary}>
+        {inner}
+      </Link>
+    ) : (
+      <div key={l.id} {...common} tabIndex={0} title={`${l.summary} Planned: no lesson text yet.`} aria-label={`${l.title}. Planned. ${l.summary}`}>
+        {inner}
+      </div>
+    )
+  }
 
   return (
     <div className="map-frame">
@@ -30,7 +95,7 @@ function PlanMap({ map }: { map: PlanMapLayout }) {
               <path key={e.key} d={e.d} stroke={e.color} className={`cross ${hover === e.to ? 'on' : ''}`} />
             ))}
             {map.edges.filter((e) => e.same).map((e) => (
-              <path key={e.key} d={e.d} stroke={e.color} className={hover === e.to ? 'on' : ''} />
+              <path key={e.key} d={e.d} stroke={e.color} className={`${hover === e.to ? 'on' : ''} ${lessonById[e.to] ? '' : 'todo'}`} />
             ))}
           </svg>
 
@@ -40,76 +105,82 @@ function PlanMap({ map }: { map: PlanMapLayout }) {
             </span>
           ))}
 
-          {map.lessons.map((l) => {
-            const isPre = !!shown?.prereqs?.includes(l.id)
-            const cls = ['station', 'planned', l.wide && 'wide', l.level ?? 'core', isPre && 'prereq', hover === l.id && 'hovered'].filter(Boolean).join(' ')
-            return (
-              <div
-                key={l.id}
-                className={cls}
-                tabIndex={0}
-                aria-label={`${l.title}. Planned${l.level === 'deeper' ? ', goes deeper' : ''}. ${l.summary}`}
-                style={{ left: l.x, top: l.y, ['--line' as string]: l.line.color }}
-                onMouseEnter={() => setHover(l.id)}
-                onMouseLeave={() => setHover(null)}
-                onFocus={() => setHover(l.id)}
-                onBlur={() => setHover(null)}
-              >
-                <span className="dot" aria-hidden="true" />
-                <span className="label" aria-hidden="true">
-                  <b>{l.title}</b>
-                  <small>{isPre ? 'Helps to know first' : l.level === 'deeper' ? 'Planned, deeper' : 'Planned'}</small>
-                </span>
-              </div>
-            )
-          })}
+          {map.lessons.map(stop)}
         </div>
       </div>
-      {shown && (
-        <div className="hover-card" style={{ ['--line' as string]: shown.line.color }} aria-hidden="true">
-          <span className="hover-line">{shown.line.name}, planned</span>
-          <h2>{shown.title}</h2>
-          <p>{shown.summary}</p>
-          {!!shown.prereqs?.length && (
-            <p className="hover-pre">Helps to know first: {shown.prereqs.map((p) => map.byId[p]?.title ?? p).join(', ')}</p>
-          )}
-        </div>
-      )}
     </div>
   )
 }
 
-/** A subject that is planned but not written: its lines and lesson titles, drawn as a map. */
+/** A subject whose map comes from a plan: the system drawing, then the map of lessons, written or planned. */
 export default function SubjectPlan({ subject }: { subject: Subject }) {
   const map = useMemo(() => layoutPlan(subject.lines), [subject])
-  const count = map.lessons.length
+  const titles = useMemo(() => Object.fromEntries(map.lessons.map((l) => [l.id, l.title])), [map])
+  const done = useProgress()
+  const { written, total, lines } = countsOf(subject)
+  const lessons = lessonsIn(subject.id)
+  const next = written ? nextUp(done, lessons) : undefined
+  const started = lessons.some((l) => done.has(l.id))
   return (
     <main className="home plan">
       <section className="hero">
-        <p className="plan-tag">
-          <span>Planned</span> {count} lessons on {subject.lines.length} lines. No lesson text yet.
+        <p className="plan-tag up">
+          {written === 0 ? (
+            <>
+              <span>Planned</span> {total} lessons on {lines} lines. No lesson text yet.
+            </>
+          ) : written < total ? (
+            <>
+              <span>In progress</span> {written} of {total} lessons written, on {lines} lines.
+            </>
+          ) : (
+            <>
+              {total} lessons on {lines} lines.
+            </>
+          )}
         </p>
-        <h1>{subject.headline}</h1>
-        <p className="lead">{subject.lead}</p>
-        <div className="hero-go row">
-          <a className="btn primary" href={PROPOSE_LESSON_URL} target="_blank" rel="noreferrer">
-            Propose or write a lesson
+        <h1 className="up" style={{ animationDelay: '0.08s' }}>
+          {subject.headline}
+        </h1>
+        <p className="lead up" style={{ animationDelay: '0.2s' }}>
+          {subject.lead}
+        </p>
+        <div className="hero-go row up" style={{ animationDelay: '0.3s' }}>
+          {next ? (
+            <Link className="btn primary" to={`/lesson/${next.id}`}>
+              {started ? `Continue with “${next.title}”` : 'Start with the first lesson'}
+            </Link>
+          ) : (
+            <a className="btn primary" href={PROPOSE_LESSON_URL} target="_blank" rel="noreferrer">
+              Propose or write a lesson
+            </a>
+          )}
+          <a className="link-btn" href="#plan-map">
+            Go to the lesson map
           </a>
-          <Link className="link-btn" to="/">
-            Read data engineering now
-          </Link>
         </div>
       </section>
+
+      {subject.system && (
+        <section className="overview" aria-labelledby="plan-system">
+          <div className="overview-head">
+            <div>
+              <h2 id="plan-system">{subject.system.title}</h2>
+              <p className="lead">{subject.system.lead}</p>
+            </div>
+          </div>
+          <PlanSystem sys={subject.system} titles={titles} />
+        </section>
+      )}
 
       <section className="plan-head" aria-labelledby="plan-map">
         <div>
           <h2 className="map-title" id="plan-map">
-            The planned map
+            The lesson map
           </h2>
           <p className="lead">
-            Read it downward, as you will read the finished map. A line into a lesson comes from something that helps to
-            know first. Point at a lesson to see what it will teach. Titles and order can change while the lessons are
-            written.
+            Read it downward. A line into a lesson comes from something that helps to know first. Nothing is locked.
+            {written < total && ' A dashed stop is planned: it has a title, and no text yet.'}
           </p>
         </div>
         <ul className="legend plan-legend" aria-label="Key">
@@ -119,10 +190,15 @@ export default function SubjectPlan({ subject }: { subject: Subject }) {
           <li>
             <i className="plan-key deeper" aria-hidden="true" /> Goes deeper
           </li>
+          {written < total && (
+            <li>
+              <i className="plan-key todo" aria-hidden="true" /> Planned
+            </li>
+          )}
         </ul>
       </section>
 
-      <PlanMap map={map} />
+      <PlanMap map={map} next={next?.id} />
 
       {/* Small screens: each line as a list. */}
       <div className="home-list">
@@ -135,18 +211,27 @@ export default function SubjectPlan({ subject }: { subject: Subject }) {
                 </h3>
                 <p>{line.blurb}</p>
                 <ol>
-                  {line.lessons.map((l) => (
-                    <li key={l.id} className={l.level ?? 'core'}>
-                      <span className="plan-stop" aria-hidden="true" />
-                      <span>
-                        <b>{l.title}</b>
-                        <small>
-                          {l.summary}
-                          {l.level === 'deeper' ? ' Goes deeper.' : ''}
-                        </small>
-                      </span>
-                    </li>
-                  ))}
+                  {line.lessons.map((l) => {
+                    const w = lessonById[l.id]
+                    const body = (
+                      <>
+                        <span className={`plan-stop ${w ? 'is-written' : ''} ${w && done.has(l.id) ? 'is-done' : ''}`} aria-hidden="true" />
+                        <span>
+                          <b>{l.title}</b>
+                          <small>
+                            {l.summary}
+                            {l.level === 'deeper' ? ' Goes deeper.' : ''}
+                            {w ? '' : ' Planned.'}
+                          </small>
+                        </span>
+                      </>
+                    )
+                    return (
+                      <li key={l.id} className={l.level ?? 'core'}>
+                        {w ? <Link to={`/lesson/${l.id}`}>{body}</Link> : body}
+                      </li>
+                    )
+                  })}
                 </ol>
               </section>
             ))}

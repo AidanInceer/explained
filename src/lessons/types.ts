@@ -1,11 +1,13 @@
 import type { SourceId } from '../data/sources.ts'
-import type { TrackId } from '../data/tracks.ts'
+import type { SubjectId } from '../data/tracks.ts'
 
 /** What a lesson file says about itself in the block between the `---` lines at the top. */
 export interface Lesson {
-  /** The file name without `.md`. Also the address: `/lesson/<id>`. */
+  /** The file name without `.md`. Also the address: `/lesson/<id>`. Unique across all subjects. */
   id: string
-  track: TrackId
+  subject: SubjectId
+  /** The line. For data engineering, a key of DATA_TRACKS. For a planned subject, the plan line's id (see lineId). */
+  track: string
   title: string
   summary: string
   level: 'core' | 'deeper'
@@ -14,7 +16,7 @@ export interface Lesson {
   /** Technology groups shown at the side. Keys of `TECH` in `src/data/tech.ts`. */
   tech: string[]
   refs: [SourceId, string][]
-  /** Place on the map: [column inside the line's band, row]. */
+  /** Data engineering: place on the map, [column inside the line's band, row]. Planned subjects: [0, order on the line]. */
   at: [number, number]
 }
 

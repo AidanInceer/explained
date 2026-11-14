@@ -1,30 +1,38 @@
 import { Link } from 'react-router-dom'
 import { lessonById } from '../data/curriculum'
-import Corners from './Corners'
-import { LANGS, ORDER, SKILLS } from '../data/toolkit'
+import type { Subject } from '../data/subjects'
+import { ORDER, TOOLKITS } from '../data/toolkit'
+import { PLANNED } from '../data/tracks'
 
-export default function Toolkit() {
+/** A lesson by id: a link if it is written, its planned title if not. */
+function LessonRef({ id }: { id: string }) {
+  const l = lessonById[id]
+  if (l) return <Link to={`/lesson/${id}`}>{l.title}</Link>
+  return (
+    <span className="planned-ref" title="Planned: no lesson text yet">
+      {PLANNED.get(id)?.lesson.title ?? id}
+    </span>
+  )
+}
+
+export default function Toolkit({ subject }: { subject: Subject }) {
+  const { lead, langsTitle, langs, levelNotes, skillsTitle, skillsNote, skills } = TOOLKITS[subject.id]
   return (
     <main className="page toolkit">
+      <p className="page-kicker">{subject.name}</p>
       <h1>The toolkit</h1>
-      <p className="lead">
-        The map explains ideas. This page lists what you need in your hands: the languages that data engineers write,
-        and the things that a useful colleague can do. Nobody knows all of it on the first day. The first three
-        languages and the “Build” list are enough to start.
-      </p>
+      <p className="lead">{lead}</p>
 
-      <h2>Languages</h2>
+      <h2>{langsTitle}</h2>
       <p className="tk-note">Each link goes to the official documentation or to a well-known free tutorial.</p>
-      {ORDER.map((level) => (
+      {ORDER.filter((level) => langs.some((l) => l.level === level)).map((level) => (
         <section key={level} className={`tk-level ${level === 'Essential' ? 'lv-essential' : level === 'Important' ? 'lv-important' : 'lv-some'}`}>
           <h3>
             <span className="tk-tag">{level}</span>
-            <small>
-              {level === 'Essential' ? 'You use these every day, in every data engineering job.' : level === 'Important' ? 'Most jobs use most of these. Learn each one when a project needs it.' : 'Depends on the team. Know what they are for. Learn them if your role needs them.'}
-            </small>
+            <small>{levelNotes[level]}</small>
           </h3>
           <div className="tk-grid">
-            {LANGS.filter((l) => l.level === level).map((l) => (
+            {langs.filter((l) => l.level === level).map((l) => (
               <article key={l.name} className="tk-card">
                 <h4>{l.name}</h4>
                 <p>{l.use}</p>
@@ -50,7 +58,7 @@ export default function Toolkit() {
                     {l.lessons.map((id, i) => (
                       <span key={id}>
                         {i > 0 && ', '}
-                        <Link to={`/lesson/${id}`}>{lessonById[id].title}</Link>
+                        <LessonRef id={id} />
                       </span>
                     ))}
                   </p>
@@ -61,14 +69,10 @@ export default function Toolkit() {
         </section>
       ))}
 
-      <h2>What a good data engineer can do</h2>
-      <p className="tk-note">
-        A list to measure yourself against, and to find the next lesson. Tools change each few years. These abilities do
-        not.
-      </p>
+      <h2>{skillsTitle}</h2>
+      <p className="tk-note">{skillsNote}</p>
       <div className="tk-skills">
-        <Corners />
-        {SKILLS.map((g) => (
+        {skills.map((g) => (
           <section key={g.group}>
             <h3>{g.group}</h3>
             <p>{g.lead}</p>
@@ -78,9 +82,7 @@ export default function Toolkit() {
                   {text}
                   <span>
                     {ids.map((id) => (
-                      <Link key={id} to={`/lesson/${id}`}>
-                        {lessonById[id].title}
-                      </Link>
+                      <LessonRef key={id} id={id} />
                     ))}
                   </span>
                 </li>

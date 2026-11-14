@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { splitLessonFile } from './format.ts'
 import { checkLessons } from './validate.ts'
 
+const NL = String.fromCharCode(10)
 const file = (meta: string, body = 'Text') => splitLessonFile(`---\n${meta}\n---\n${body}`)
 const good = 'title: T\nsummary: S\ntrack: foundations\nlevel: core\nminutes: 5\nat: [0, 0]\nprereqs: []\ntech: []\nrefs:\n  - fode: Ch. 1'
 
@@ -9,7 +10,30 @@ describe('checkLessons', () => {
   test('a correct lesson has no errors', () => {
     const r = checkLessons([{ id: 'a', file: file(good) }])
     expect(r.errors).toEqual([])
-    expect(r.lessons[0]).toMatchObject({ id: 'a', at: [0, 0], refs: [['fode', 'Ch. 1']] })
+    expect(r.lessons[0]).toMatchObject({ id: 'a', subject: 'data', at: [0, 0], refs: [['fode', 'Ch. 1']] })
+  })
+
+  test('a lesson of a planned subject takes its title and line from the plan', () => {
+    const r = checkLessons([{ id: 'vectors', subject: 'ai', file: file(['minutes: 6', 'tech: []', 'refs:', '  - mml: Ch. 2'].join(NL)) }])
+    expect(r.errors).toEqual([])
+    expect(r.lessons[0]).toMatchObject({ id: 'vectors', subject: 'ai', title: 'Vectors', track: 'ai-linear-algebra', prereqs: [] })
+  })
+
+  test('a lesson of a planned subject must be in the plan, with only its own keys', () => {
+    const all = checkLessons([
+      { id: 'not-planned', subject: 'ai', file: file(['minutes: 6', 'refs: []'].join(NL)) },
+      { id: 'vectors', subject: 'software', file: file(['minutes: 6', 'title: X', 'refs: []'].join(NL)) },
+    ]).errors.join(NL)
+    expect(all).toContain('src/content/ai/not-planned.md: "not-planned" is not a lesson in src/data/plans/ai.ts')
+    expect(all).toContain('src/content/software/vectors.md: Unknown key "title"')
+  })
+
+  test('lesson ids are unique across subjects', () => {
+    const { errors } = checkLessons([
+      { id: 'vectors', file: file(good) },
+      { id: 'vectors', subject: 'ai', file: file(['minutes: 6', 'refs: []'].join(NL)) },
+    ])
+    expect(errors.some((e) => e.includes('Lesson ids must be unique across all subjects'))).toBe(true)
   })
 
   test('finds wrong values', () => {

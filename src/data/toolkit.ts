@@ -1,7 +1,12 @@
 /**
- * Content of the Toolkit page: languages to know, and the abilities of a good data engineer.
- * Lesson ids in `lessons` and in the skill items must exist in src/content (the tests check this).
+ * Content of each subject's Toolkit page: languages and tools to know, and the abilities of a good practitioner.
+ * Data engineering is here; software engineering and AI are in toolkit-software.ts and toolkit-ai.ts.
+ * Lesson ids in `lessons` and in the skill items must be written or planned lessons (the tests check this).
+ * A planned lesson with no text shows as its title, with no link.
  */
+import type { SubjectId } from './tracks.ts'
+import { SOFTWARE_TOOLKIT } from './toolkit-software.ts'
+import { AI_TOOLKIT } from './toolkit-ai.ts'
 
 export type Level = 'Essential' | 'Important' | 'For some roles'
 
@@ -14,7 +19,7 @@ export interface Lang {
   lessons?: string[]
 }
 
-export const LANGS: Lang[] = [
+const LANGS: Lang[] = [
   {
     name: 'SQL',
     level: 'Essential',
@@ -132,7 +137,9 @@ export const LANGS: Lang[] = [
   },
 ]
 
-export const SKILLS: { group: string; lead: string; items: [string, string[]][] }[] = [
+export type SkillGroup = { group: string; lead: string; items: [string, string[]][] }
+
+const SKILLS: SkillGroup[] = [
   {
     group: 'Build',
     lead: 'You can take a question to a table that answers it.',
@@ -180,3 +187,32 @@ export const SKILLS: { group: string; lead: string; items: [string, string[]][] 
 ]
 
 export const ORDER: Level[] = ['Essential', 'Important', 'For some roles']
+
+export interface Toolkit {
+  /** Text under the page title. */
+  lead: string
+  /** Heading of the first section: languages, or languages and libraries. */
+  langsTitle: string
+  langs: Lang[]
+  /** One line under each level heading. */
+  levelNotes: Record<Level, string>
+  skillsTitle: string
+  skillsNote: string
+  skills: SkillGroup[]
+}
+
+const DATA_TOOLKIT: Toolkit = {
+  lead: 'The map explains ideas. This page lists what you need in your hands: the languages that data engineers write, and the things that a useful colleague can do. Nobody knows all of it on the first day. The first three languages and the “Build” list are enough to start.',
+  langsTitle: 'Languages',
+  langs: LANGS,
+  levelNotes: {
+    Essential: 'You use these every day, in every data engineering job.',
+    Important: 'Most jobs use most of these. Learn each one when a project needs it.',
+    'For some roles': 'Depends on the team. Know what they are for. Learn them if your role needs them.',
+  },
+  skillsTitle: 'What a good data engineer can do',
+  skillsNote: 'A list to measure yourself against, and to find the next lesson. Tools change each few years. These abilities do not.',
+  skills: SKILLS,
+}
+
+export const TOOLKITS: Record<SubjectId, Toolkit> = { data: DATA_TOOLKIT, software: SOFTWARE_TOOLKIT, ai: AI_TOOLKIT }

@@ -9,10 +9,14 @@ import { ChooseEngine, ChooseIngestion, ChooseLatency, ChooseStack } from './dec
 import { BatchStream, QueueLog } from './motion'
 import { WbFlight, WbFraud, WbMethod } from './whiteboard'
 import { WbBank, WbClicks, WbIot, WbShop } from './boards2'
+import { AI_FIGURES } from './ai'
+import { SOFTWARE_FIGURES } from './software'
 import { CiPipeline, DbtLayers, FactTypes, Joins, ModelLevels, Requirements, Sdlc, Skew, SqlOrder, ZoneMap } from './more'
 
-/** Names used by `::fig <name> | caption` lines in the lesson files. */
+/** Names used by `::fig <name> | caption` lines in the lesson files. Software and AI figures are in their folders. */
 export const FIGURES: Record<string, ComponentType> = {
+  ...SOFTWARE_FIGURES,
+  ...AI_FIGURES,
   lifecycle: Lifecycle,
   lakehouse: Lakehouse,
   star: Star,

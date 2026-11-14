@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { lessonsOf } from '../data/curriculum'
-import { trackById, type TrackId } from '../data/tracks'
+import { trackById } from '../data/tracks'
 import { setDone, useProgress } from '../lib/progress'
 import { quizText, useQuizScores } from '../lib/quizStore'
 
 /** One line drawn vertically with its lessons as stops. */
-export default function TrackLine({ track, current }: { track: TrackId; current?: string }) {
+export default function TrackLine({ track, current }: { track: string; current?: string }) {
   const done = useProgress()
   const quiz = useQuizScores()
   const t = trackById[track]

@@ -2,7 +2,12 @@
  * Terms for the Glossary page and the search. Each term points to the lesson that explains it.
  * When a lesson uses a term from a lesson that is not on its path (not one of its prerequisites, or theirs),
  * the first use gets a definition at the side. Text in brackets after a term is not matched in lesson text.
+ *
+ * Data engineering terms are here. Software engineering and AI terms are in glossary-software.ts and
+ * glossary-ai.ts. A term's subject is the subject of its lesson.
  */
+import { AI_TERMS } from './glossary-ai.ts'
+import { SOFTWARE_TERMS } from './glossary-software.ts'
 export interface Term {
   term: string
   def: string
@@ -11,7 +16,7 @@ export interface Term {
   basic?: true
 }
 
-export const GLOSSARY: Term[] = [
+const DATA_TERMS: Term[] = [
   { term: 'ACID', def: 'Atomicity, consistency, isolation, durability: the guarantees of a database transaction.', lesson: 'oltp-olap' },
   { term: 'OLTP', def: 'Online transaction processing. Many small reads and writes from an application.', lesson: 'oltp-olap' },
   { term: 'OLAP', def: 'Online analytical processing. Few, large queries that scan and aggregate many rows.', lesson: 'oltp-olap' },
@@ -202,3 +207,5 @@ export const GLOSSARY: Term[] = [
   { term: "UTC", def: "Coordinated universal time. The time standard with no daylight saving. Store timestamps in it.", lesson: 'scheduling-in-detail', basic: true },
   { term: "Rate limit", def: "The largest number of requests that an API accepts in a period of time.", lesson: 'api-extract-worked', basic: true },
 ]
+
+export const GLOSSARY: Term[] = [...DATA_TERMS, ...SOFTWARE_TERMS, ...AI_TERMS]

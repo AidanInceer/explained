@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { linkLesson } from './link'
 import type { LessonContent } from './types'
 
-const files = import.meta.glob<LessonContent>('../content/*.md', { query: '?lesson', import: 'default' })
+const files = import.meta.glob<LessonContent>(['../content/*.md', '../content/software/*.md', '../content/ai/*.md'], { query: '?lesson', import: 'default' })
 const fileOf = Object.fromEntries(Object.entries(files).map(([path, load]) => [path.slice(path.lastIndexOf('/') + 1, -3), load]))
 
 const cache = new Map<string, LessonContent>()

@@ -2,16 +2,19 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { lessonById } from '../data/curriculum'
 import { trackById } from '../data/tracks'
-import { GLOSSARY } from '../data/glossary'
+import { GLOSSARY as ALL_TERMS } from '../data/glossary'
+import type { Subject } from '../data/subjects'
 
-export default function Glossary() {
+export default function Glossary({ subject }: { subject: Subject }) {
   const [q, setQ] = useState('')
+  // The terms of this subject: those whose lesson is in it.
+  const GLOSSARY = useMemo(() => ALL_TERMS.filter((g) => lessonById[g.lesson]?.subject === subject.id), [subject])
   const items = useMemo(() => {
     const s = q.trim().toLowerCase()
     return [...GLOSSARY]
       .sort((a, b) => a.term.localeCompare(b.term))
       .filter((g) => !s || g.term.toLowerCase().includes(s) || g.def.toLowerCase().includes(s))
-  }, [q])
+  }, [q, GLOSSARY])
 
   const groups = useMemo(() => {
     const m = new Map<string, typeof items>()
@@ -24,8 +27,13 @@ export default function Glossary() {
 
   return (
     <main className="page narrow">
+      <p className="page-kicker">{subject.name}</p>
       <h1>Glossary</h1>
-      <p className="lead">Short definitions of {GLOSSARY.length} terms. Each one links to the lesson that explains it.</p>
+      <p className="lead">
+        {GLOSSARY.length
+          ? `Short definitions of ${GLOSSARY.length} terms. Each one links to the lesson that explains it.`
+          : 'No terms yet. Each term comes with the lesson that explains it.'}
+      </p>
       <div className="filter-bar">
         <input
           className="filter"

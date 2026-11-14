@@ -1,0 +1,105 @@
+/* ---------- home page of the site ---------- */
+.landing { max-width: var(--page-w); margin: 0 auto; padding: 30px 28px 120px; }
+
+/* Words and blocks that rise into place when the page opens. */
+.rise { display: inline-block; animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(0.45em); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+
+.land-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; min-height: min(640px, calc(100vh - var(--bar-h) - 40px)); margin-bottom: 72px; }
+.land-copy h1 { font-size: clamp(36px, 4.4vw, 58px); font-weight: 750; letter-spacing: -0.035em; line-height: 1.02; margin: 0; max-width: 11em; }
+.land-copy .lead { display: block; font-size: 19px; max-width: 31em; margin: 22px 0 30px; }
+.land-copy .hero-go { display: flex; }
+
+/* The opening map */
+.lm { position: relative; border: 1px solid var(--line-2); background-color: var(--canvas); background-image: radial-gradient(var(--dot) 0.9px, transparent 1.1px); background-size: 16px 16px; animation: rise 0.8s 0.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.lm-svg { display: block; width: 100%; height: auto; }
+.lm-line { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: lm-draw 1.3s cubic-bezier(0.6, 0, 0.2, 1) both; }
+.lm-cross { fill: none; stroke: var(--line-2); stroke-width: 1.4; stroke-dasharray: 3 4; animation: lm-fade 0.6s ease both; }
+@keyframes lm-draw { to { stroke-dashoffset: 0; } }
+@keyframes lm-fade { from { opacity: 0; } }
+
+.lm-st { transform-box: fill-box; transform-origin: center; animation: lm-pop 0.45s var(--d) cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+@keyframes lm-pop { from { opacity: 0; transform: scale(0.2); } }
+.lm-box { fill: var(--surface); stroke: var(--c); stroke-width: 3.5; }
+.lm-st.planned .lm-box { stroke-width: 2.5; stroke-dasharray: 4 3; }
+.lm-st.done .lm-box { animation: lm-fill 0.35s var(--f) ease both; }
+@keyframes lm-fill { to { fill: var(--c); } }
+.lm-tick { fill: none; stroke: var(--surface); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 16; stroke-dashoffset: 16; animation: lm-tick 0.3s calc(var(--f) + 0.2s) ease-out both; }
+@keyframes lm-tick { to { stroke-dashoffset: 0; } }
+.lm-core { fill: var(--accent); transform-box: fill-box; transform-origin: center; animation: lm-pop 0.4s 2.75s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+.lm-ring { fill: none; stroke: var(--accent); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; opacity: 0; animation: lm-ring 2s 3s ease-out infinite; }
+@keyframes lm-ring { 0% { opacity: 0.8; transform: scale(0.6); } 70%, 100% { opacity: 0; transform: scale(1.25); } }
+.lm-packet { stroke: var(--canvas); stroke-width: 2; }
+.lm-pill { animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.lm-pill text { fill: var(--surface); font-family: var(--sans); font-weight: 650; font-size: 14px; }
+
+.lm-next { display: flex; align-items: center; gap: 12px; margin: 0; padding: 12px 16px; border-top: 1px solid var(--line-1); background: var(--surface); text-decoration: none; animation: rise 0.5s 3s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.lm-next > i { flex: none; width: 22px; height: 22px; border-radius: 5px; border: 3px solid var(--accent-text); background: var(--surface); position: relative; }
+.lm-next > i::after { content: ''; position: absolute; inset: 3px; border-radius: 1.5px; background: var(--accent); }
+.lm-next small { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-text); }
+.lm-next b { display: block; font-size: 16px; line-height: 1.2; letter-spacing: -0.01em; }
+.lm-meta { margin-left: auto; font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+a.lm-next:hover b { text-decoration: underline; text-underline-offset: 3px; }
+
+/* How to use the site: four stations on one line */
+.land-how, .land-subjects { margin-bottom: 72px; }
+.landing h2 { font-size: clamp(26px, 3vw, 36px); font-weight: 750; letter-spacing: -0.03em; margin-bottom: 20px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 28px; }
+.steps li { position: relative; color: var(--ink-2); font-size: 15.5px; line-height: 1.45; opacity: 0; }
+.land-how.seen .steps li { animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+/* The line from each station to the next */
+.steps li:not(:last-child)::before { content: ''; position: absolute; left: 30px; right: -28px; top: 13px; height: 4px; border-radius: 2px; background: var(--accent-text); opacity: 0.25; }
+.step-n { position: relative; display: grid; place-items: center; width: 30px; height: 30px; margin-bottom: 14px; border: 3.5px solid var(--accent-text); border-radius: 6px; background: var(--surface); font-size: 14px; font-weight: 750; color: var(--accent-text); }
+.steps b { display: block; color: var(--ink); font-size: 18px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 4px; }
+
+/* Subjects */
+.subject-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.subject-card {
+  display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 18px;
+  background: var(--surface); border: 1px solid var(--line-1); border-top: 4px solid var(--c); text-decoration: none; color: var(--ink-2);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease; opacity: 0;
+}
+.land-subjects.seen .subject-card { animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.land-subjects.seen .subject-card:nth-child(2) { animation-delay: 0.08s; }
+.land-subjects.seen .subject-card:nth-child(3) { animation-delay: 0.16s; }
+.subject-card:hover { border-color: var(--line-2); border-top-color: var(--c); box-shadow: 0 16px 32px -24px rgb(19 32 41 / 0.5); }
+.subject-card h3 { font-size: 22px; font-weight: 720; letter-spacing: -0.02em; color: var(--ink); }
+.subject-card p { margin: 0; font-size: 15.5px; line-height: 1.45; flex: 1; }
+.sc-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.sc-tag { flex: none; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; color: #fff; background: var(--c); }
+.subject-card.planned .sc-tag { color: var(--ink-2); background: none; border: 1.5px dashed var(--line-2); padding: 1px 6px; }
+.sc-go { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--rule-soft); font-size: 14.5px; }
+.sc-go > span:last-child { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; color: var(--ink); }
+.sc-count { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.sc-go svg path { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sc-go svg { transition: transform 0.15s ease; }
+.subject-card:hover .sc-go svg { transform: translateX(3px); }
+
+.land-open { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0; padding: 14px 18px; border: 1px solid var(--line-1); background: var(--surface); font-size: 14.5px; color: var(--ink-2); }
+.land-open span { margin-right: auto; }
+.land-open a { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 1000px) {
+  .land-hero { grid-template-columns: 1fr; min-height: 0; gap: 36px; }
+  .steps { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .steps li:nth-child(2)::before { display: none; }
+  .subject-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .landing { padding: 22px 18px 90px; }
+  .steps { grid-template-columns: 1fr; }
+  .steps li::before { display: none; }
+  .lm-meta { display: none; }
+}
+
+/* ---------- planned subjects: the hero text comes in like the home page ---------- */
+.up { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing *, .up { animation: none !important; }
+  .lm-line, .fl-wire { stroke-dashoffset: 0; }
+  .lm-st.done .lm-box { fill: var(--c); }
+  .lm-tick { stroke-dashoffset: 0; }
+  .lm-ring { opacity: 0; }
+  .steps li, .subject-card { opacity: 1; }
+}
