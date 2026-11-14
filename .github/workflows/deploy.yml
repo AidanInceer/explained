@@ -1,8 +1,13 @@
 name: Deploy to GitHub Pages
 
+# One Pages site holds two builds:
+#   /<repository>/          the main branch (the live site)
+#   /<repository>/develop/  the develop branch (a preview to test changes before they go to main)
+# A push to either branch builds both and publishes them together.
+
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
 
 permissions:
@@ -14,23 +19,58 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  BASE: /${{ github.event.repository.name }}/
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+      - uses: actions/checkout@v4
+        id: get-develop
+        # If develop is missing or broken, the live site still deploys. A push to develop must build develop.
+        continue-on-error: ${{ github.ref_name != 'develop' }}
+        with:
+          ref: develop
+          path: develop
       - uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: main/.nvmrc
           cache: npm
-      - run: npm ci
-      - run: npm run check
-      # The site is served from /<repository name>/. 404.html lets addresses such as /lesson/cdc open directly.
-      - run: npx vite build --base=/${{ github.event.repository.name }}/
-      - run: cp dist/index.html dist/404.html
+          cache-dependency-path: '*/package-lock.json'
+
+      - name: Build main
+        working-directory: main
+        run: |
+          npm ci
+          npm run check
+          npx vite build --base=$BASE
+
+      - name: Build develop
+        id: build-develop
+        if: steps.get-develop.outcome == 'success'
+        continue-on-error: ${{ github.ref_name != 'develop' }}
+        working-directory: develop
+        run: |
+          npm ci
+          npm run check
+          npx vite build --base=${BASE}develop/
+
+      # GitHub Pages serves the root 404.html for every unknown address, so addresses such as /lesson/cdc open
+      # the app. index.html sends unknown addresses under develop/ on to the preview build.
+      - name: Put the site together
+        run: |
+          mkdir site
+          cp -r main/dist/. site/
+          cp site/index.html site/404.html
+          if [ "${{ steps.build-develop.outcome }}" = "success" ]; then cp -r develop/dist site/develop; fi
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
 
   deploy:
     needs: build

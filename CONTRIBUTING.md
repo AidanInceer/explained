@@ -153,8 +153,20 @@ A figure is a React component with no props, in a file in `src/figures/`. Regist
 - If you change the shape of data in `localStorage`, change the version in its key (for example `dee.marks.v2` to `dee.marks.v3`).
 - Add a test for a change to the lesson format (`src/lessons/`) or the checks.
 
+## Branches and releases
+
+- `develop` is where changes go first. Open your pull request **into `develop`**.
+- Each push to `develop` publishes a preview at `https://aidaninceer.github.io/explained/develop/`. Test your change there.
+- `main` is the live site at `https://aidaninceer.github.io/explained/`. A maintainer releases by merging a pull request from `develop` into `main`.
+- CI runs on every pull request and on each push to `develop` and `main`.
+
+```
+feature branch ──PR──▶ develop ──(preview)──PR──▶ main ──▶ live site
+```
+
 ## Pull requests
 
 - One change in each pull request. A new lesson and its figure can be one pull request.
 - Say what you changed and why. For a new lesson, add a screenshot of its place on the map.
 - CI runs `npm run check` and `npm run build`. Both must pass.
+- If you use Claude Code, `CLAUDE.md` and the skills in `.claude/skills/` describe this workflow.
