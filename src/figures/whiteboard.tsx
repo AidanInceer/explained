@@ -54,7 +54,7 @@ export function edge(n: Node, tx: number, ty: number) {
 export function Shape({ n }: { n: Node }) {
   const h = H(n)
   const col = PEN[n.c ?? 'k']
-  const common = { fill: n.kind === 'zone' ? 'none' : '#fff', stroke: col, strokeWidth: 2.4, pathLength: 1 }
+  const common = { fill: n.kind === 'zone' ? 'none' : '#fff', stroke: col, strokeWidth: 2, pathLength: 1 }
   if (n.kind === 'db')
     return (
       <path
@@ -66,7 +66,7 @@ export function Shape({ n }: { n: Node }) {
   if (n.kind === 'zone') return <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={10} strokeDasharray="0.012 0.008" strokeWidth={2} />
   return (
     <>
-      <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={5} />
+      <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={8} />
       {n.kind === 'log' &&
         [1, 2, 3, 4, 5].map((k) => (
           <line key={k} x1={n.x + (n.w * k) / 6} x2={n.x + (n.w * k) / 6} y1={n.y + h - 11} y2={n.y + h} stroke={col} strokeWidth={2} />
@@ -126,7 +126,7 @@ export function Whiteboard({ board }: { board: Board }) {
             ))}
           </defs>
 
-          <g filter="url(#wb-wobble)">
+          <g>
             {board.nodes
               .filter((n) => n.step <= step)
               .map((n) => (
@@ -192,7 +192,7 @@ export function Whiteboard({ board }: { board: Board }) {
             .map((n, i) => (
               <text key={i} x={n.x} y={n.y} className={`wb-note ${fresh(n.step)}`} fill={PEN[n.c ?? 'r']}>
                 {n.text.map((line, k) => (
-                  <tspan key={k} x={n.x} dy={k === 0 ? 0 : 20}>
+                  <tspan key={k} x={n.x} dy={k === 0 ? 0 : 17}>
                     {line}
                   </tspan>
                 ))}
@@ -281,7 +281,7 @@ const SHOP: Board = {
     { id: 'wh', x: 286, y: 92, w: 334, h: 168, label: 'Cloud warehouse', kind: 'zone', c: 'b', step: 4 },
     { id: 'raw', x: 298, y: 140, w: 78, h: 72, label: 'Raw', sub: 'copies', kind: 'db', c: 'b', step: 4 },
     { id: 'dbt', x: 398, y: 140, w: 80, h: 72, label: 'dbt', sub: 'SQL models', c: 'g', step: 4 },
-    { id: 'test', x: 330, y: 300, w: 216, h: 50, label: 'orders paid = charges settled?', c: 'r', step: 5 },
+    { id: 'test', x: 306, y: 300, w: 264, h: 50, label: 'orders paid = charges settled?', c: 'r', step: 5 },
     { id: 'crm', x: 640, y: 350, w: 112, label: 'Email tool', sub: 'segments', kind: 'who', c: 'o', step: 6 },
   ],
   arrows: [

@@ -167,12 +167,12 @@ export default function BigPicture() {
           </defs>
 
           <g className={`bp-detail ${simple ? 'faded' : ''}`}>
-            <g filter="url(#bp-wobble)" className="wb-shape">
+            <g className="wb-shape">
               {NODES.map((n) => (
                 <Shape key={n.id} n={n} />
               ))}
               {SCREENS.map((s) => (
-                <rect key={s.id} x={s.x} y={s.y} width={SCREEN_W} height={SCREEN_H} rx="5" fill="#fff" stroke={PEN.k} strokeWidth="2.4" />
+                <rect key={s.id} x={s.x} y={s.y} width={SCREEN_W} height={SCREEN_H} rx="8" fill="#fff" stroke={PEN.k} strokeWidth="2" />
               ))}
               {ARROWS.map((a, i) => (
                 <path

@@ -173,7 +173,7 @@ button, input { font: inherit; color: inherit; }
 .bp-board svg { min-width: 980px; }
 .bp-detail { transition: opacity 0.35s ease; }
 .bp-detail.faded { opacity: 0.2; }
-.bp-small { font-family: 'Caveat Variable', 'Segoe Print', cursive; font-size: 15.5px; font-weight: 600; }
+.bp-small { font-family: var(--sans); font-size: 11px; font-weight: 600; }
 .bp-stage { font-family: var(--sans); font-size: 27px; font-weight: 750; letter-spacing: -0.02em; }
 .bp-what { margin: 0; font: 550 15.5px/1.3 var(--sans); text-align: center; }
 .bp-stages { animation: wb-fade 0.4s ease-out; }
