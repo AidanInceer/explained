@@ -48,7 +48,7 @@ The server finds or builds the page and sends a **response**: a status code (`20
 
 ## 6. Build the page
 
-The browser reads the HTML and finds that it needs more: style sheets, scripts, images, fonts. It requests each one, often from the same connection or from a CDN close to you. Then it:
+The browser reads the HTML and finds that it needs more: style sheets, scripts, images, fonts. It requests each one, often from the same connection, or from a **CDN** (content delivery network): servers in many places that keep copies of files close to users. Then it:
 
 1. Builds the **DOM**, a tree of the page's elements.
 2. Applies the CSS to work out the style of each element.

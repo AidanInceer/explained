@@ -26,7 +26,7 @@ Every GPU holds a **full copy** of the model. Each gets a **different part of th
 - Simple, and scales well, as long as the model fits on one GPU.
 - The averaging, an **all-reduce**, sends gradients between all GPUs every step, which needs a fast network.
 
-**Sharded** data parallelism (such as ZeRO or FSDP) splits the weights, gradients and optimiser state across the GPUs, and gathers each layer's weights just when it is needed. The model no longer has to fit on one GPU.
+**Sharded** data parallelism (such as ZeRO, or PyTorch's fully sharded data parallel, FSDP) splits the weights, gradients and optimiser state across the GPUs, and gathers each layer's weights just when it is needed. The model no longer has to fit on one GPU.
 
 ## Model parallelism
 
