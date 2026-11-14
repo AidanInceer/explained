@@ -6,7 +6,6 @@ import LessonPage from './components/LessonPage'
 import Glossary from './components/Glossary'
 import Toolkit from './components/Toolkit'
 import Sources from './components/Sources'
-import Brand from './components/Brand'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,14 +41,13 @@ export default function App() {
           <Route path="/toolkit" element={<Toolkit />} />
           <Route path="/glossary" element={<Glossary />} />
           <Route path="/sources" element={<Sources />} />
-          <Route path="/brand" element={<Brand />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <footer className="foot">
         <p>
           Runs on your machine. Progress is saved in this browser only. Concepts follow the books and community
-          references on the <Link to="/sources">sources page</Link>. <Link to="/brand">Name and logo options</Link>.
+          references on the <Link to="/sources">sources page</Link>.
         </p>
       </footer>
     </>

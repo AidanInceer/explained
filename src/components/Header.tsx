@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS, trackById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
 import { useProgress } from '../lib/progress'
-import { SiteMark } from './Logos'
+import SiteMark from './SiteMark'
 
 interface Hit {
   key: string
