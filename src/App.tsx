@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Home from './components/Home'
-import LessonPage from './components/LessonPage'
-import Glossary from './components/Glossary'
-import Toolkit from './components/Toolkit'
-import Sources from './components/Sources'
+const LessonPage = lazy(() => import('./components/LessonPage'))
+const Glossary = lazy(() => import('./components/Glossary'))
+const Toolkit = lazy(() => import('./components/Toolkit'))
+const Sources = lazy(() => import('./components/Sources'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -35,6 +35,7 @@ export default function App() {
       <ScrollToTop />
       <Header />
       <div id="main">
+        <Suspense fallback={<p className="page" role="status">Loading</p>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lesson/:id" element={<LessonPage />} />
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/sources" element={<Sources />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </div>
       <footer className="foot">
         <p>

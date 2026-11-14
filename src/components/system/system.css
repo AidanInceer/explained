@@ -1,0 +1,165 @@
+/* The home page system drawing (SystemDrawing.tsx).
+   One ink colour on a dot grid, hairline frames with square corner marks, tiles with small icons,
+   and the site blue for whatever is in focus. */
+.sd {
+  --fd-accent: #2f6bff; /* lines, packets, outlines: the blue in the logo */
+  --fd-accent-text: #2456d6; /* blue text: AA on white */
+  --fd-accent-tint: #eef3ff;
+  --fd-line: #c4ccc8;
+  --fd-line-strong: #9eaaa5;
+  --fd-tile: #ffffff;
+  --fd-canvas: #fbfcfb;
+}
+
+/* ---------- frame ---------- */
+.mk-frame { position: relative; border: 1px solid var(--fd-line-strong); background: var(--fd-tile); }
+.mk-c { position: absolute; z-index: 3; width: 11px; height: 11px; border: 1px solid var(--fd-line-strong); border-radius: 2px; background: var(--paper); }
+.mk-c.tl { left: -6px; top: -6px; }
+.mk-c.tr { right: -6px; top: -6px; }
+.mk-c.bl { left: -6px; bottom: -6px; }
+.mk-c.br { right: -6px; bottom: -6px; }
+.mk-top { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 10px 8px 16px; border-bottom: 1px solid var(--fd-line); }
+.mk-top-main { flex: 1; min-width: 0; }
+.mk-pause { flex: none; width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--fd-line-strong); border-radius: 4px; background: var(--fd-tile); color: var(--ink); cursor: pointer; }
+.mk-pause:hover { border-color: var(--ink); }
+.mk-pause:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.mk-frame .wb-board.mk-board { border: 0; border-radius: 0; padding: 0; background: var(--fd-canvas); overflow-x: auto; }
+.mk-svg { display: block; width: 100%; height: auto; min-width: 860px; }
+
+/* tabs */
+.mk-routes { display: flex; flex-wrap: wrap; gap: 6px; }
+.mk-routes button { font: 500 14.5px/1.2 var(--sans); color: var(--ink-2); background: var(--fd-tile); border: 1px dashed var(--fd-line-strong); border-radius: 4px; padding: 7px 12px; cursor: pointer; }
+.mk-routes button b { font-weight: 700; color: var(--ink); }
+.mk-routes button:hover { border-style: solid; border-color: var(--ink); }
+.mk-routes button[aria-selected='true'] { border: 1px solid var(--fd-accent); background: var(--fd-accent-tint); color: var(--ink); }
+.mk-routes button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---------- drawing ---------- */
+.fd text { font-family: var(--sans); }
+.fd-grid-dot { fill: #d9dfdc; }
+.fd-zone { fill: none; stroke: var(--fd-line-strong); stroke-width: 1; }
+.fd-corner { fill: var(--fd-canvas); stroke: var(--fd-line-strong); stroke-width: 1; }
+.fd-zone-label { font-size: 12.5px; font-weight: 600; fill: var(--ink-2); }
+.fd-tile { fill: var(--fd-tile); stroke: var(--fd-line-strong); stroke-width: 1; }
+.fd-ibox { fill: #f1f4f2; stroke: var(--fd-line); stroke-width: 1; }
+.fd-glyph { fill: none; stroke: var(--ink); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.fd-label { font-size: 13px; font-weight: 650; letter-spacing: -0.01em; fill: var(--ink); }
+.fd-sub { font-size: 11px; font-weight: 450; fill: var(--ink-2); }
+.fd-small { font-size: 11px; font-weight: 600; fill: var(--ink-2); }
+.fd-screen-title { font-size: 10.5px; }
+.fd-note { font-size: 11.5px; font-weight: 600; fill: var(--ink-3); }
+.fd-count { font-size: 10.5px; font-weight: 600; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.fd-rule { stroke: var(--fd-line); stroke-width: 1; }
+.fd-dot { fill: var(--fd-line); }
+.fd-chip rect { fill: var(--fd-tile); stroke: var(--fd-line-strong); stroke-width: 1; stroke-dasharray: 3 2.5; transition: stroke 0.25s ease, fill 0.25s ease; }
+.fd-chip text { font-size: 11px; font-weight: 600; fill: var(--ink); }
+.fd-chip.gate rect { stroke: var(--ink); stroke-dasharray: none; }
+.fd-chip-link { stroke: var(--fd-line-strong); stroke-width: 1; fill: none; }
+.fd-check { font-size: 11px; font-weight: 600; fill: var(--ink); }
+.fd-check.bad { fill: #b3261e; }
+.fd-seat { fill: var(--ink); }
+.fd-seat.free { fill: none; stroke: var(--fd-line-strong); stroke-width: 1; }
+.fd-seat.blink { animation: fd-seat 3.2s steps(1) infinite; }
+@keyframes fd-seat { 0%, 60% { fill: var(--ink); } 61%, 100% { fill: var(--fd-accent); } }
+.fd-bar { fill: var(--fd-line-strong); }
+.fd-bar.now { fill: var(--fd-accent); }
+.fd-trend { fill: none; stroke: var(--fd-accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* CI/CD: one step runs (blue, with a pulsing dot), the steps before it show a tick */
+.fd-ci-run, .fd-ci-ok { opacity: 0; transition: opacity 0.2s ease; }
+.fd-ci-run { fill: var(--fd-accent); }
+.fd-ci-ok { fill: none; stroke: #0a6e5f; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.fd-ci.run rect { stroke: var(--fd-accent); stroke-dasharray: none; fill: var(--fd-accent-tint); }
+.fd-ci.run .fd-ci-run { opacity: 1; animation: fd-pulse 0.9s ease-in-out infinite; }
+.fd-ci.done rect { stroke: var(--ink-3); stroke-dasharray: none; }
+.fd-ci.done .fd-ci-ok { opacity: 1; }
+.fd-ci.done + .fd-ci .fd-chip-link, .fd-ci.done .fd-chip-link { stroke: var(--ink-3); }
+@keyframes fd-pulse { 50% { opacity: 0.3; } }
+
+/* Email + CRM: the envelope lifts a little each time a sync arrives */
+.fd-part[data-id='ucrm'].got .fd-glyph { animation: fd-send 0.8s ease-out; }
+@keyframes fd-send { 0% { transform: none; } 35% { transform: translate(1.5px, -2px); } 100% { transform: none; } }
+
+/* lines */
+.fd-line { fill: none; stroke: var(--fd-line-strong); stroke-width: 1.25; transition: stroke 0.3s ease, opacity 0.3s ease; }
+.fd-line.control { stroke-dasharray: 3 4; animation: fd-march 1.2s linear infinite; }
+.fd-line.hi { stroke: var(--fd-accent); stroke-width: 1.75; }
+.fd-head { fill: none; stroke: var(--fd-line-strong); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.fd-head.hi { stroke: var(--fd-accent); }
+@keyframes fd-march { to { stroke-dashoffset: -14; } }
+
+/* packets */
+.fd-pk { fill: var(--ink); }
+.fd-pk.hi { fill: var(--fd-accent); }
+.fd-pk.trail { opacity: 0.22; }
+.fd-pk.trail:nth-child(4n + 3) { opacity: 0.14; }
+.fd-pk.trail:nth-child(4n) { opacity: 0.07; }
+.fd-parcel { fill: var(--fd-accent); stroke: #fff; stroke-width: 2; }
+.fd-parcel.trail { stroke: none; opacity: 0.25; }
+
+/* a part flashes when data arrives */
+.fd-ping { fill: none; stroke: none; pointer-events: none; transform-box: fill-box; transform-origin: center; }
+.fd-ping.on { animation: fd-ping 0.7s ease-out; }
+.fd-ping.on.strong { animation: fd-ping-strong 1s ease-out; }
+@keyframes fd-ping { from { stroke: var(--ink); stroke-width: 1.5; opacity: 0.55; transform: scale(1); } to { stroke: var(--ink); stroke-width: 1; opacity: 0; transform: scale(1.12); } }
+@keyframes fd-ping-strong { from { stroke: var(--fd-accent); stroke-width: 3; opacity: 1; transform: scale(1); } to { stroke: var(--fd-accent); stroke-width: 1; opacity: 0; transform: scale(1.2); } }
+
+/* focus: lit and dimmed */
+.mk-part, .mk-notes { transition: opacity 0.3s ease; }
+.mk-part.off, .fd-line.off { opacity: 0.36; }
+.mk-notes.off { opacity: 0.3; }
+.fd-part.hi:not(.zone) > .fd-tile { stroke: var(--fd-accent); stroke-width: 1.5; }
+.fd-part.hi .fd-ibox { fill: var(--fd-accent-tint); stroke: var(--fd-accent); }
+.fd-part.hi .fd-glyph { stroke: var(--fd-accent-text); }
+.fd-part.hi.zone > .fd-zone, .fd-part.hi.zone > .fd-corner { stroke: var(--fd-accent); }
+.fd-handle { fill: #fff; stroke: var(--fd-accent); stroke-width: 1.5; }
+
+/* five stages */
+.fd-stage-line { fill: rgba(47, 107, 255, 0.04); stroke: var(--fd-accent); stroke-width: 1.5; }
+.fd-stage-tab { fill: var(--fd-accent-text); }
+.fd-stage-tabtext { font-size: 12.5px; font-weight: 650; fill: #fff; }
+.fd-stages { animation: wb-fade 0.3s ease-out; }
+.is-stages .mk-notes { opacity: 0; }
+
+/* ---------- the bar under the drawing ---------- */
+.mk-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px; padding: 12px 16px; border-top: 1px solid var(--fd-line); font: 500 14px/1.4 var(--sans); color: var(--ink-2); }
+.mk-key { display: inline-flex; align-items: center; gap: 9px; }
+.mk-key i { flex: none; display: inline-block; width: 34px; height: 5px; }
+.lg-stream { background-image: linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 11px); background-size: 11px 5px; }
+.lg-batch { background-image: linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 8px, var(--ink) 8px 13px, transparent 13px 16px, var(--ink) 16px 21px, transparent 21px); }
+.mk-key .lg-control { height: 0; border-top: 1.5px dashed var(--fd-line-strong); }
+.mk-key .lg-ping { width: 26px; height: 16px; border: 1.5px solid var(--ink); border-radius: 3px; box-shadow: 0 0 0 3px rgba(19, 32, 41, 0.12); }
+.mk-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--sans); padding: 5px 8px; border-radius: 4px; border: 1px solid var(--fd-line); color: var(--ink-2); background: var(--fd-tile); }
+.mk-chip.done { color: #0a6e5f; border-color: #b7dcd5; }
+.mk-chip.done::before { content: '✓'; }
+.mk-chip.running { color: var(--fd-accent-text); border-color: var(--fd-accent); }
+.mk-chip.running::before { content: ''; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--fd-accent); border-right-color: transparent; animation: fd-spin 0.7s linear infinite; }
+@keyframes fd-spin { to { transform: rotate(360deg); } }
+.mk-foot-step { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; }
+.mk-foot-step > p { margin: 0; font: 400 15px/1.5 var(--text); color: var(--ink); }
+.mk-foot-step > p b { font: 650 15px/1.5 var(--sans); }
+.mk-foot-step > p b span { color: var(--ink-3); }
+.mk-foot-nav { display: flex; gap: 8px; }
+.mk-foot-learn { grid-column: 1 / -1; margin: 2px 0 0; font-size: 14.5px; }
+.mk-foot-learn a, .mk-foot-stages a { color: var(--ink); font-weight: 600; }
+.mk-foot-stages { gap: 8px 16px; }
+.mk-foot-stages ol { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0 0 0 18px; }
+.mk-foot-stages li::marker { color: var(--fd-accent-text); font-weight: 700; }
+
+/* the pause button stops every CSS animation too */
+.sd-paused .fd-line.control, .sd-paused .fd-seat.blink, .sd-paused .fd-ci.run .fd-ci-run, .sd-paused .mk-chip.running::before { animation-play-state: paused; }
+
+@media (max-width: 900px) {
+  .mk-foot-step { grid-template-columns: auto minmax(0, 1fr); }
+  .mk-foot-nav { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-part, .mk-notes, .fd-line, .fd-chip rect, .fd-ci-run, .fd-ci-ok { transition: none; }
+  .fd-line.control, .fd-seat.blink, .fd-ci.run .fd-ci-run, .mk-chip.running::before, .fd-ping.on, .fd-stages, .fd-part[data-id='ucrm'].got .fd-glyph { animation: none; }
+}
+@media (max-width: 700px) {
+  /* one row of tabs that scrolls sideways, instead of four stacked rows */
+  .mk-routes { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+  .mk-routes button { white-space: nowrap; }
+  .mk-top { padding-left: 10px; }
+}

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Corners from '../components/Corners'
 
 export type Pen = 'k' | 'b' | 'r' | 'g' | 'p' | 'o'
 export const PEN: Record<Pen, string> = { k: '#1d2a33', b: '#2456d6', r: '#c5372c', g: '#0b8a78', p: '#7a3fd1', o: '#a86a00' }
@@ -100,6 +101,20 @@ export function Whiteboard({ board }: { board: Board }) {
       document.body.style.overflow = ''
     }
   })
+  // On a narrow screen the drawing is wider than its frame. Bring the part drawn in this step into view.
+  const frame = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = frame.current
+    if (!el || el.scrollWidth <= el.clientWidth + 2) return
+    const fresh = board.nodes.filter((n) => n.step === step)
+    if (whole || fresh.length === 0) {
+      el.scrollLeft = 0
+      return
+    }
+    const svgW = el.scrollWidth - 24
+    const mid = (Math.min(...fresh.map((n) => n.x)) + Math.max(...fresh.map((n) => n.x + n.w))) / 2
+    el.scrollLeft = 12 + (mid / board.w) * svgW - el.clientWidth / 2
+  }, [step, whole, big, board])
   const byId = Object.fromEntries(board.nodes.map((n) => [n.id, n]))
   const age = (s: number) => (whole ? '' : s === step ? 'wb-new' : 'wb-old')
   const ends = (a: Arrow) => {
@@ -133,8 +148,11 @@ export function Whiteboard({ board }: { board: Board }) {
           {big ? 'Close (Esc)' : 'Expand'}
         </button>
       </div>
+      <p className="wb-hint">{big ? 'Drag the drawing to move around it.' : 'The drawing is wider than this screen. Drag it sideways, or use Expand for a larger view.'}</p>
       <div className="wb-main">
-        <div className="wb-board">
+        <div className="wb-frame">
+          <Corners />
+        <div className="wb-board" ref={frame} tabIndex={0} role="group" aria-label="Drawing. Scroll sideways if it is cut off." style={{ ['--wb-w' as string]: board.w }}>
           <svg viewBox={`0 0 ${board.w} ${board.h}`} role="img" aria-label={`Design drawing, step ${step + 1}: ${board.steps[step].title}`}>
             <defs>
               {(Object.keys(PEN) as Pen[]).map((p) => (
@@ -208,6 +226,7 @@ export function Whiteboard({ board }: { board: Board }) {
                 </text>
               ))}
           </svg>
+        </div>
         </div>
         <div className="wb-side">
           <ol className="wb-steps">

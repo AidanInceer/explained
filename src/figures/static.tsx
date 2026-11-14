@@ -101,7 +101,7 @@ export function Star() {
         ))}
         {dims.map((d) => (
           <g key={d.name}>
-            <rect x={d.x} y={d.y} width="160" height="98" rx="8" fill="#fff" stroke="var(--ink)" strokeWidth="1.5" />
+            <rect x={d.x} y={d.y} width="160" height="98" rx="4" fill="#fff" stroke="#9eaaa5" strokeWidth="1" />
             <text x={d.x + 10} y={d.y + 20} className="t">
               {d.name}
             </text>
@@ -112,7 +112,7 @@ export function Star() {
             ))}
           </g>
         ))}
-        <rect x="222" y="98" width="176" height="154" rx="8" fill="var(--line)" />
+        <rect x="222" y="98" width="176" height="154" rx="4" fill="var(--line)" />
         <text x="234" y="120" className="t w">
           fact_sales
         </text>

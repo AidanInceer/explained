@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LESSONS, SOURCES, TRACKS, lessonById, lessonsOf, trackById, type Lesson, type TrackId } from '../curriculum'
+import { LESSONS, TRACKS, lessonById, lessonsOf, trackById, type Lesson, type TrackId } from '../curriculum'
 import { nextUp, resetProgress, useProgress } from '../lib/progress'
-import { GLOSSARY } from '../glossary'
-import BigPicture from './BigPicture'
+import { quizText, useQuizScores } from '../lib/quizStore'
+import SystemDrawing, { GLYPH_D } from './system/SystemDrawing'
 import TrackLine from './TrackLine'
+import Corners from './Corners'
 
 /* Map geometry. Every lesson sits below all of its prerequisites, so every line runs downward. */
 const W = 1180
@@ -58,6 +59,14 @@ const EDGES = LESSONS.flatMap((l) =>
   }),
 )
 
+/** The same small icon tiles as the system drawing. */
+const AimIcon = ({ d }: { d: string }) => (
+  <svg className="aim-icon" viewBox="0 0 20 20" width="30" height="30" aria-hidden="true">
+    <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" />
+    <path d={d} />
+  </svg>
+)
+
 const PILLS = TRACKS.map((t) => {
   const first = lessonsOf(t.id).reduce((m, l) => (l.at[1] < m.at[1] || (l.at[1] === m.at[1] && l.at[0] < m.at[0]) ? l : m))
   const p = pos(first)
@@ -66,6 +75,7 @@ const PILLS = TRACKS.map((t) => {
 
 export default function Home() {
   const done = useProgress()
+  const quiz = useQuizScores()
   const next = nextUp(done)
   const [hover, setHover] = useState<string | null>(null)
   const shown = hover ? lessonById[hover] : null
@@ -102,15 +112,19 @@ export default function Home() {
           and kept correct. Each lesson is one idea, a drawing, and the reason behind each choice.
         </p>
         <ul className="aims">
+          <Corners />
           <li>
+            <AimIcon d={GLYPH_D.person} />
             <b>Do the job</b>
             Know enough to be useful in a data team: build a pipeline, keep it running, and explain your choices.
           </li>
           <li>
+            <AimIcon d={GLYPH_D.plug} />
             <b>Build for yourself</b>
             Make a small pipeline of your own when you need one, with free tools and data that you care about.
           </li>
           <li>
+            <AimIcon d={GLYPH_D.model} />
             <b>Steer AI well</b>
             An assistant can write the code. You must know which design is correct for the situation, and see when its
             answer is wrong.
@@ -139,13 +153,13 @@ export default function Home() {
         </div>
         {intro && (
           <>
-            <BigPicture />
+            <SystemDrawing />
             <div className="hero-after">
               <div>
                 <h3>Looks complicated? It is {LESSONS.length} small ideas.</h3>
                 <p>
-                  Each box in the drawing is a lesson on the map below. Select “How we think about it” to see the five
-                  stages that every data platform has. Then start with the basics. At the end you can design this
+                  Each box in the drawing is a lesson on the map below. Select “Five stages” to see the stages that every
+                  data platform has, or follow one journey through it. Then start with the basics. At the end you can design this
                   system yourself, and say why each part is there.
                 </p>
               </div>
@@ -163,6 +177,7 @@ export default function Home() {
           </p>
         </div>
         <aside className="board">
+          <Corners />
           <h2>
             {done.size} of {LESSONS.length} lessons understood
           </h2>
@@ -211,6 +226,8 @@ export default function Home() {
       </section>
 
       {/* Wide screens: the map */}
+      <div className="map-frame">
+        <Corners />
       <div className="map-wrap" ref={wrap} style={{ height: H * scale }}>
         <div className={`map ${shown ? 'has-hover' : ''}`} style={{ width: W, height: H, transform: `scale(${scale})` }}>
           <svg className="map-lines" width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
@@ -267,6 +284,7 @@ export default function Home() {
                   <small>
                     {isPre ? 'Helps to know first' : isDone ? 'Understood' : next?.id === l.id ? 'Next for you' : `${l.minutes} min`}
                     {l.level === 'deeper' && !isDone && !isPre ? ', deeper' : ''}
+                    {quiz[l.id] && !isPre && <span className="st-quiz">{quizText(quiz[l.id])}</span>}
                   </small>
                 </span>
               </Link>
@@ -274,29 +292,8 @@ export default function Home() {
           })}
         </div>
       </div>
+      </div>
 
-
-      <section className="beside">
-        <h2>Beside the map</h2>
-        <p className="lead">The lessons explain ideas. These pages are for reference while you work.</p>
-        <div className="beside-grid">
-          <Link to="/toolkit" className="beside-card">
-            <b>The toolkit</b>
-            <span>The languages that data engineers write, with what to learn first and where. And a list of what a good colleague can do.</span>
-            <small>11 languages, 20 abilities</small>
-          </Link>
-          <Link to="/glossary" className="beside-card">
-            <b>The glossary</b>
-            <span>Each term in one sentence, with a link to the lesson that explains it.</span>
-            <small>{GLOSSARY.length} terms</small>
-          </Link>
-          <Link to="/sources" className="beside-card">
-            <b>The sources</b>
-            <span>The books, papers and community references that the lessons follow, and what each one is best for.</span>
-            <small>{Object.keys(SOURCES).length} sources</small>
-          </Link>
-        </div>
-      </section>
     </main>
   )
 }

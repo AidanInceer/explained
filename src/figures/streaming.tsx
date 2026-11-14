@@ -105,7 +105,7 @@ export function Windows() {
             </g>
           ))}
           {EVENTS.map((e) => (
-            <circle key={e} cx={X(e)} cy="22" r="6" fill="var(--ink)" />
+            <rect key={e} x={X(e) - 5.5} y="16.5" width="11" height="11" rx="2" fill="var(--ink)" />
           ))}
           {wins.map((w, i) => {
             const y = 72 + (kind === 'sliding' ? (i % 2) * 34 : 0)
@@ -113,7 +113,7 @@ export function Windows() {
             const width = Math.max(X(w.to) - X(w.from) - 3, 24)
             return (
               <g key={i}>
-                <rect x={x} y={y} width={width} height="28" rx="6" fill="var(--line)" />
+                <rect x={x} y={y} width={width} height="28" rx="4" fill="var(--line)" />
                 <text x={x + width / 2} y={y + 19} textAnchor="middle" className="cnt">
                   {w.count}
                 </text>

@@ -110,15 +110,15 @@ export function BatchStream() {
           Batch
         </text>
         <line x1={SRC} x2={DST} y1="70" y2="70" className="bs-track" />
-        <rect x="16" y="46" width="78" height="48" rx="8" className="bs-box" />
+        <rect x="16" y="46" width="78" height="48" rx="4" className="bs-box" />
         <text x="55" y="75" textAnchor="middle">
           Source
         </text>
-        <rect x={STAGE - 54} y="38" width="124" height="64" rx="8" className="bs-box dash" />
+        <rect x={STAGE - 54} y="38" width="124" height="64" rx="4" className="bs-box dash" />
         <text x={STAGE + 8} y="30" textAnchor="middle" className="bs-s">
           Landing area: {staged} waiting, next run in {nextRun.toFixed(1)} s
         </text>
-        <rect x={DST - 34} y="46" width="96" height="48" rx="8" className="bs-box solid k" />
+        <rect x={DST - 34} y="46" width="96" height="48" rx="4" className="bs-box solid k" />
         <text x={DST + 14} y="67" textAnchor="middle" className="bs-w">
           Target
         </text>
@@ -126,7 +126,7 @@ export function BatchStream() {
           {batchDone} rows
         </text>
         {batchDots.map((d, i) => (
-          <circle key={i} cx={d.x} cy={d.y} r="5.5" className="bs-dot k" />
+          <rect key={i} x={d.x - 5} y={d.y - 5} width="10" height="10" rx="2" className="bs-dot k" />
         ))}
         <text x={DST + 62} y="116" textAnchor="end" className="bs-s">
           {age(batchNewest)}
@@ -137,15 +137,15 @@ export function BatchStream() {
           Streaming
         </text>
         <line x1={SRC} x2={DST} y1="196" y2="196" className="bs-track" />
-        <rect x="16" y="172" width="78" height="48" rx="8" className="bs-box" />
+        <rect x="16" y="172" width="78" height="48" rx="4" className="bs-box" />
         <text x="55" y="201" textAnchor="middle">
           Source
         </text>
-        <rect x={STAGE - 54} y="172" width="124" height="48" rx="8" className="bs-box tint" />
+        <rect x={STAGE - 54} y="172" width="124" height="48" rx="4" className="bs-box tint" />
         <text x={STAGE + 8} y="201" textAnchor="middle">
           Processor
         </text>
-        <rect x={DST - 34} y="172" width="96" height="48" rx="8" className="bs-box solid" />
+        <rect x={DST - 34} y="172" width="96" height="48" rx="4" className="bs-box solid" />
         <text x={DST + 14} y="193" textAnchor="middle" className="bs-w">
           Target
         </text>
@@ -153,7 +153,7 @@ export function BatchStream() {
           {streamDone} rows
         </text>
         {streamDots.map((d, i) => (
-          <circle key={i} cx={d.x} cy="196" r="5.5" className="bs-dot" />
+          <rect key={i} x={d.x - 5} y="191" width="10" height="10" rx="2" className="bs-dot" />
         ))}
         <text x={DST + 62} y="242" textAnchor="end" className="bs-s">
           {age(streamNewest)}

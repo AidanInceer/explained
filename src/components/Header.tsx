@@ -1,9 +1,60 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS, trackById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
 import { useProgress } from '../lib/progress'
+import { useQuizScores } from '../lib/quizStore'
 import SiteMark from './SiteMark'
+
+const still = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** The bar under the open section. When you change section, a small square carries it across,
+    like a packet of data in the drawing on the home page, and the bar follows. */
+function NavFlow({ nav, path }: { nav: RefObject<HTMLElement | null>; path: string }) {
+  const [pos, setPos] = useState<{ x: number; w: number } | null>(null)
+  const prev = useRef<{ x: number; w: number } | null>(null)
+  const pk = useRef<(HTMLSpanElement | null)[]>([])
+  useLayoutEffect(() => {
+    const measure = () => {
+      const a = nav.current?.querySelector<HTMLElement>('a.active')
+      setPos(a ? { x: a.offsetLeft, w: a.offsetWidth } : null)
+    }
+    measure()
+    // Measure again once the link classes and the web fonts have settled.
+    const raf = requestAnimationFrame(measure)
+    document.fonts?.ready.then(measure)
+    window.addEventListener('resize', measure)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', measure)
+    }
+  }, [nav, path])
+  useEffect(() => {
+    const p = prev.current
+    prev.current = pos
+    if (!pos || !p || p.x === pos.x || still) return
+    const from = p.x + p.w / 2
+    const to = pos.x + pos.w / 2
+    pk.current.forEach((el, i) =>
+      el?.animate(
+        [
+          { transform: `translateX(${from}px)`, opacity: 1 },
+          { transform: `translateX(${to}px)`, opacity: 1, offset: 0.8 },
+          { transform: `translateX(${to}px)`, opacity: 0 },
+        ],
+        { duration: 560, delay: i * 50, easing: 'cubic-bezier(0.55, 0, 0.25, 1)', fill: 'backwards' },
+      ),
+    )
+  }, [pos])
+  return (
+    <>
+      <span className="nav-bar" aria-hidden="true" style={pos ? { transform: `translateX(${pos.x}px)`, width: pos.w } : { opacity: 0 }} />
+      {[0, 1, 2].map((i) => (
+        <span key={i} className={`nav-pk t${i}`} aria-hidden="true" ref={(el) => void (pk.current[i] = el)} />
+      ))}
+    </>
+  )
+}
 
 interface Hit {
   key: string
@@ -41,7 +92,10 @@ export default function Header() {
   const nav = useNavigate()
   const loc = useLocation()
   const input = useRef<HTMLInputElement>(null)
+  const navEl = useRef<HTMLElement>(null)
   const done = useProgress()
+  const scores = useQuizScores()
+  const quizzes = Object.values(scores).filter((s) => s.correct === s.total).length
   const onLesson = loc.pathname.startsWith('/lesson/')
 
   useEffect(() => {
@@ -70,15 +124,16 @@ export default function Header() {
           Data Engineering <em>Explained</em>
         </span>
       </Link>
-      <nav className="top-nav" aria-label="Main">
+      <nav className="top-nav" aria-label="Main" ref={navEl}>
         <NavLink to="/" end className={({ isActive }) => (isActive || onLesson ? 'active' : '')}>
           Lessons
         </NavLink>
         <NavLink to="/toolkit">Toolkit</NavLink>
         <NavLink to="/glossary">Glossary</NavLink>
         <NavLink to="/sources">Sources</NavLink>
+        <NavFlow nav={navEl} path={loc.pathname} />
       </nav>
-      <Link to="/" className="top-progress" title="Lessons that you marked as understood">
+      <Link to="/" className="top-progress" title={`${done.size} ${done.size === 1 ? 'lesson' : 'lessons'} marked as understood. ${quizzes} ${quizzes === 1 ? 'quiz' : 'quizzes'} with all answers correct.`}>
         <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
           <circle cx="10" cy="10" r="8" fill="none" stroke="var(--rule)" strokeWidth="3" />
           <circle cx="10" cy="10" r="8" fill="none" stroke="var(--good)" strokeWidth="3" strokeLinecap="round" pathLength="100" strokeDasharray={`${(done.size / LESSONS.length) * 100} 100`} transform="rotate(-90 10 10)" />

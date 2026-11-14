@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { LESSONS, SOURCES, dependents, lessonById, lessonsOf, trackById } from '../curriculum'
-import { lessonContent } from '../lib/content'
+import { useLessonContent } from '../lib/content'
 import { addMark, clearMarks, paint, removeMark, useMarks } from '../lib/marks'
 import { setDone, useProgress } from '../lib/progress'
+import { useQuizScores } from '../lib/quizStore'
 import { FIGURES } from '../figures'
 import { GLOSSARY } from '../glossary'
 import { LESSON_TECH, TECH } from '../tech'
@@ -11,6 +12,7 @@ import Quiz from './Quiz'
 import Scenario from './Scenario'
 import TechNote from './TechNote'
 import TrackLine from './TrackLine'
+import Corners from './Corners'
 
 type Tool =
   | { mode: 'add'; x: number; y: number; seg: number; start: number; end: number; text: string; over: string[] }
@@ -37,10 +39,14 @@ export default function LessonPage() {
   const rail = useRef<HTMLElement>(null)
   const [note, setNote] = useState<Note | null>(null)
   const [tool, setTool] = useState<Tool | null>(null)
-  const content = lesson ? lessonContent(lesson.id) : null
+  const [sideOpen, setSideOpen] = useState(() => window.matchMedia('(min-width: 861px)').matches)
+  const content = useLessonContent(lesson?.id)
   const segs = content?.segs ?? null
   const parts = content?.parts ?? []
   const last = parts.length - 1
+  // When the lesson ends with a quiz that is all correct, the quiz box already has the "Mark as understood" button.
+  const quizScore = useQuizScores()[id]
+  const quizEnds = !!segs && segs.length > 0 && segs[segs.length - 1].type === 'quiz' && !!quizScore && quizScore.correct === quizScore.total
   // Parts open one at a time. A reader who wants the whole page at once can choose that, and it is remembered.
   const [wide, setWide] = useState(() => {
     try {
@@ -63,7 +69,8 @@ export default function LessonPage() {
   const shown = all ? last : Math.min(open, last)
   const reveal = (n: number) => {
     setOpen((o) => Math.max(o, n))
-    requestAnimationFrame(() => document.getElementById(`part-${n}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    requestAnimationFrame(() => document.getElementById(`part-${n}`)?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' }))
   }
   const chooseAll = (v: boolean) => {
     setAll(v)
@@ -123,6 +130,7 @@ export default function LessonPage() {
     !onward && branches.length === 0
       ? LESSONS.filter((l) => !done.has(l.id) && l.id !== lesson.id && l.prereqs.every((p) => done.has(p) || p === lesson.id)).slice(0, 3)
       : []
+  const nextUp = onward ?? branches[0] ?? elsewhere[0]
   const techKeys = LESSON_TECH[lesson.id] ?? []
 
   const techAt = (el: HTMLElement): Omit<Note, 'pinned'> => ({
@@ -199,12 +207,20 @@ export default function LessonPage() {
   return (
     <main className={wide ? 'lesson wide' : 'lesson'} style={{ ['--line' as string]: track.color }}>
       <aside className="lesson-side">
+        <a className="skip" href="#lesson-title">
+          Skip the lesson list
+        </a>
         <Link to="/" className="back">
           All lines
         </Link>
         <h2>{track.name}</h2>
         <p>{track.blurb}</p>
-        <TrackLine track={lesson.track} current={lesson.id} />
+        <details className="side-lessons" open={sideOpen} onToggle={(e) => setSideOpen(e.currentTarget.open)}>
+          <summary>
+            Lessons in {track.name} <span>{lessonsOf(lesson.track).length}</span>
+          </summary>
+          <TrackLine track={lesson.track} current={lesson.id} />
+        </details>
       </aside>
 
       <article className="lesson-body" key={lesson.id} onClick={onClick} onMouseOver={onOver} onMouseOut={onOut}>
@@ -215,12 +231,14 @@ export default function LessonPage() {
               Lesson {idx + 1} of {line.length}
             </span>
             <span>{lesson.minutes} min read</span>
-            {lesson.level === 'deeper' && <span>Goes deeper</span>}
+            {lesson.level === 'deeper' && <span className="meta-deeper">Goes deeper</span>}
             <button className="link-btn wide-btn" onClick={() => chooseWide(!wide)} aria-pressed={wide}>
               {wide ? 'Normal width' : 'Wide view'}
             </button>
           </p>
-          <h1>{lesson.title}</h1>
+          <h1 id="lesson-title" tabIndex={-1}>
+            {lesson.title}
+          </h1>
           <p className="lesson-summary">{lesson.summary}</p>
           {lesson.prereqs.length > 0 && (
             <p className="lesson-pre">
@@ -287,12 +305,22 @@ export default function LessonPage() {
                   {segs.map((s, i) => {
                     if (s.part !== n) return null
                     if (s.type === 'md') return <div key={i} data-seg={i} dangerouslySetInnerHTML={{ __html: s.html }} />
-                    if (s.type === 'quiz') return <Quiz key={i} questions={s.questions} />
+                    if (s.type === 'quiz') return <Quiz
+                          key={`${lesson.id}-${i}`}
+                          questions={s.questions}
+                          lessonId={lesson.id}
+                          next={nextUp}
+                          understood={isDone}
+                          onUnderstood={(v) => setDone(lesson.id, v)}
+                        />
                     if (s.type === 'scenario') return <Scenario key={i} items={s.items} />
                     const F = FIGURES[s.name]
                     return (
                       <figure key={i} className="fig">
-                        <div className="fig-body">{F ? <F /> : <p>Figure “{s.name}” is missing.</p>}</div>
+                        <div className="fig-frame">
+                          <Corners />
+                          <div className="fig-body">{F ? <F /> : <p>Figure “{s.name}” is missing.</p>}</div>
+                        </div>
                         {s.caption && <figcaption dangerouslySetInnerHTML={{ __html: s.caption }} />}
                       </figure>
                     )
@@ -300,6 +328,8 @@ export default function LessonPage() {
                 </section>
               ),
             )
+          ) : content === undefined ? (
+            <p className="lesson-loading" role="status">Loading the lesson…</p>
           ) : (
             <p>This lesson is not written yet.</p>
           )}
@@ -317,9 +347,11 @@ export default function LessonPage() {
         )}
 
         <section className="lesson-end" hidden={shown < last}>
-          <button className={`btn ${isDone ? '' : 'primary'}`} onClick={() => setDone(lesson.id, !isDone)}>
-            {isDone ? 'Understood ✓ (select to undo)' : 'Mark as understood'}
-          </button>
+          {!quizEnds && (
+            <button className={`btn ${isDone ? '' : 'primary'}`} onClick={() => setDone(lesson.id, !isDone)}>
+              {isDone ? 'Understood ✓ (select to undo)' : 'Mark as understood'}
+            </button>
+          )}
           <p className="marks-note">
             Select text in the lesson to highlight or underline it. Select a mark to remove it. Your marks are saved in this browser.
             {marks.length > 0 && (

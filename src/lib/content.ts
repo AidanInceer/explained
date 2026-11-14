@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { marked } from 'marked'
 import { lessonById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
@@ -28,9 +29,10 @@ export interface ScenarioItem {
   options: { text: string; why: string; verdict: 'best' | 'ok' | 'poor' }[]
 }
 
-const raw = import.meta.glob('../content/*.md', { query: '?raw', import: 'default', eager: true }) as Record<
+// Each lesson's text is its own small file, loaded when the lesson opens.
+const raw = import.meta.glob('../content/*.md', { query: '?raw', import: 'default' }) as Record<
   string,
-  string
+  () => Promise<string>
 >
 
 const inline = (s: string) => marked.parseInline(s, { async: false }) as string
@@ -221,11 +223,33 @@ function parse(src: string, id: string): LessonContent {
 
 const cache = new Map<string, LessonContent>()
 
-export function lessonContent(id: string): LessonContent | null {
+const keyOf = (id: string) => Object.keys(raw).find((k) => k.endsWith(`/${id}.md`))
+
+/** Parsed lesson if it is loaded, null if the lesson has no text, undefined while it is not loaded yet. */
+export function lessonContent(id: string): LessonContent | null | undefined {
   if (cache.has(id)) return cache.get(id)!
-  const key = Object.keys(raw).find((k) => k.endsWith(`/${id}.md`))
+  return keyOf(id) ? undefined : null
+}
+
+export async function loadLessonContent(id: string): Promise<LessonContent | null> {
+  if (cache.has(id)) return cache.get(id)!
+  const key = keyOf(id)
   if (!key) return null
-  const c = parse(raw[key], id)
+  const c = parse(await raw[key](), id)
   cache.set(id, c)
+  return c
+}
+
+export function useLessonContent(id: string | undefined): LessonContent | null | undefined {
+  const [, bump] = useState(0)
+  const c = id ? lessonContent(id) : null
+  useEffect(() => {
+    if (!id || c !== undefined) return
+    let live = true
+    loadLessonContent(id).then(() => live && bump((n) => n + 1))
+    return () => {
+      live = false
+    }
+  }, [id, c])
   return c
 }

@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { lessonsOf, trackById, type TrackId } from '../curriculum'
 import { setDone, useProgress } from '../lib/progress'
+import { quizText, useQuizScores } from '../lib/quizStore'
 
 /** One line drawn vertically with its lessons as stops. */
 export default function TrackLine({ track, current }: { track: TrackId; current?: string }) {
   const done = useProgress()
+  const quiz = useQuizScores()
   const t = trackById[track]
   return (
     <ol className="track-line" style={{ ['--line' as string]: t.color }}>
@@ -17,12 +19,16 @@ export default function TrackLine({ track, current }: { track: TrackId; current?
               <small>
                 {done.has(l.id) ? 'Understood' : `${l.minutes} min`}
                 {l.level === 'deeper' ? ', deeper' : ''}
+                {quiz[l.id] ? `, ${quizText(quiz[l.id])}` : ''}
               </small>
             </span>
           </Link>
           <button
             type="button"
             className="tl-check"
+            // Only the current lesson's tick is in the tab order, so keyboard users reach the lesson text quickly.
+            // The other ticks still work with a mouse or touch, and on their own lesson pages.
+            tabIndex={l.id === current || !current ? undefined : -1}
             aria-pressed={done.has(l.id)}
             aria-label={done.has(l.id) ? `${l.title}: understood. Select to undo` : `Mark “${l.title}” as understood`}
             title={done.has(l.id) ? 'Understood. Select to undo' : 'Mark as understood'}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { lessonById } from '../curriculum'
+import Corners from './Corners'
 
 type Level = 'Essential' | 'Important' | 'For some roles'
 
@@ -192,9 +193,9 @@ export default function Toolkit() {
       <h2>Languages</h2>
       <p className="tk-note">Each link goes to the official documentation or to a well-known free tutorial.</p>
       {ORDER.map((level) => (
-        <section key={level} className="tk-level">
+        <section key={level} className={`tk-level ${level === 'Essential' ? 'lv-essential' : level === 'Important' ? 'lv-important' : 'lv-some'}`}>
           <h3>
-            {level}
+            <span className="tk-tag">{level}</span>
             <small>
               {level === 'Essential' ? 'You use these every day, in every data engineering job.' : level === 'Important' ? 'Most jobs use most of these. Learn each one when a project needs it.' : 'Depends on the team. Know what they are for. Learn them if your role needs them.'}
             </small>
@@ -243,6 +244,7 @@ export default function Toolkit() {
         not.
       </p>
       <div className="tk-skills">
+        <Corners />
         {SKILLS.map((g) => (
           <section key={g.group}>
             <h3>{g.group}</h3>
