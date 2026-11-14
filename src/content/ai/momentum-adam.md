@@ -37,6 +37,8 @@ Each step moves the weight by about `η × m / (√v + ε)`, with a small correc
 
 Adam works well with little tuning across a wide range of models, which is why it is the common default. **AdamW** is a version that handles weight decay, a form of regularisation, more correctly, and is the usual choice for training transformers.
 
+::fig ai-momentum | A long, narrow valley seen from above. Compare the paths of plain gradient descent, momentum and Adam.
+
 ## The cost
 
 Adam stores two extra numbers for every weight. For a model with 7 billion weights, that is 14 billion extra numbers, often in 32-bit precision: about 56 GB of memory for optimiser state alone, more than the weights themselves in 16-bit precision. This matters a lot when training large models, as the lesson on many chips explains.

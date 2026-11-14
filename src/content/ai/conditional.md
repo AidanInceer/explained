@@ -54,6 +54,8 @@ The test is good, but the prior was tiny, and false positives from the many heal
 
 > **In practice.** The same trap hits fraud and anomaly detectors. When the thing you look for is rare, even an accurate model produces mostly false alarms. Look at precision on real data, as the lesson on measuring a model explains.
 
+::fig ai-bayes | 1,000 people, one square each. Make the disease rarer and see what a positive test is worth.
+
 ## In models
 
 - **Naive Bayes** classifiers apply Bayes' rule directly, assuming words are independent given the class. Simple and still useful for text.

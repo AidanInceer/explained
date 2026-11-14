@@ -22,6 +22,8 @@ Uses:
 
 Hashing is one-way. There is no key, and no way to "unhash". It is not encryption.
 
+::fig sw-hash-fn | Type, and watch the SHA-256 hash change.
+
 ## Encryption: a lock
 
 **Encryption** turns readable data into unreadable data with a **key**, and the key turns it back. It protects data from people who should not read it.

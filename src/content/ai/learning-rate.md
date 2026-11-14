@@ -17,6 +17,8 @@ The update is `w ← w - η × gradient`. The learning rate η scales every step
 
 In the example from the last lesson, minimising `(w - 3)²`: a learning rate of 0.25 halved the distance each step. A rate of 1.0 would jump from 0 to 6, then back to 0, for ever. A rate above 1.0 would move further away each step.
 
+::fig ai-descent | Try learning rates of 0.1, 0.5, 0.9 and 1.05 on the bowl. Above 1, each step overshoots further than the last.
+
 ## Finding a good value
 
 Typical starting points depend on the optimiser: around 0.1 to 0.01 for plain stochastic gradient descent, and around 0.001 to 0.0001 for Adam. But each problem differs.

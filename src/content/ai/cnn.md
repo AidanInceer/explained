@@ -18,6 +18,8 @@ A **filter** (or kernel) is a small grid of weights, for example 3 × 3. To appl
 
 The result is a new grid, a **feature map**, that shows how strongly each region matches the filter's pattern. A filter with positive weights on the left and negative on the right responds to vertical edges, wherever they are.
 
+::fig ai-conv | A 3 × 3 filter slides over an 8 × 8 image. Select pixels to draw your own image.
+
 ## Two key ideas
 
 - **Local connections.** Each output depends only on a small neighbourhood. Nearby pixels are related; distant ones much less.

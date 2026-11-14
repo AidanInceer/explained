@@ -30,6 +30,8 @@ Take a different random sample, and you get a slightly different estimate. The *
 
 **Example.** A model is right on 900 of 1,000 test examples: 90%. The standard error of that is about √(0.9 × 0.1 / 1000) ≈ 0.95 percentage points. So the true accuracy is plausibly anywhere from about 88% to 92%. A rival model with 91% on the same test set is not clearly better.
 
+::fig ai-samples | Take many samples and plot their means. Larger samples give means that wobble less.
+
 ## The bootstrap
 
 When there is no neat formula, resample. Draw many new samples of the same size from your sample, with replacement, compute the estimate on each, and look at how much they vary. This **bootstrap** gives an error range for almost anything, such as an F1 score or a median, at the cost of computing.

@@ -28,6 +28,8 @@ Minimise `L(w) = (w - 3)²`. The best w is clearly 3. The derivative is `2(w - 3
 
 Each step halves the distance to 3. The steps get smaller by themselves, because the slope gets gentler near the bottom.
 
+::fig ai-descent | Step downhill on the loss from the worked example. Then try the two-valley loss and other start points.
+
 ## The loop that trains a model
 
 1. Run the model on training data and compute the loss.

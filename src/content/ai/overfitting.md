@@ -16,6 +16,8 @@ Train a model and watch two numbers as training goes on:
 
 The point where validation loss starts to rise is where the model starts to memorise rather than learn. The gap between the two curves is the size of the overfitting.
 
+::fig ai-overfit | Fit curves of higher and higher degree to 12 noisy points, and compare the training and test errors.
+
 ## An example
 
 Fit points that follow a gentle curve, with some noise:

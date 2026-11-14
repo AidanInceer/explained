@@ -24,6 +24,8 @@ A floating-point number stores a sign, an **exponent** (the scale, like the powe
 
 After training, models can often be run with **integer** weights: int8 (8 bits) or even 4 bits. This is **quantisation**. Each weight is mapped to one of a small set of levels, with a scale factor to convert back. A model quantised to 4 bits takes about a quarter of the memory of its 16-bit version, with a small loss in quality if done carefully. The lesson on distillation and quantisation covers how.
 
+::fig ai-numbers | One value, stored in four number formats.
+
 ## Why fewer bits are faster
 
 - **Less memory.** A 7-billion-weight model takes 28 GB in float32, 14 GB in bfloat16, and about 3.5 GB at 4 bits. Smaller means it fits on smaller, cheaper hardware.

@@ -27,6 +27,8 @@ Big O keeps only the part that grows fastest and drops constant factors. An algo
 
 The gaps are huge. With a million items, an O(*n* log *n*) sort does about 20 million steps. An O(*n*²) sort does a trillion.
 
+::fig sw-big-o | Move the input size and compare the work of each class.
+
 ## Spot quadratic code
 
 The most common performance bug in real code is an accidental O(*n*²): a loop inside a loop over the same data.

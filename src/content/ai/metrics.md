@@ -45,6 +45,8 @@ Most classifiers output a probability, and a threshold turns it into yes or no, 
 
 The **ROC curve** and the **precision–recall curve** show this trade-off for every threshold. The **area under the ROC curve** (AUC) summarises how well the model ranks positives above negatives, whatever the threshold: 0.5 is random, 1.0 is perfect.
 
+::fig ai-threshold | 200 payments, 30 of them fraud. Move the threshold and watch precision and recall.
+
 ## For numbers
 
 For regression: **mean absolute error** (in the units of the target, easy to explain), **root mean squared error** (punishes large errors), and **R²** (the share of variation the model explains). For forecasts, compare against a simple baseline, such as "same as last week".

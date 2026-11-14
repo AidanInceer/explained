@@ -29,6 +29,8 @@ As h gets smaller and smaller, this gets closer to the exact derivative, written
 
 Try it for `f(x) = x²` at x = 3 with h = 0.001: `(3.001² - 3²) / 0.001 = (9.006001 - 9) / 0.001 = 6.001`. The exact answer is 6.
 
+::fig ai-tangent | Make the gap h smaller. The slope of the secant line closes in on the derivative.
+
 ## Rules to know
 
 You rarely compute derivatives by hand; libraries do it. But a few rules make the ideas clear:

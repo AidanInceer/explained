@@ -32,6 +32,8 @@ The result is a new vector for this token, made of information from the tokens i
 
 This is two [matrix multiplications](/lesson/matrix-multiply) and a softmax, which GPUs do very well.
 
+::fig ai-attention | Select a word to see which words it attends to.
+
 ## Masking
 
 When a model predicts the next token, a token must not look at tokens that come after it, or it would see the answer. A **causal mask** sets those scores to minus infinity before the softmax, so their weights become zero. Each token attends only to itself and earlier tokens.

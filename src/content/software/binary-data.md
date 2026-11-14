@@ -42,6 +42,8 @@ To store text, each character gets a number, and the number is stored as bits.
 
 When text shows as strange symbols, such as "Ã©" in place of "é", a program wrote UTF-8 and another read it with a different encoding.
 
+::fig sw-bits | Switch bits on and off, then type text to see its UTF-8 bytes.
+
 ## Everything else
 
 An image is a grid of **pixels**, and each pixel is often 3 bytes: red, green and blue, from 0 to 255. Sound is a list of numbers that measure the wave many thousands of times each second. A file format, such as PNG or MP3, is an agreed layout of these bytes, usually compressed.

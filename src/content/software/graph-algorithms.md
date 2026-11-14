@@ -25,6 +25,8 @@ With a priority queue to find the smallest distance quickly, it runs in about O(
 
 Route planners and network routers use these ideas, with many improvements, such as precomputed shortcuts and estimates that steer the search towards the target.
 
+::fig sw-graph | Dijkstra's algorithm on a small road map, one place at a time.
+
 ## Dependencies: topological sort
 
 A build system must compile a library before the code that uses it. A course must teach a lesson before the lessons that need it. These are graphs where an edge A → B means "A must come before B".

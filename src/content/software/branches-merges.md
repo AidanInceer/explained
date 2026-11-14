@@ -28,6 +28,8 @@ When the work on a branch is ready, you **merge** it into `main`. Git finds the 
 
 A **rebase** is the other way to combine work: it replays your commits on top of the latest `main`, as if you had started there. The history is a straight line. Because rebase rewrites your commits, only rebase work that you have not shared.
 
+::fig sw-git | Build a branch step by step, then join it with a merge or a rebase.
+
 ## Conflicts
 
 If both branches changed the same lines, Git cannot choose, and stops with a **merge conflict**. It marks both versions in the file:

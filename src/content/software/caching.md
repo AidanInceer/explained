@@ -43,6 +43,8 @@ The price changes in the database. The cache still holds the old price. Now the 
 
 > **Pitfall.** Cache only what you can afford to see a little out of date. Decide, for each kind of data, how old is acceptable, and choose the TTL from that.
 
+::fig sw-cache | A minute of reads, one a second. The data changes three times.
+
 ## Other traps
 
 - **Stampede.** A popular entry expires, and a thousand requests all miss at once and hit the database together. Let one request refresh it while others wait, or refresh before it expires.

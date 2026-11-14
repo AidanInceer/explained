@@ -31,6 +31,8 @@ So its sign tells you the direction:
 
 And its size grows with how long the vectors are, and how well they line up.
 
+::fig ai-dot | Turn and stretch the two arrows. The dot product is positive when they point the same way, 0 at right angles and negative when they point apart.
+
 ## Cosine similarity
 
 Often you want "how alike?" without the effect of length. Divide the dot product by the two lengths, and you get the cosine of the angle alone:

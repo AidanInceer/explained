@@ -32,6 +32,10 @@ Step 2 is the key. While one task runs, no click is handled and nothing on scree
 
 > **Rule of thumb.** Keep each task short. A task longer than about 50 ms is noticeable to a user. Split long work into pieces, or move it off the main thread.
 
+There is a second, smaller queue: the **microtask queue**. Promise callbacks wait there. After each task, the event loop runs every waiting microtask before it takes the next task. So a promise callback always runs before a timer, even a timer with a delay of 0.
+
+::fig sw-event-loop | Step through four lines of JavaScript and watch the stack and the two queues.
+
 ## Waiting without blocking
 
 Slow things in the browser, such as network requests, do not run on the main thread. You start them, and the browser puts a task in the queue when they finish. Modern JavaScript writes this with **promises** and `async`/`await`:

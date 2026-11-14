@@ -25,6 +25,8 @@ Things to know:
 - **Scale matters**: distances depend on units, so standardise features first, as in [Features and representations](/lesson/features).
 - **Different starts can give different results.** Run it several times.
 
+::fig ai-kmeans | Run k-means one step at a time: assign each point to a centre, then move each centre.
+
 ## Dimension reduction with PCA
 
 Data often has many features that move together. **Principal component analysis** (PCA) finds new axes, the **principal components**:

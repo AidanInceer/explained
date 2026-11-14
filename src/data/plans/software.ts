@@ -99,6 +99,7 @@ export const SOFTWARE_PLAN: PlanLine[] = [
     tier: 2,
     lessons: [
       l('apis', 'APIs: REST, GraphQL and RPC', 'Three ways to ask a service for something.', ['networks', 'functions']),
+      l('serialisation', 'Data formats and serialisation', 'JSON, binary formats, and changing a format without breaking readers.', ['apis']),
       l('auth', 'Authentication and authorisation', 'Who you are, what you may do, sessions and tokens.', ['apis']),
       l('app-databases', 'Databases for applications', 'Tables, indexes, and migrations without downtime.', ['apis']),
       l('queues', 'Queues and background jobs', 'Do slow work later, and retry it safely.', ['apis']),

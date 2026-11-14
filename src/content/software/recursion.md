@@ -63,6 +63,8 @@ def fib(n):
 
 `fib(40)` makes hundreds of millions of calls, because `fib(38)` is computed again inside both `fib(40)` and `fib(39)`, and so on down. Remembering each answer the first time makes it instant. That idea is the subject of [Dynamic programming](/lesson/dynamic-programming).
 
+::fig sw-fib | The calls that fib(n) makes, with and without a memo.
+
 ## Remember
 
 - A recursive function has a base case and a recursive case on a smaller problem.

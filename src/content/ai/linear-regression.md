@@ -33,6 +33,8 @@ Two ways:
 
 For one input, the gradient for w is the average of `2(ŷ - y) × x`, and for b the average of `2(ŷ - y)`. Each step nudges the line towards the points that it misses most.
 
+::fig ai-fit | Fit a line to ten houses by hand, or let gradient descent fit it.
+
 ## A small example
 
 House prices (in thousands) against size (in m²): (50, 150), (80, 210), (100, 250). The best line here is exactly `price = 2 × size + 50`: every point lies on it, and the loss is zero. Real data is never this tidy; the best line leaves some error, and the loss measures how much.

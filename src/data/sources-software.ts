@@ -280,4 +280,18 @@ export const SOFTWARE_SOURCES = {
     kind: 'Book',
     why: 'Why adding people to a late project makes it later, and other lasting lessons about software teams.',
   },
+  rfc8259: {
+    title: 'RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format',
+    by: 'Tim Bray (editor), IETF, 2017',
+    kind: 'Website',
+    url: 'https://www.rfc-editor.org/rfc/rfc8259',
+    why: 'The JSON standard. Short, and clear about where readers disagree, such as large numbers.',
+  },
+  protobuf: {
+    title: 'Protocol Buffers documentation',
+    by: 'Google',
+    kind: 'Website',
+    url: 'https://protobuf.dev/programming-guides/encoding/',
+    why: 'How a schema-based binary format turns a message into bytes, and the rules for changing a schema safely.',
+  },
 } satisfies Record<string, Source>

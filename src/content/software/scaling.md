@@ -46,6 +46,8 @@ Web servers are easy to copy. The database holds the one true copy of the data, 
 
 Scaling the wrong part wastes money. Measure: where do requests spend their time? The CPU, the database, a slow partner API? Fix the slowest part, measure again, and repeat.
 
+::fig sw-load | Add load or add servers, and watch the response time.
+
 ## Remember
 
 - Scale up first. Design so you can scale out.

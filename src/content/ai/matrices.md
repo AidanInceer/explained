@@ -44,6 +44,8 @@ In two dimensions you can see what a matrix does to every point:
 
 Such maps are **linear**: straight lines stay straight, the origin stays put, and grid lines stay evenly spaced. That property makes them predictable and fast to compute.
 
+::fig ai-matrix | Set the four numbers of a matrix, or choose a preset. The red and green arrows are its two columns: where (1, 0) and (0, 1) land.
+
 ## The columns tell you everything
 
 A neat fact: the first column of a matrix is where the first axis direction `[1, 0]` lands, and the second column is where `[0, 1]` lands. Every other point follows from those, because any vector is a mix of the axis directions. So you can read what a matrix does from its columns.

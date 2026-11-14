@@ -12,6 +12,8 @@ Ask a model for "a watercolour of a fox in the snow" and a new image appears tha
 
 Take a real image. Add a little random noise. Then a little more. After hundreds of small steps, nothing of the image is left: it is pure random static. This **forward process** is easy: no learning is needed, just adding noise.
 
+::fig ai-noise | Add noise step by step. By step 1,000 nothing of the picture is left.
+
 ## Learning to undo it
 
 Now train a network to go backwards: given a noisy image and how noisy it is, predict the noise that was added, so it can be subtracted. Training is simple:

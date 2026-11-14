@@ -33,6 +33,8 @@ These cut off the long tail of unlikely tokens before sampling:
 
 Temperature and top-p are often used together.
 
+::fig ai-sampling | Set the temperature and top-p, then draw the next word 50 times.
+
 ## Choosing settings
 
 | Task | Typical setting |

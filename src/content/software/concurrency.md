@@ -50,6 +50,8 @@ Locks fix races and bring new problems:
 
 > **Rule of thumb.** Always take locks in the same order in every part of the program. This one rule removes the most common cause of deadlock.
 
+::fig sw-race | Two threads add 1 to the same counter. Compare three orders of their steps.
+
 ## Ways to share less
 
 The safest shared data is data that is not shared.

@@ -60,6 +60,8 @@ The browser reads the HTML and finds that it needs more: style sheets, scripts, 
 
 Before the first byte of HTML arrives, there are about four round trips: DNS, TCP, TLS, and the request itself. On a phone network with 100 ms per round trip, that is 400 ms before the server even starts. This is why sites put servers and CDNs close to users, keep connections open for reuse, and avoid long chains of requests where each waits for the last.
 
+::fig sw-page-load | Change the distance to the server and the settings, and watch the round trips add up.
+
 ## Remember
 
 - DNS turns a name into an IP address, usually from a cache.

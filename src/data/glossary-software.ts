@@ -41,6 +41,7 @@ export const SOFTWARE_TERMS: Term[] = [
   { term: 'SQL injection', def: 'An attack where input changes the meaning of a database query.', lesson: 'web-attacks' },
   { term: 'Authentication', def: 'Proving who a user or service is.', lesson: 'auth' },
   { term: 'Authorisation', def: 'Deciding what a user or service may do.', lesson: 'auth' },
+  { term: 'Serialisation', def: 'Turning a value in memory into bytes that can be sent or stored, and turning the bytes back again.', lesson: 'serialisation' },
   { term: 'N+1 query', def: 'One query for a list, then one more for each item: many slow round trips to the database.', lesson: 'app-databases' },
   { term: 'Dead-letter queue', def: 'Where a job goes after failing too many times, for a person to look at.', lesson: 'queues' },
   { term: 'Cache-aside', def: 'Look in the cache first; on a miss, load from the source and store a copy.', lesson: 'caching' },

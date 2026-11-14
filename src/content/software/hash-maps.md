@@ -29,6 +29,8 @@ Two different keys can land in the same bucket. This is a **collision**, and it 
 
 To keep them short, the map grows. When it holds too many pairs for its number of buckets, it makes a bigger array, often twice as large, and moves every pair to its new bucket. That move is slow, but it is rare, so the average cost of an insert stays constant.
 
+::fig sw-hash | Add keys to a hash map with 8 buckets.
+
 ## What a hash map cannot do
 
 - **No order.** Keys are spread by their hash, not sorted. You cannot ask for "all ids between C-1000 and C-2000" without looking at every key. A tree or a sorted list does that.

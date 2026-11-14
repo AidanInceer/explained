@@ -24,6 +24,8 @@ Retrying a failed call is natural. Done carelessly, it causes harm:
 - **Retry storms.** A struggling service gets slower. Every client retries, tripling the load, and it falls over completely. Use exponential **back-off** with random **jitter**, and a limit.
 - **Cascades.** Service A waits on B, which waits on C. When C is slow, everything upstream fills with waiting requests. A **circuit breaker** stops calling a failing service for a while and fails fast instead.
 
+::fig sw-backoff | 300 clients and a server that goes down. Compare three ways to retry.
+
 ## Clocks cannot be trusted
 
 Each machine's clock drifts, and synchronisation over the network is only accurate to some milliseconds, sometimes much worse. So "which event happened first?" cannot be answered reliably by comparing timestamps from different machines.

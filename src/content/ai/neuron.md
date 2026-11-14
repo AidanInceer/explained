@@ -25,6 +25,8 @@ The weights define a direction in input space. The neuron gives a large output w
 
 The name comes from a loose analogy with brain cells, which receive signals and fire when stimulated enough. Real neurons are far more complicated; the analogy should not be taken further than that.
 
+::fig ai-neuron | One neuron with two inputs. Change the weights and the bias and watch the boundary line move.
+
 ## A layer
 
 A **layer** is many neurons that all see the same inputs, each with its own weights and bias. With 3 inputs and 4 neurons, the weights form a 4 × 3 matrix W, the biases a vector b of 4, and the whole layer computes:

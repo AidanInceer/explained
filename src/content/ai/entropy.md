@@ -24,6 +24,8 @@ Each outcome's surprise, weighted by how often it happens.
 
 For a fixed number of outcomes, entropy is highest when all are equally likely, and zero when one is certain.
 
+::fig ai-entropy | Set the chances of four outcomes. Entropy is highest when all four are equally likely.
+
 ## What it means
 
 Entropy is the **minimum average number of bits** needed to encode outcomes from the distribution. Shannon proved that no code can do better on average, and good codes come close. So entropy is a hard limit on compression: English text has a certain entropy per character, and no compressor can go below it on average.

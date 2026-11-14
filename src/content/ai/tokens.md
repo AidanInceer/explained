@@ -25,6 +25,8 @@ Most tokenisers use **byte-pair encoding** (BPE) or a close relative:
 
 The result: frequent strings, such as ` the` (often with its leading space), become single tokens; rare strings need several.
 
+::fig ai-bpe | Step through byte-pair encoding on a tiny training text.
+
 ## Rules of thumb
 
 - In English, one token is about **4 characters** or about **¾ of a word** on average. 1,000 tokens ≈ 750 words.

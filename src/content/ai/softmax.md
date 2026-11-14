@@ -43,6 +43,8 @@ Divide the scores by a number T, the **temperature**, before softmax:
 
 Language models use temperature when they generate text: low for focused, predictable answers; higher for more varied writing. The lesson on sampling covers this.
 
+::fig ai-softmax | Scores for the next word, turned into probabilities by softmax. Change the temperature.
+
 ## Two practical points
 
 - **Stability.** e raised to a large score overflows. Libraries subtract the largest score from all scores first, which changes nothing in the result, as noted above, and keeps the numbers small.

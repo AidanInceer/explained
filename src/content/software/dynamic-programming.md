@@ -29,6 +29,8 @@ def fib(n):
 
 Now each `fib(k)` is computed once. `fib(50)` takes 51 steps. This top-down approach is called **memoisation** (often spelled memoization). Python's `functools.cache` adds it with one line.
 
+::fig sw-fib | Turn the memo on and count the calls.
+
 ## Tabulation: fill a table from the bottom
 
 The other way is to start from the smallest problems and build up:

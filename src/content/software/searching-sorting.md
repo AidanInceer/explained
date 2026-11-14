@@ -24,6 +24,8 @@ It is the same method that you use to find a word in a printed dictionary. You n
 
 > **Pitfall.** Binary search on data that is not sorted gives wrong answers with no error. Make sure the data is sorted, by the same rule that the search uses.
 
+::fig sw-search | Linear and binary search on the same sorted list, one comparison per step.
+
 ## How fast can you sort?
 
 Simple sorts, such as **insertion sort**, which takes each item and slides it into place among the sorted ones, take O(*n*²) time. They are fine for small lists and for lists that are almost sorted already.
@@ -34,6 +36,8 @@ Good general sorts take O(*n* log *n*). Two classic ones:
 - **Quicksort** picks a **pivot** item, moves smaller items to its left and larger ones to its right, then sorts each side. It is very fast in practice, with a rare worst case of O(*n*²) that good pivot choices make unlikely.
 
 Sorts that compare pairs of items cannot do better than O(*n* log *n*) in general. That is a proven limit.
+
+::fig sw-sort | Insertion sort and merge sort on the same list. Compare the comparisons.
 
 ## What your language does
 

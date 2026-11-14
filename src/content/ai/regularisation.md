@@ -20,6 +20,8 @@ Why does this help? A model with large weights can react sharply to small change
 
 > **For experienced readers.** With plain SGD, L2 regularisation and weight decay are the same. With Adam they differ; AdamW applies weight decay directly to the weights, which works better, as [Momentum and Adam](/lesson/momentum-adam) noted.
 
+::fig ai-ridge | A degree-11 curve through 12 points. Raise the penalty λ and the wild curve calms down.
+
 ## Early stopping
 
 Watch the validation loss while training, and stop when it stops improving. Keep the weights from the best point. Simple, cheap, and effective: it limits how far the weights can travel from their small starting values.
