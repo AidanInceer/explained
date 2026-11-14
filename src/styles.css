@@ -10,7 +10,7 @@
   --bad: #b3261e;
   --line: var(--ink);
   --sans: 'Bricolage Grotesque Variable', 'Segoe UI', system-ui, sans-serif;
-  --serif: 'Literata Variable', Georgia, serif;
+  --text: 'Source Sans 3 Variable', 'Segoe UI', system-ui, sans-serif;
   --mono: 'JetBrains Mono Variable', Consolas, monospace;
 }
 
@@ -225,11 +225,11 @@ button, input { font: inherit; color: inherit; }
 .lesson-body { max-width: 720px; }
 .lesson-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 0 0 14px; color: var(--ink-2); font-size: 14px; }
 .lesson-head h1 { font-size: clamp(34px, 5vw, 50px); font-weight: 740; letter-spacing: -0.03em; }
-.lesson-summary { font-family: var(--serif); font-size: 22px; line-height: 1.45; margin: 18px 0 0; padding-left: 18px; border-left: 5px solid var(--line); }
+.lesson-summary { font-family: var(--text); font-size: 22px; line-height: 1.45; margin: 18px 0 0; padding-left: 18px; border-left: 5px solid var(--line); }
 .lesson-pre { margin: 16px 0 0; color: var(--ink-2); font-size: 15px; }
 .lesson-pre .tick { color: var(--good); }
 
-.prose { font-family: var(--serif); font-size: 18.5px; line-height: 1.68; margin-top: 34px; }
+.prose { font-family: var(--text); font-size: 18.5px; line-height: 1.68; margin-top: 34px; }
 .prose p { margin: 0 0 1.05em; }
 .prose h2 { font-size: 27px; margin: 1.9em 0 0.6em; }
 .prose h3 { font-size: 20px; margin: 1.6em 0 0.4em; }
@@ -513,3 +513,21 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 @media (max-width: 860px) { .brand-grid { grid-template-columns: 1fr; } }
 .brand { max-width: 1100px; }
 @media (max-width: 620px) { .parts-nav ol { display: none; } .parts-head { margin-bottom: 0; } }
+
+/* ---------- reading type: plain, even, built to be read ---------- */
+.prose { font-size: 17px; line-height: 1.62; color: var(--ink); }
+.prose p, .prose ul, .prose ol, .prose blockquote, .prose h2, .prose h3 { max-width: 44em; }
+.prose h2 { font-size: 24px; }
+.prose h3 { font-size: 18.5px; }
+.prose strong { font-weight: 600; }
+.prose li { margin-bottom: 0.3em; }
+.prose li::marker { color: var(--ink-3); font-family: var(--text); font-weight: 500; }
+.prose a { color: inherit; text-decoration-color: var(--line); text-decoration-thickness: 1.5px; }
+.prose a:hover { color: var(--line); }
+.prose blockquote { font-family: var(--text); font-size: 16.5px; }
+.prose table { font-family: var(--text); font-size: 15.5px; }
+.prose td:first-child { font-weight: 550; }
+.lesson-summary { font-size: 19px; line-height: 1.5; color: var(--ink-2); border-left-width: 3px; padding-left: 16px; max-width: 40em; }
+.part-n { color: var(--ink-3); font-weight: 600; }
+.lesson.wide .prose { font-size: 17.5px; }
+@media (max-width: 760px) { .prose { font-size: 16.5px; } .lesson-summary { font-size: 17.5px; } }
