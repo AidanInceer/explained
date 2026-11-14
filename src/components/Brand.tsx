@@ -2,14 +2,12 @@ import type { ReactNode } from 'react'
 
 /* Name and logo options for the site. A working page for the owner, linked from the footer only. */
 
-export function MarkConverge({ size = 26 }: { size?: number }) {
+/** The site logo: the initials on an ink tile, with one dot in the blue of the first line of the map. */
+export function MarkTile({ size = 30 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true">
-      <path d="M8 7v4c0 5 8 4 8 9M24 7v4c0 5-8 4-8 9v5" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="8" cy="6.5" r="3.6" fill="#2456D6" />
-      <circle cx="24" cy="6.5" r="3.6" fill="#0B8A78" />
-      <circle cx="16" cy="25.5" r="3.6" fill="#D0356F" />
-    </svg>
+    <span className="logo-tile" style={{ width: size, height: size, fontSize: size * 0.53, borderRadius: size * 0.26 }} aria-hidden="true">
+      de<i />
+    </span>
   )
 }
 
@@ -64,7 +62,7 @@ const OPTIONS: Option[] = [
     line: 'in small pieces',
     why: 'It says exactly what the site is, and people search for these three words. The matching .com has no registration.',
     against: 'Long. It is a description more than a name.',
-    mark: MarkConverge,
+    mark: MarkTile,
     free: ['dataengineeringexplained.com', 'dataengineeringexplained.dev', 'deexplained.dev'],
     taken: ['deexplained.com'],
     pick: true,
@@ -106,7 +104,7 @@ export default function Brand() {
     <main className="page brand">
       <h1>Name and logo options</h1>
       <p className="lead">
-        Four names, each with a mark and the domains that were looked up for it. The header uses the first mark now. To
+        Four names, each with a mark and the domains that were looked up for it. The header uses the first mark now: the initials on a tile. To
         change it, say which one you want.
       </p>
       <div className="brand-grid">
@@ -116,8 +114,8 @@ export default function Brand() {
               <div className="brand-tile">
                 <o.mark size={72} />
               </div>
-              <div className="brand-tile dark">
-                <o.mark size={72} />
+              <div className={o.mark === MarkTile ? 'brand-tile' : 'brand-tile dark'}>
+                <o.mark size={o.mark === MarkTile ? 44 : 72} />
               </div>
               <div className="brand-tile small">
                 <o.mark size={20} />

@@ -531,3 +531,31 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .part-n { color: var(--ink-3); font-weight: 600; }
 .lesson.wide .prose { font-size: 17.5px; }
 @media (max-width: 760px) { .prose { font-size: 16.5px; } .lesson-summary { font-size: 17.5px; } }
+
+/* ---------- header, second version ---------- */
+.top { display: block; padding: 0; background: color-mix(in srgb, var(--surface) 92%, transparent); }
+.top-in { max-width: 1400px; margin: 0 auto; height: 60px; padding: 0 28px; display: flex; align-items: center; gap: 22px; }
+.wordmark { gap: 11px; font-size: 16.5px; font-weight: 700; color: var(--ink); }
+.wordmark em { font-style: normal; font-weight: 450; color: var(--ink-2); }
+.logo-tile { flex: none; display: inline-flex; align-items: baseline; justify-content: center; line-height: 1.75; background: var(--ink); color: #fff; font-family: var(--sans); font-weight: 800; letter-spacing: -0.06em; }
+.logo-tile i { width: 0.26em; height: 0.26em; margin-left: 0.07em; border-radius: 50%; background: #5b8cff; }
+.top-nav { gap: 2px; align-self: stretch; margin-left: 8px; }
+.top-nav a { display: flex; align-items: center; padding: 0 13px; border-radius: 0; color: var(--ink-2); font-weight: 550; font-size: 15.5px; border-bottom: 3px solid transparent; border-top: 3px solid transparent; }
+.top-nav a:hover { color: var(--ink); background: none; border-bottom-color: var(--rule); }
+.top-nav a.active { color: var(--ink); background: none; border-bottom-color: var(--ink); }
+.top-progress { margin-left: auto; display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 14px; font-weight: 550; color: var(--ink-2); padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.top-progress:hover { background: var(--rule-soft); color: var(--ink); }
+.search { margin-left: 0; width: min(300px, 30vw); }
+.search input { padding-left: 36px; background: var(--paper); border-color: transparent; height: 38px; }
+.search input:hover { border-color: var(--rule); }
+.search input:focus { background: var(--surface); border-color: var(--rule); }
+.search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink-3); pointer-events: none; }
+@media (max-width: 860px) {
+  .top { padding: 0; }
+  .top-in { height: auto; flex-wrap: wrap; gap: 6px 12px; padding: 10px 16px; }
+  .top-nav { margin-left: auto; align-self: auto; }
+  .top-nav a { padding: 6px 8px; border-top: 0; }
+  .top-progress { display: none; }
+  .search { order: 3; width: 100%; }
+}
+@media (max-width: 480px) { .wordmark em { display: none; } }

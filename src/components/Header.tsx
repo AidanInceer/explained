@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS, trackById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
-import { MarkConverge } from './Brand'
+import { useProgress } from '../lib/progress'
+import { MarkTile } from './Brand'
 
 interface Hit {
   key: string
@@ -40,6 +41,8 @@ export default function Header() {
   const nav = useNavigate()
   const loc = useLocation()
   const input = useRef<HTMLInputElement>(null)
+  const done = useProgress()
+  const onLesson = loc.pathname.startsWith('/lesson/')
 
   useEffect(() => {
     setOpen(false)
@@ -60,19 +63,35 @@ export default function Header() {
 
   return (
     <header className="top">
+      <div className="top-in">
       <Link to="/" className="wordmark" aria-label="Data Engineering Explained, home">
-        <MarkConverge />
-        <span>Data Engineering Explained</span>
+        <MarkTile />
+        <span>
+          Data Engineering <em>Explained</em>
+        </span>
       </Link>
       <nav className="top-nav" aria-label="Main">
-        <NavLink to="/" end>
-          Map
+        <NavLink to="/" end className={({ isActive }) => (isActive || onLesson ? 'active' : '')}>
+          Lessons
         </NavLink>
         <NavLink to="/toolkit">Toolkit</NavLink>
         <NavLink to="/glossary">Glossary</NavLink>
         <NavLink to="/sources">Sources</NavLink>
       </nav>
+      <Link to="/" className="top-progress" title="Lessons that you marked as understood">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="none" stroke="var(--rule)" strokeWidth="3" />
+          <circle cx="10" cy="10" r="8" fill="none" stroke="var(--good)" strokeWidth="3" strokeLinecap="round" pathLength="100" strokeDasharray={`${(done.size / LESSONS.length) * 100} 100`} transform="rotate(-90 10 10)" />
+        </svg>
+        <span>
+          {done.size} of {LESSONS.length}
+        </span>
+      </Link>
       <div className="search" onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}>
+        <svg className="search-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" strokeWidth="2" />
+          <path d="M13.5 13.5 18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
         <input
           ref={input}
           type="search"
@@ -121,6 +140,7 @@ export default function Header() {
             ))}
           </ul>
         )}
+      </div>
       </div>
     </header>
   )
