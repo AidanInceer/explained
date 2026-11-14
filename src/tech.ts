@@ -450,5 +450,7 @@ export const LESSON_TECH: Record<string, string[]> = {
   'case-clickstream': ['brokers', 'rtolap', 'transformation'],
   'case-iot-telemetry': ['brokers', 'stream', 'nosql'],
   'case-bank-reporting': ['catalog', 'warehouses', 'orchestrators'],
-  'first-project': ['batch', 'transformation', 'ci'],
+  'first-project': ['batch', 'transformation'],
+  'project-stack': ['transformation', 'ci'],
+  'project-with-ai': ['ci'],
 }

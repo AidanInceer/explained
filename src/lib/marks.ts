@@ -12,7 +12,7 @@ export interface Mark {
   text: string
 }
 
-const KEY = 'dee.marks.v1'
+const KEY = 'dee.marks.v2'
 const listeners = new Set<() => void>()
 
 function load(): Record<string, Mark[]> {

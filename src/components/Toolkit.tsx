@@ -172,7 +172,7 @@ const SKILLS: { group: string; lead: string; items: [string, string[]][] }[] = [
       ['Give status before you are asked, and bad news early', ['working-day']],
       ['Review code well, and take review well', ['software-engineering']],
       ['Use AI tools to go faster, and still be able to explain every line', ['ai-for-data-engineering']],
-      ['Have built and run something of your own', ['first-project']],
+      ['Have built and run something of your own', ['first-project', 'project-stack']],
     ],
   },
 ]

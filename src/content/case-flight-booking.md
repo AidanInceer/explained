@@ -1,10 +1,10 @@
-This is the second worked design. The [online shop](/lesson/case-online-shop) needed a plain batch design. This system has three properties that make it harder: the main record changes many times, some users need data within the hour, and the data includes sensitive personal details. The airline and its numbers are invented for the example.
+The [online shop](/lesson/case-online-shop) needed a plain batch design. This system has three properties that make it harder: the main record changes many times, some users need data within the hour, and the data includes sensitive personal details. The airline and its numbers are invented for the example.
 
 ## The situation
 
 A regional airline sells seats on about 300 flights a day through its website, its app and travel agents. A booking is not one event. It is created, paid, changed, sometimes cancelled and refunded, checked in, and finally flown. Between the first step and the last there can be eleven months.
 
-::fig wb-flight | The design in eight steps. Use “Next step” to draw it in order.
+::fig wb-flight | The design in ten steps. Use “Next step” to draw it in order.
 
 ## Step 1: users and requirements
 

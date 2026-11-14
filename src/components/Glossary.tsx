@@ -29,7 +29,7 @@ export default function Glossary() {
         {items.map((g) => {
           const l = lessonById[g.lesson]
           return (
-            <div key={g.term}>
+            <div key={g.term + g.lesson}>
               <dt>{g.term}</dt>
               <dd>
                 {g.def}{' '}

@@ -49,15 +49,20 @@
 @media (max-width: 700px) { .ql-stage { grid-template-columns: 1fr; } .ql-arrow { transform: rotate(90deg); justify-self: center; } }
 
 .wb.wb-full { position: fixed; inset: 0; z-index: 60; background: var(--paper); padding: 18px 26px; overflow: auto; display: flex; flex-direction: column; }
-.wb.wb-full .wb-board { flex: 1; min-height: 0; display: flex; align-items: center; }
-.wb.wb-full .wb-board svg { max-height: calc(100vh - 230px); }
+.wb.wb-full .wb-main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: start; }
+.wb.wb-full .wb-board { align-self: stretch; display: flex; align-items: center; }
+.wb.wb-full .wb-board svg { max-height: calc(100vh - 120px); }
+.wb.wb-full .wb-steps { display: grid; gap: 2px; margin: 0 0 14px; }
+.wb.wb-full .wb-steps span { display: block; }
+.wb.wb-full .wb-steps button { width: 100%; text-align: left; padding: 4px 6px; border-radius: 8px; }
+.wb.wb-full .wb-steps li.now button { background: var(--surface); }
+.wb.wb-full .wb-say { margin-top: 0; background: var(--surface); border: 1px solid var(--rule); }
 .wb.wb-full .wb-say b { font-size: 19px; }
-.wb.wb-full .wb-say p { font-size: 16.5px; max-width: 70em; }
-
-/* whiteboard */
+.wb.wb-full .wb-say p { font-size: 16.5px; }
+@media (max-width: 900px) { .wb.wb-full .wb-main { grid-template-columns: 1fr; } }
 .wb-ctl { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; margin-bottom: 12px; }
 .wb-count { font-weight: 600; font-size: 14px; color: var(--ink-2); margin-right: auto; }
-.wb-board { background: #fdfdfb; border: 1px solid #d9dedb; border-radius: 6px; box-shadow: inset 0 0 0 5px #eef0ed, 0 2px 0 #c9cfcc; overflow-x: auto; padding: 12px; }
+.wb-board { background: #fdfdfb; border: 1px solid #d9dedb; border-radius: 8px; overflow-x: auto; padding: 12px; }
 .wb-board svg { display: block; width: 100%; height: auto; min-width: 640px; }
 .wb-shape { stroke-linecap: round; stroke-linejoin: round; }
 .wb-arrow { fill: none; stroke-width: 2.2; stroke-linecap: round; }
@@ -65,13 +70,27 @@
 .wb-sub { font-family: var(--sans); font-size: 11.5px; font-weight: 450; opacity: 0.85; }
 .wb-alabel { font-family: var(--sans); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: #fdfdfb; stroke-width: 5px; }
 .wb-note { font-family: var(--sans); font-size: 13px; font-weight: 600; }
-.wb-new rect, .wb-new path, path.wb-new { stroke-dasharray: 1; animation: wb-draw 0.75s ease-out; }
-.wb-text.wb-new, .wb-alabel.wb-new, .wb-note.wb-new, .wb-fade { animation: wb-fade 0.6s ease-out 0.25s backwards; }
-@keyframes wb-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+/* One step at a time: the new part is at full strength and lightly tinted, the earlier parts are faint. */
+.wb-shape, .wb-arrow, .wb-text, .wb-alabel, .wb-note { transition: opacity 0.35s ease; }
+.wb-old { opacity: 0.5; }
+.wb-shape.wb-new:not(.wb-zone) rect, .wb-shape.wb-new:not(.wb-zone) path { fill: color-mix(in srgb, var(--pen) 9%, #fff); }
+.wb-shape.wb-new { animation: wb-in 0.45s ease-out backwards; }
+.wb-text.wb-new, .wb-note.wb-new { animation: wb-fade 0.4s ease-out 0.15s backwards; }
+.wb-arrow.wb-new, .wb-alabel.wb-new { animation: wb-fade 0.4s ease-out 0.4s backwards; }
+@keyframes wb-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes wb-fade { from { opacity: 0; } to { opacity: 1; } }
-.wb-say { margin-top: 12px; padding: 12px 16px; background: var(--paper); border-radius: 9px; }
+.wb-steps { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.wb-steps button { display: flex; gap: 10px; align-items: center; background: none; border: 0; padding: 0; cursor: pointer; font-size: 14.5px; line-height: 1.25; color: var(--ink-2); }
+.wb-steps i { flex: none; font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12.5px; font-weight: 650; border: 1.5px solid var(--rule); color: var(--ink-3); background: var(--surface); }
+.wb-steps span { display: none; }
+.wb-steps li.seen i { border-color: var(--ink-3); color: var(--ink); }
+.wb-steps li.now i { background: var(--ink); border-color: var(--ink); color: #fff; }
+.wb-steps li.now button { color: var(--ink); font-weight: 650; }
+.wb-steps button:hover i { border-color: var(--ink); }
+.wb-say { margin-top: 10px; padding: 12px 16px; background: var(--paper); border-radius: 9px; }
 .wb-say b { font-size: 16.5px; }
 .wb-say p { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+
 
 /* requirements */
 .req-ask { font-family: var(--serif); font-size: 19px; margin: 0 0 12px; padding: 10px 14px; background: var(--ink); color: #fff; border-radius: 10px 10px 10px 0; display: inline-block; }

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LESSONS, TRACKS, lessonById, lessonsOf, trackById, type Lesson, type TrackId } from '../curriculum'
+import { LESSONS, SOURCES, TRACKS, lessonById, lessonsOf, trackById, type Lesson, type TrackId } from '../curriculum'
 import { nextUp, resetProgress, useProgress } from '../lib/progress'
+import { GLOSSARY } from '../glossary'
 import BigPicture from './BigPicture'
 import TrackLine from './TrackLine'
 
@@ -12,6 +13,7 @@ const WIDE = [200, 395, 590, 785, 980]
 const TIER1 = 650
 const TIER2 = 1430
 const TIER3 = 2210
+const TIER4 = 2600
 const BAND: Record<TrackId, { x: number[]; y: number }> = {
   foundations: { x: WIDE, y: 70 },
   storage: { x: [44, 232], y: TIER1 },
@@ -21,8 +23,9 @@ const BAND: Record<TrackId, { x: number[]; y: number }> = {
   architecture: { x: [434, 622], y: TIER2 },
   ops: { x: [824, 1012], y: TIER2 },
   designs: { x: WIDE, y: TIER3 },
+  build: { x: WIDE, y: TIER4 },
 }
-const H = TIER3 + 2 * ROW + 96
+const H = TIER4 + 2 * ROW + 96
 
 const pos = (l: Lesson) => ({ x: BAND[l.track].x[l.at[0]], y: BAND[l.track].y + l.at[1] * ROW })
 
@@ -58,7 +61,7 @@ const EDGES = LESSONS.flatMap((l) =>
 const PILLS = TRACKS.map((t) => {
   const first = lessonsOf(t.id).reduce((m, l) => (l.at[1] < m.at[1] || (l.at[1] === m.at[1] && l.at[0] < m.at[0]) ? l : m))
   const p = pos(first)
-  return { t, x: t.id === 'foundations' || t.id === 'designs' ? p.x : BAND[t.id].x[0], y: p.y - 54 }
+  return { t, x: BAND[t.id].x === WIDE ? p.x : BAND[t.id].x[0], y: p.y - 54 }
 })
 
 export default function Home() {
@@ -78,7 +81,7 @@ export default function Home() {
   }, [])
 
   const started = done.size > 0
-  // New readers get the whole system first. Returning readers get the map first.
+  // The drawing is open for new readers. Returning readers open it when they want it.
   const [intro, setIntro] = useState(!started)
   const cta = next ? (
     <Link className="btn primary" to={`/lesson/${next.id}`}>
@@ -92,54 +95,72 @@ export default function Home() {
 
   return (
     <main className="home">
-      {intro ? (
-        <section className="hero">
-          <h1>A customer books a flight. Follow the data.</h1>
-          <p className="lead">
-            In the next hour, pricing, finance, marketing and the control room all need to know about that booking, and
-            each one needs it in a different form. This is the kind of system an airline builds to make that happen.
-          </p>
-          <BigPicture />
-          <div className="hero-after">
-            <div>
-              <h2>Looks complicated? It is {LESSONS.length} small ideas.</h2>
-              <p>
-                Each box in the drawing is a lesson on the map below. Select “How we think about it” to see the five
-                stages that every data platform has. Then start with the basics. At the end you can design this system
-                yourself, and say why each part is there.
-              </p>
-            </div>
-            <div className="hero-go">
-              {cta}
-              <Link className="link-btn" to="/lesson/case-flight-booking">
-                Go directly to the flight booking design
-              </Link>
-              {started && (
-                <button className="link-btn" onClick={() => setIntro(false)}>
-                  Hide this introduction
-                </button>
-              )}
-            </div>
-          </div>
-          <p className="hero-fine">The airline is an invented example. The parts and the practices are the ones that real companies use.</p>
-        </section>
-      ) : null}
+      <section className="hero">
+        <h1>Data engineering, explained in small pieces.</h1>
+        <p className="lead">
+          {LESSONS.length} short lessons that take the whole subject apart: how data is stored, modeled, moved, processed
+          and kept correct. Each lesson is one idea, a drawing, and the reason behind each choice.
+        </p>
+        <ul className="aims">
+          <li>
+            <b>Do the job</b>
+            Know enough to be useful in a data team: build a pipeline, keep it running, and explain your choices.
+          </li>
+          <li>
+            <b>Build for yourself</b>
+            Make a small pipeline of your own when you need one, with free tools and data that you care about.
+          </li>
+          <li>
+            <b>Steer AI well</b>
+            An assistant can write the code. You must know which design is correct for the situation, and see when its
+            answer is wrong.
+          </li>
+        </ul>
+        <div className="hero-go row">
+          {cta}
+          <a className="link-btn" href="#map">
+            Go to the lesson map
+          </a>
+        </div>
+      </section>
 
-      <section className="home-top">
-        <div>
-          {intro ? <h2 className="map-title">The map</h2> : <h1>Data engineering, explained</h1>}
-          <p className="lead">
-            The core ideas, from first principles to whole system designs. Start at the top if you are new. If you
-            already do this work, go to the lesson you want to refresh.
-          </p>
-          {intro ? null : (
-            <div className="hero-go row">
-              {cta}
-              <button className="link-btn" onClick={() => setIntro(true)}>
-                Show the whole system again
-              </button>
+      <section className="overview">
+        <div className="overview-head">
+          <div>
+            <h2>What all of it builds</h2>
+            <p className="lead">
+              One invented airline, drawn whole. Sources on the left, users on the right, and everything that a data
+              team builds between them.
+            </p>
+          </div>
+          <button className="link-btn" onClick={() => setIntro(!intro)}>
+            {intro ? 'Hide the drawing' : 'Show the drawing'}
+          </button>
+        </div>
+        {intro && (
+          <>
+            <BigPicture />
+            <div className="hero-after">
+              <div>
+                <h3>Looks complicated? It is {LESSONS.length} small ideas.</h3>
+                <p>
+                  Each box in the drawing is a lesson on the map below. Select “How we think about it” to see the five
+                  stages that every data platform has. Then start with the basics. At the end you can design this
+                  system yourself, and say why each part is there.
+                </p>
+              </div>
             </div>
-          )}
+          </>
+        )}
+      </section>
+
+      <section className="home-top" id="map">
+        <div>
+          <h2 className="map-title">The lesson map</h2>
+          <p className="lead">
+            Start at the top if you are new. If you already do this work, go to the lesson that you want to refresh.
+            The last two lines put it together: whole system designs, then a project of your own.
+          </p>
         </div>
         <aside className="board">
           <h2>
@@ -213,7 +234,7 @@ export default function Home() {
             const isPre = !!shown?.prereqs.includes(l.id)
             const cls = [
               'station',
-              (l.track === 'foundations' || l.track === 'designs') && 'wide',
+              BAND[l.track].x === WIDE && 'wide',
               l.level,
               isDone && 'done',
               next?.id === l.id && 'next',
@@ -254,6 +275,28 @@ export default function Home() {
         </div>
       </div>
 
+
+      <section className="beside">
+        <h2>Beside the map</h2>
+        <p className="lead">The lessons explain ideas. These pages are for reference while you work.</p>
+        <div className="beside-grid">
+          <Link to="/toolkit" className="beside-card">
+            <b>The toolkit</b>
+            <span>The languages that data engineers write, with what to learn first and where. And a list of what a good colleague can do.</span>
+            <small>11 languages, 20 abilities</small>
+          </Link>
+          <Link to="/glossary" className="beside-card">
+            <b>The glossary</b>
+            <span>Each term in one sentence, with a link to the lesson that explains it.</span>
+            <small>{GLOSSARY.length} terms</small>
+          </Link>
+          <Link to="/sources" className="beside-card">
+            <b>The sources</b>
+            <span>The books, papers and community references that the lessons follow, and what each one is best for.</span>
+            <small>{Object.keys(SOURCES).length} sources</small>
+          </Link>
+        </div>
+      </section>
     </main>
   )
 }

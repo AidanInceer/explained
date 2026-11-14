@@ -7,6 +7,7 @@ export type TrackId =
   | 'ops'
   | 'architecture'
   | 'designs'
+  | 'build'
 
 export interface Track {
   id: TrackId
@@ -192,6 +193,7 @@ export const TRACKS: Track[] = [
   { id: 'architecture', name: 'Architecture', blurb: 'How the parts fit into a platform, and who owns what.', color: '#D8472B' },
   { id: 'ops', name: 'Operations', blurb: 'How to run pipelines on a schedule and trust the output.', color: '#B97700' },
   { id: 'designs', name: 'Worked designs', blurb: 'Six whole systems, each with a different shape, drawn step by step with the reasons for each choice.', color: '#4D7C0F' },
+  { id: 'build', name: 'Build it yourself', blurb: 'How to practise with no employer and no budget: a small pipeline of your own, built in the right order.', color: '#B4530A' },
 ]
 
 export const BRANCH_TRACKS = TRACKS.filter((t) => t.id !== 'foundations')
@@ -680,16 +682,28 @@ export const LESSONS: Lesson[] = [
     refs: [["streaming","Ch. 2 and Ch. 3, windows and watermarks"],["fode","Ch. 5, “IoT devices and edge”"]],
   },
   {
-    id: 'case-bank-reporting', track: 'designs', level: 'deeper', minutes: 12, prereqs: ['case-online-shop', 'scd'], at: [0, 2],
+    id: 'case-bank-reporting', track: 'designs', level: 'deeper', minutes: 12, prereqs: ['case-online-shop', 'scd'], at: [1, 2],
     title: "Worked design: a regulatory report at a bank",
     summary: "Nobody needs it fast. Everybody needs it exact, explained and repeatable two years later. A batch design built around audit, history and reconciliation.",
     refs: [["kimball","Ch. 10, Financial Services"],["fode","Ch. 10, Security and Privacy"]],
   },
   {
-    id: 'first-project', track: 'designs', level: 'core', minutes: 11, prereqs: ['case-online-shop'], at: [1, 2],
-    title: 'Build one yourself: a first project',
-    summary: 'You cannot practise at company scale, and you do not need to. Choose something that annoys you, build a small pipeline for it, and keep it running.',
-    refs: [['reddit', 'Community wiki and recurring threads on portfolio projects'], ['wiki', 'Learning resources'], ['functional', 'Whole essay, for the habits to practise']],
+    id: 'first-project', track: 'build', level: 'core', minutes: 6, prereqs: ['case-online-shop'], at: [0, 0],
+    title: 'Start from something that annoys you',
+    summary: 'You cannot practise at company scale, and you do not need to. Choose a problem of your own that data could improve. You will keep it running.',
+    refs: [['reddit', 'Community wiki and recurring threads on portfolio projects'], ['wiki', 'Learning resources']],
+  },
+  {
+    id: 'project-stack', track: 'build', level: 'core', minutes: 5, prereqs: ['first-project'], at: [1, 1],
+    title: 'A free stack, and the order to build in',
+    summary: 'DuckDB, dbt, Python, Git and a free scheduler are a complete stack at no cost. Go from end to end in days, then improve one part at a time.',
+    refs: [['wiki', 'Learning resources'], ['dbt', 'Project structure, as used in the example stack']],
+  },
+  {
+    id: 'project-with-ai', track: 'build', level: 'core', minutes: 5, prereqs: ['project-stack'], at: [2, 2],
+    title: 'Use AI, and still learn',
+    summary: 'An assistant can write the whole project in an afternoon. How to use it so that the knowledge stays with you, and what the project shows an employer.',
+    refs: [['functional', 'Whole essay, for the habits to practise'], ['reddit', 'Recurring threads on portfolio projects']],
   },
 ]
 

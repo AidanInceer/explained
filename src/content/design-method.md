@@ -9,7 +9,7 @@ The other lines of the map each explain one part. This line puts the parts toget
 | [Sensor data from machines](/lesson/case-iot-telemetry) | High-volume streaming with late data |
 | [Payment fraud checks](/lesson/case-fraud-stream) | Streaming, with a decision in milliseconds |
 
-After them, [build one yourself](/lesson/first-project).
+After them, the last line of the map shows how to [build a small pipeline of your own](/lesson/first-project).
 
 The method is useful for real projects and for system design interviews. In the two cases the common error is the same: to start with the tools. “We will use Kafka and Spark” is not a design. It is a list of products with no reason.
 

@@ -54,7 +54,7 @@ export function edge(n: Node, tx: number, ty: number) {
 export function Shape({ n }: { n: Node }) {
   const h = H(n)
   const col = PEN[n.c ?? 'k']
-  const common = { fill: n.kind === 'zone' ? 'none' : '#fff', stroke: col, strokeWidth: 2, pathLength: 1 }
+  const common = { fill: n.kind === 'zone' ? 'none' : '#fff', stroke: col, strokeWidth: 2 }
   if (n.kind === 'db')
     return (
       <path
@@ -63,7 +63,7 @@ export function Shape({ n }: { n: Node }) {
       />
     )
   if (n.kind === 'who') return <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={h / 2} />
-  if (n.kind === 'zone') return <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={10} strokeDasharray="0.012 0.008" strokeWidth={2} />
+  if (n.kind === 'zone') return <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={10} strokeDasharray="7 5" strokeWidth={2} />
   return (
     <>
       <rect {...common} x={n.x} y={n.y} width={n.w} height={h} rx={8} />
@@ -79,130 +79,163 @@ export function Whiteboard({ board }: { board: Board }) {
   const last = board.steps.length - 1
   const [step, setStep] = useState(0)
   const [big, setBig] = useState(false)
+  // "The whole board" shows every part at full strength. In a step, the earlier parts are faint, so that the new part is clear.
+  const [whole, setWhole] = useState(false)
+  const go = (n: number) => {
+    setWhole(false)
+    setStep(Math.max(0, Math.min(last, n)))
+  }
 
   useEffect(() => {
     if (!big) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setBig(false)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setBig(false)
+      if (e.key === 'ArrowRight') go(step + 1)
+      if (e.key === 'ArrowLeft') go(step - 1)
+    }
     window.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => {
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
-  }, [big])
+  })
   const byId = Object.fromEntries(board.nodes.map((n) => [n.id, n]))
-  const fresh = (s: number) => (s === step ? 'wb-new' : '')
+  const age = (s: number) => (whole ? '' : s === step ? 'wb-new' : 'wb-old')
+  const ends = (a: Arrow) => {
+    const f = byId[a.from]
+    const t = byId[a.to]
+    return [edge(f, t.x + t.w / 2, t.y + H(t) / 2), edge(t, f.x + f.w / 2, f.y + H(f) / 2)]
+  }
 
   return (
     <div className={`wb ${big ? 'wb-full' : ''}`}>
       <div className="wb-ctl">
-        <button className="act ghost" disabled={step === 0} onClick={() => setStep(step - 1)}>
+        <button className="act ghost" disabled={step === 0} onClick={() => go(step - 1)}>
           Back
         </button>
-        <button className="act" disabled={step === last} onClick={() => setStep(step + 1)}>
-          {step === 0 ? 'Start drawing' : 'Next step'}
+        <button className="act" disabled={step === last && !whole} onClick={() => go(whole ? 0 : step + 1)}>
+          {whole ? 'Start again' : step === 0 ? 'Start drawing' : 'Next step'}
         </button>
-        <span className="wb-count">
-          Step {step + 1} of {board.steps.length}
-        </span>
-        <button className="link-btn" onClick={() => setStep(step === last ? 0 : last)}>
-          {step === last ? 'Start again' : 'Show the whole board'}
-        </button>
+        <span className="wb-count">{whole ? 'The whole board' : `Step ${step + 1} of ${board.steps.length}`}</span>
+        {!whole && (
+          <button
+            className="link-btn"
+            onClick={() => {
+              setStep(last)
+              setWhole(true)
+            }}
+          >
+            Show the whole board
+          </button>
+        )}
         <button className="act ghost" onClick={() => setBig(!big)} aria-pressed={big}>
           {big ? 'Close (Esc)' : 'Expand'}
         </button>
       </div>
-      <div className="wb-board">
-        <svg viewBox={`0 0 ${board.w} ${board.h}`} role="img" aria-label={`Whiteboard drawing, step ${step + 1}: ${board.steps[step].title}`}>
-          <defs>
-            <filter id="wb-wobble" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="n" />
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" />
-            </filter>
-            {(Object.keys(PEN) as Pen[]).map((p) => (
-              <marker key={p} id={`wb-head-${p}`} viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-                <path d="M2 2 L10 6 L2 10" fill="none" stroke={PEN[p]} strokeWidth="2" strokeLinecap="round" />
-              </marker>
-            ))}
-          </defs>
+      <div className="wb-main">
+        <div className="wb-board">
+          <svg viewBox={`0 0 ${board.w} ${board.h}`} role="img" aria-label={`Design drawing, step ${step + 1}: ${board.steps[step].title}`}>
+            <defs>
+              {(Object.keys(PEN) as Pen[]).map((p) => (
+                <marker key={p} id={`wb-head-${p}`} viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+                  <path d="M2 2 L10 6 L2 10" fill="none" stroke={PEN[p]} strokeWidth="2" strokeLinecap="round" />
+                </marker>
+              ))}
+            </defs>
 
-          <g>
             {board.nodes
               .filter((n) => n.step <= step)
               .map((n) => (
-                <g key={n.id} className={`wb-shape ${fresh(n.step)}`}>
+                <g key={n.id} data-n={n.id} className={`wb-shape ${n.kind === 'zone' ? 'wb-zone' : ''} ${age(n.step)}`} style={{ ['--pen' as string]: PEN[n.c ?? 'k'] }}>
                   <Shape n={n} />
                 </g>
               ))}
             {board.arrows
               .filter((a) => a.step <= step)
               .map((a, i) => {
-                const f = byId[a.from]
-                const t = byId[a.to]
-                const p1 = edge(f, t.x + t.w / 2, t.y + H(t) / 2)
-                const p2 = edge(t, f.x + f.w / 2, f.y + H(f) / 2)
+                const [p1, p2] = ends(a)
                 return (
                   <path
                     key={i}
-                    className={`wb-arrow ${a.step === step ? (a.dash ? 'wb-fade' : 'wb-new') : ''}`}
+                    data-a={i}
+                    className={`wb-arrow ${age(a.step)}`}
                     d={`M${p1.x} ${p1.y} L${p2.x} ${p2.y}`}
                     stroke={PEN[a.c ?? 'k']}
                     strokeDasharray={a.dash ? '7 6' : undefined}
-                    pathLength={a.dash ? undefined : 1}
                     markerEnd={`url(#wb-head-${a.c ?? 'k'})`}
                   />
                 )
               })}
-          </g>
 
-          {board.nodes
-            .filter((n) => n.step <= step)
-            .map((n) => {
-              const zone = n.kind === 'zone'
-              const cx = zone ? n.x + 12 : n.x + n.w / 2
-              const cy = zone ? n.y + 20 : n.y + H(n) / 2 + (n.kind === 'db' ? 5 : 0)
-              return (
-                <g key={n.id} className={`wb-text ${fresh(n.step)}`} fill={PEN[n.c ?? 'k']} textAnchor={zone ? 'start' : 'middle'}>
-                  <text x={cx} y={n.sub && !zone ? cy - 3 : cy + 7} className="wb-label">
-                    {n.label}
-                  </text>
-                  {n.sub && !zone && (
-                    <text x={cx} y={cy + 15} className="wb-sub">
-                      {n.sub}
+            {board.nodes
+              .filter((n) => n.step <= step)
+              .map((n) => {
+                const zone = n.kind === 'zone'
+                const cx = zone ? n.x + 12 : n.x + n.w / 2
+                const cy = zone ? n.y + 20 : n.y + H(n) / 2 + (n.kind === 'db' ? 5 : 0)
+                return (
+                  <g key={n.id} data-n={n.id} className={`wb-text ${age(n.step)}`} fill={PEN[n.c ?? 'k']} textAnchor={zone ? 'start' : 'middle'}>
+                    <text x={cx} y={n.sub && !zone ? cy - 3 : cy + 7} className="wb-label">
+                      {n.label}
                     </text>
-                  )}
-                </g>
-              )
-            })}
-          {board.arrows
-            .filter((a) => a.step <= step && a.label)
-            .map((a, i) => {
-              const f = byId[a.from]
-              const t = byId[a.to]
-              const p1 = edge(f, t.x + t.w / 2, t.y + H(t) / 2)
-              const p2 = edge(t, f.x + f.w / 2, f.y + H(f) / 2)
+                    {n.sub && !zone && (
+                      <text x={cx} y={cy + 15} className="wb-sub">
+                        {n.sub}
+                      </text>
+                    )}
+                  </g>
+                )
+              })}
+            {board.arrows.map((a, i) => {
+              if (a.step > step || !a.label) return null
+              const [p1, p2] = ends(a)
               return (
-                <text key={i} x={(p1.x + p2.x) / 2} y={(p1.y + p2.y) / 2 - 6} textAnchor="middle" className={`wb-alabel ${fresh(a.step)}`} fill={PEN[a.c ?? 'k']}>
+                <text key={i} data-a={i} x={(p1.x + p2.x) / 2} y={(p1.y + p2.y) / 2 - 6} textAnchor="middle" className={`wb-alabel ${age(a.step)}`} fill={PEN[a.c ?? 'k']}>
                   {a.label}
                 </text>
               )
             })}
-          {board.notes
-            ?.filter((n) => n.step <= step)
-            .map((n, i) => (
-              <text key={i} x={n.x} y={n.y} className={`wb-note ${fresh(n.step)}`} fill={PEN[n.c ?? 'r']}>
-                {n.text.map((line, k) => (
-                  <tspan key={k} x={n.x} dy={k === 0 ? 0 : 17}>
-                    {line}
-                  </tspan>
-                ))}
-              </text>
+            {board.notes
+              ?.filter((n) => n.step <= step)
+              .map((n, i) => (
+                <text key={i} x={n.x} y={n.y} className={`wb-note ${age(n.step)}`} fill={PEN[n.c ?? 'r']}>
+                  {n.text.map((line, k) => (
+                    <tspan key={k} x={n.x} dy={k === 0 ? 0 : 17}>
+                      {line}
+                    </tspan>
+                  ))}
+                </text>
+              ))}
+          </svg>
+        </div>
+        <div className="wb-side">
+          <ol className="wb-steps">
+            {board.steps.map((s, i) => (
+              <li key={i} className={!whole && i === step ? 'now' : i <= step ? 'seen' : ''}>
+                <button onClick={() => go(i)} aria-current={!whole && i === step ? 'step' : undefined} title={s.title}>
+                  <i>{i + 1}</i>
+                  <span>{s.title}</span>
+                </button>
+              </li>
             ))}
-        </svg>
-      </div>
-      <div className="wb-say" role="status">
-        <b>{board.steps[step].title}</b>
-        <p>{board.steps[step].note}</p>
+          </ol>
+          <div className="wb-say" role="status">
+            {whole ? (
+              <>
+                <b>The whole design</b>
+                <p>Every part, at full strength. Select a step number to see why that part is there.</p>
+              </>
+            ) : (
+              <>
+                <b>
+                  {step + 1}. {board.steps[step].title}
+                </b>
+                <p>{board.steps[step].note}</p>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -212,7 +245,7 @@ export function Whiteboard({ board }: { board: Board }) {
 
 const METHOD: Board = {
   w: 760,
-  h: 400,
+  h: 424,
   steps: [
     { title: 'Start at the right side: the users', note: 'Write each user and the decision they make. Next to each one write how fresh the data must be and at what level of detail. Everything to the left exists only to supply this column.' },
     { title: 'Draw the tables they will read', note: 'Name the fact and dimension tables and the grain of each fact. If you cannot name the grain, the requirement is not complete. Go back to the user.' },
@@ -252,9 +285,9 @@ const METHOD: Board = {
   ],
   notes: [
     { x: 150, y: 44, text: ['rows / day × bytes = volume', 'peak events / second?', 'growth in a year?'], step: 3, c: 'b' },
-    { x: 280, y: 250, text: ['fresher ↔ cheaper', 'managed ↔ control', 'next version when…?'], step: 8, c: 'p' },
+    { x: 10, y: 372, text: ['fresher ↔ cheaper', 'managed ↔ control', 'next version when…?'], step: 8, c: 'p' },
     { x: 500, y: 24, text: ['what decision? how fresh? what grain?'], step: 0 },
-    { x: 10, y: 316, text: ['who owns it?', 'how big? how does it change?'], step: 2 },
+    { x: 10, y: 312, text: ['who owns it? how big?', 'how does it change?'], step: 2 },
     { x: 274, y: 226, text: ['never edited'], step: 5, c: 'b' },
     { x: 626, y: 330, text: ['runs twice?', 'runs late?', 'bad file?'], step: 7 },
   ],
@@ -270,7 +303,9 @@ const FLIGHT: Board = {
     { title: 'Change data capture for bookings', note: 'A query each hour does not see a booking that was created and cancelled inside that hour, and it loads a database that sells tickets. Debezium reads the transaction log and writes each change to Kafka. Search events and payment webhooks go to Kafka also. Files and the nightly payment report use a simple batch loader.' },
     { title: 'Bronze: keep every change', note: 'All of it lands in append-only Iceberg tables in object storage. Bronze has one row for each change to a booking, not one row for each booking. This history is what makes it possible to answer “what did this booking look like on Tuesday?”' },
     { title: 'Silver, then gold', note: 'A Spark job each 15 minutes merges the changes into the current state of each booking and removes duplicates. dbt then builds the gold facts and dimensions. Personal data such as passport numbers is masked in silver, and gold does not contain it.' },
+    { title: 'A contract with the booking team', note: 'The booking team can rename a column on any day, and the change arrives in Kafka at once. A schema registry accepts only changes that old readers can still read, and CI in the booking service checks each change against it. A change that would break the pipeline fails in their build, not in your night run.' },
     { title: 'Orchestration and the checks that matter', note: 'Airflow schedules the batch steps and backfills. Two tests can stop the pipeline: seats sold must not be more than capacity, and tickets paid must equal payments settled for the day. A freshness alert protects the hourly promise to revenue management.' },
+    { title: 'Late changes, and how to repair history', note: 'A schedule change or a refund can arrive days after the booking. A nightly job builds the last three days of silver again, so late changes find their place. When the logic of a model changes, Airflow runs a backfill from bronze for the dates concerned. This is possible only because bronze keeps every change.' },
     { title: 'What this design must not do', note: 'The question “is seat 14C free now?” stays in the booking service. The analytics platform is minutes late by design, and a platform that is minutes late must not sell seats. To draw this line is part of the design.' },
   ],
   nodes: [
@@ -288,7 +323,8 @@ const FLIGHT: Board = {
     { id: 'load', x: 156, y: 315, w: 100, label: 'Batch loader', sub: 'files, reports', c: 'g', step: 3 },
     { id: 'bronze', x: 282, y: 140, w: 92, h: 92, label: 'Bronze', sub: 'every change', kind: 'db', c: 'b', step: 4 },
     { id: 'silver', x: 398, y: 140, w: 92, h: 92, label: 'Silver', sub: 'current state', kind: 'db', c: 'b', step: 5 },
-    { id: 'air', x: 156, y: 400, w: 448, h: 48, label: 'Airflow: schedule, backfill, tests, alerts', c: 'o', step: 6 },
+    { id: 'reg', x: 276, y: 30, w: 118, label: 'Schema registry', sub: 'the contract', c: 'r', step: 6 },
+    { id: 'air', x: 156, y: 400, w: 448, h: 48, label: 'Airflow: schedule, backfill, tests, alerts', c: 'o', step: 7 },
   ],
   arrows: [
     { from: 'gold', to: 'rm', step: 1 },
@@ -305,57 +341,65 @@ const FLIGHT: Board = {
     { from: 'load', to: 'bronze', step: 4 },
     { from: 'bronze', to: 'silver', step: 5 },
     { from: 'silver', to: 'gold', step: 5 },
-    { from: 'air', to: 'silver', step: 6, dash: true, c: 'o' },
+    { from: 'reg', to: 'kafka', step: 6, dash: true, c: 'r' },
+    { from: 'air', to: 'silver', step: 7, dash: true, c: 'o' },
   ],
   notes: [
     { x: 282, y: 262, text: ['Iceberg tables', 'in object storage'], step: 4, c: 'b' },
     { x: 454, y: 262, text: ['PII masked here'], step: 5 },
     { x: 362, y: 128, text: ['Spark'], step: 5, c: 'k' },
     { x: 486, y: 128, text: ['dbt'], step: 5, c: 'k' },
-    { x: 470, y: 300, text: ['seats sold <= capacity', 'paid = settled'], step: 6 },
-    { x: 262, y: 44, text: ['“is seat 14C free?” stays', 'in the booking service'], step: 7 },
+    { x: 470, y: 300, text: ['seats sold <= capacity', 'paid = settled'], step: 7 },
+    { x: 404, y: 40, text: ['“is seat 14C free?” stays', 'in the booking service'], step: 9 },
+    { x: 8, y: 404, text: ['late changes:', 'reprocess 3 days'], step: 8, c: 'o' },
   ],
 }
 
 const FRAUD: Board = {
   w: 760,
-  h: 450,
+  h: 500,
   steps: [
     { title: 'The requirement is a time limit', note: 'The checkout waits for the answer. The payment API has about 300 milliseconds in total, and the fraud check can use 100 of them. A batch job cannot be part of this path, so the design starts from the limit.' },
+    { title: 'Put numbers on it', note: 'About 2 million payments a day is 23 a second on average. The peak is 150 a second. Design for the peak. A query that counts the last ten minutes of a card, run for each payment, cannot answer inside 100 milliseconds at that rate. So the features must be ready before the payment arrives.' },
     { title: 'Publish each payment as an event', note: 'The payment API writes each attempt to a Kafka topic, with the card as the key. All events for one card are then in one partition and in order.' },
     { title: 'A stream job keeps features for each card', note: 'A Flink job keeps state for each card: the number of payments and the amount in the last 10 minutes, and the number of different countries in the last hour. These are window aggregations on event time.' },
     { title: 'Serve the features from a fast store', note: 'Flink writes the current features to a key-value store. The scoring service reads them by card in about a millisecond. It does not query Kafka or Flink in the request path.' },
     { title: 'The batch path trains the model', note: 'The same topic is written to the lake. A daily job builds the training set and trains a new model, which the scoring service loads. The stream path uses the model. The batch path makes it.' },
     { title: 'The labels arrive weeks later', note: 'You learn that a payment was fraud when the cardholder disputes it, days or weeks later. The training job must join each chargeback to the features as they were at the time of the payment, not as they are today.' },
+    { title: 'A new model runs in shadow mode first', note: 'A new model scores real payments for some days, and its answers are recorded and not used. You compare them with the model in service: how many more payments would it decline, and were those fraud? Only then does it decide. A model that declines good customers costs money from the first minute.' },
     { title: 'Decide what happens when a part fails', note: 'If the feature store does not answer in time, the service uses a simple rule: approve small payments and decline large ones. Exactly-once is not needed for the features, because a count that is wrong by one does not change the decision. It is needed for the money, and the money is not in this pipeline.' },
+    { title: 'Watch four numbers', note: 'Consumer lag of the Flink job: are the features current? The slowest one percent of scoring times: is the limit kept? The approval rate: a sudden fall means a defect, not more fraud. And the share of payments that used the simple rule: it shows how often the fast store did not answer.' },
   ],
   nodes: [
     { id: 'api', x: 10, y: 60, w: 130, h: 62, label: 'Payment API', sub: 'checkout waits', step: 0 },
     { id: 'score', x: 320, y: 60, w: 140, h: 62, label: 'Scoring service', sub: 'model + rules', c: 'p', step: 0 },
-    { id: 'kafka', x: 10, y: 210, w: 130, h: 62, label: 'Kafka: payments', sub: 'key = card', kind: 'log', c: 'g', step: 1 },
-    { id: 'flink', x: 180, y: 210, w: 120, h: 62, label: 'Flink job', sub: 'state per card', c: 'g', step: 2 },
-    { id: 'feat', x: 340, y: 210, w: 110, h: 62, label: 'Feature store', sub: 'key-value', kind: 'db', c: 'b', step: 3 },
-    { id: 'lake', x: 10, y: 350, w: 130, h: 62, label: 'Lake', sub: 'all payments', kind: 'db', c: 'b', step: 4 },
-    { id: 'train', x: 320, y: 350, w: 140, h: 62, label: 'Training job', sub: 'daily, batch', c: 'o', step: 4 },
-    { id: 'reg', x: 520, y: 210, w: 120, h: 62, label: 'Model registry', sub: 'versions', c: 'o', step: 4 },
-    { id: 'cb', x: 520, y: 350, w: 120, h: 62, label: 'Chargebacks', sub: 'weeks later', kind: 'who', c: 'r', step: 5 },
+    { id: 'kafka', x: 10, y: 210, w: 130, h: 62, label: 'Kafka: payments', sub: 'key = card', kind: 'log', c: 'g', step: 2 },
+    { id: 'flink', x: 180, y: 210, w: 120, h: 62, label: 'Flink job', sub: 'state per card', c: 'g', step: 3 },
+    { id: 'feat', x: 340, y: 210, w: 110, h: 62, label: 'Feature store', sub: 'key-value', kind: 'db', c: 'b', step: 4 },
+    { id: 'lake', x: 10, y: 350, w: 130, h: 62, label: 'Lake', sub: 'all payments', kind: 'db', c: 'b', step: 5 },
+    { id: 'train', x: 320, y: 350, w: 140, h: 62, label: 'Training job', sub: 'daily, batch', c: 'o', step: 5 },
+    { id: 'reg', x: 520, y: 210, w: 120, h: 62, label: 'Model registry', sub: 'versions', c: 'o', step: 5 },
+    { id: 'cb', x: 520, y: 350, w: 120, h: 62, label: 'Chargebacks', sub: 'weeks later', kind: 'who', c: 'r', step: 6 },
+    { id: 'mon', x: 180, y: 440, w: 300, h: 46, label: 'Monitor: lag, latency, approval rate', c: 'o', step: 9 },
   ],
   arrows: [
     { from: 'api', to: 'score', step: 0, label: 'score this payment' },
-    { from: 'api', to: 'kafka', step: 1, c: 'g' },
-    { from: 'kafka', to: 'flink', step: 2, c: 'g' },
-    { from: 'flink', to: 'feat', step: 3, c: 'g' },
-    { from: 'feat', to: 'score', step: 3, c: 'b', label: '1 ms read' },
-    { from: 'kafka', to: 'lake', step: 4 },
-    { from: 'train', to: 'reg', step: 4, c: 'o' },
-    { from: 'reg', to: 'score', step: 4, c: 'o', label: 'new model' },
-    { from: 'lake', to: 'train', step: 4, label: 'payments + features' },
-    { from: 'cb', to: 'train', step: 5, c: 'r', label: 'labels' },
+    { from: 'api', to: 'kafka', step: 2, c: 'g' },
+    { from: 'kafka', to: 'flink', step: 3, c: 'g' },
+    { from: 'flink', to: 'feat', step: 4, c: 'g' },
+    { from: 'feat', to: 'score', step: 4, c: 'b', label: '1 ms read' },
+    { from: 'kafka', to: 'lake', step: 5 },
+    { from: 'train', to: 'reg', step: 5, c: 'o' },
+    { from: 'reg', to: 'score', step: 5, c: 'o', label: 'new model' },
+    { from: 'lake', to: 'train', step: 5, label: 'payments + features' },
+    { from: 'cb', to: 'train', step: 6, c: 'r', label: 'labels' },
   ],
   notes: [
     { x: 150, y: 44, text: ['answer in 100 ms'], step: 0 },
-    { x: 180, y: 300, text: ['count, sum: last 10 min'], step: 2, c: 'g' },
-    { x: 490, y: 76, text: ['store too slow?', 'small: approve', 'large: decline'], step: 6 },
+    { x: 150, y: 150, text: ['peak: 150 / second'], step: 1, c: 'b' },
+    { x: 590, y: 190, text: ['shadow mode first'], step: 7, c: 'o' },
+    { x: 180, y: 300, text: ['count, sum: last 10 min'], step: 3, c: 'g' },
+    { x: 490, y: 76, text: ['store too slow?', 'small: approve', 'large: decline'], step: 8 },
   ],
 }
 

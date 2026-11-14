@@ -2,6 +2,8 @@ export interface Term {
   term: string
   def: string
   lesson: string
+  /** General computing term that no lesson teaches. Its definition is offered in every lesson that uses it. */
+  basic?: true
 }
 
 export const GLOSSARY: Term[] = [
@@ -180,4 +182,18 @@ export const GLOSSARY: Term[] = [
   { term: "MQTT", def: "A light publish-subscribe protocol for devices.", lesson: 'case-iot-telemetry' },
   { term: "Bitemporal", def: "A table that keeps when a fact was true and when the system knew it.", lesson: 'case-bank-reporting' },
   { term: "Control total", def: "A row count and a sum that the source sends with a file, to prove that the load is complete.", lesson: 'case-bank-reporting' },
+  { term: "API", def: "Application programming interface. A defined way for one program to ask another for data or an action, usually over HTTP.", lesson: 'source-systems', basic: true },
+  { term: "SaaS", def: "Software as a service. An application that a vendor runs for you, used through a browser or an API.", lesson: 'source-systems', basic: true },
+  { term: "CSV", def: "Comma-separated values. A plain text file with one record on each line. It has no types and no schema.", lesson: 'source-systems', basic: true },
+  { term: "JSON", def: "A text format for nested records of names and values. Most APIs and events use it.", lesson: 'source-systems', basic: true },
+  { term: "SFTP", def: "A way to copy files to and from a server over an encrypted connection.", lesson: 'source-systems', basic: true },
+  { term: "CRM", def: "Customer relationship management. The tool where sales and support keep customer records.", lesson: 'serving-reverse-etl', basic: true },
+  { term: "HTTP", def: "The request and response protocol of the web. Most APIs and object stores use it.", lesson: 'object-storage', basic: true },
+  { term: "BI", def: "Business intelligence. Dashboards and reports for people who make decisions, and the tools that draw them.", lesson: 'serving-reverse-etl', basic: true },
+  { term: "ML", def: "Machine learning. Programs that learn a rule from examples in data.", lesson: 'data-for-ml', basic: true },
+  { term: "YAML", def: "A text format for configuration, structured by indentation.", lesson: 'transformation-dbt', basic: true },
+  { term: "JVM", def: "Java virtual machine. The runtime that Spark, Flink and Kafka run on.", lesson: 'spark-job-anatomy', basic: true },
+  { term: "UDF", def: "User-defined function. Your own code, called for each row inside a query engine.", lesson: 'spark-tuning', basic: true },
+  { term: "UTC", def: "Coordinated universal time. The time standard with no daylight saving. Store timestamps in it.", lesson: 'scheduling-in-detail', basic: true },
+  { term: "Rate limit", def: "The largest number of requests that an API accepts in a period of time.", lesson: 'api-extract-worked', basic: true },
 ]

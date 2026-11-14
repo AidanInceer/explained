@@ -1,4 +1,4 @@
-This is the third worked design, and the only one of the three where streaming is necessary. The reason is in the first requirement: a program must decide in less than a second, and the checkout waits for the answer. The company and its numbers are invented for the example.
+This worked design is one where streaming is necessary. The reason is in the first requirement: a program must decide in less than a second, and the checkout waits for the answer. The company and its numbers are invented for the example.
 
 Compare it with the [online shop](/lesson/case-online-shop) and the [flight booking system](/lesson/case-flight-booking). The method is the same. The requirement is different, so the design is different.
 
@@ -6,7 +6,7 @@ Compare it with the [online shop](/lesson/case-online-shop) and the [flight book
 
 A payment company processes card payments for online merchants: about 2 million payments a day, with peaks of 150 each second. A small part is fraud: stolen card numbers that are tested with small payments and then used for large ones. Each payment must be approved or declined before the customer sees the result.
 
-::fig wb-fraud | The design in seven steps. Use “Next step”.
+::fig wb-fraud | The design in ten steps. Use “Next step”.
 
 ## Step 1: users and requirements
 

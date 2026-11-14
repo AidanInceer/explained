@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS, trackById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
+import { MarkConverge } from './Brand'
 
 interface Hit {
   key: string
@@ -60,11 +61,7 @@ export default function Header() {
   return (
     <header className="top">
       <Link to="/" className="wordmark" aria-label="Data Engineering Explained, home">
-        <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
-          <path d="M8 7v9a8 8 0 0 0 8 8h8" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-          <circle cx="8" cy="7" r="4" fill="#2456D6" stroke="#fff" strokeWidth="2" />
-          <circle cx="24" cy="24" r="4" fill="#D0356F" stroke="#fff" strokeWidth="2" />
-        </svg>
+        <MarkConverge />
         <span>Data Engineering Explained</span>
       </Link>
       <nav className="top-nav" aria-label="Main">
