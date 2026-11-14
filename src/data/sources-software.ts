@@ -106,6 +106,20 @@ export const SOFTWARE_SOURCES = {
     url: 'https://www.inkandswitch.com/local-first/',
     why: 'Apps that keep data on the device and sync it, with CRDTs to merge changes made offline.',
   },
+  nygard: {
+    title: 'Documenting Architecture Decisions',
+    by: 'Michael Nygard, 2011',
+    kind: 'Essay',
+    url: 'https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions',
+    why: 'The short essay that proposed architecture decision records: context, decision, consequences.',
+  },
+  microservices: {
+    title: 'Microservices',
+    by: 'James Lewis and Martin Fowler, 2014',
+    kind: 'Essay',
+    url: 'https://martinfowler.com/articles/microservices.html',
+    why: 'What a microservice architecture is, and the costs that come with it.',
+  },
   rfc9110: {
     title: 'RFC 9110: HTTP Semantics',
     by: 'R. Fielding, M. Nottingham and J. Reschke (editors), IETF, 2022',
