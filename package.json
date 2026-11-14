@@ -1,8 +1,8 @@
 {
-  "name": "data-engineering-explained",
+  "name": "explained",
   "private": true,
   "version": "0.1.0",
-  "description": "Data engineering taught as a map of short lessons, with drawings, quizzes and worked designs.",
+  "description": "Technical subjects taught as maps of short lessons, with drawings, quizzes and worked designs.",
   "type": "module",
   "engines": {
     "node": ">=20.19"
@@ -15,7 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "tsc --noEmit && vitest run",
-    "preview:pages": "vite build --base=/data-engineering-explained/ && vite preview --base=/data-engineering-explained/ --port 5200 --strictPort"
+    "preview:pages": "vite build --base=/explained/ && vite preview --base=/explained/ --port 5200 --strictPort"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

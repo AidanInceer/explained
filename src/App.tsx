@@ -2,10 +2,12 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Home from './components/Home'
+import { subjectById } from './data/subjects'
 const LessonPage = lazy(() => import('./components/lesson/LessonPage'))
 const Glossary = lazy(() => import('./components/Glossary'))
 const Toolkit = lazy(() => import('./components/Toolkit'))
 const Sources = lazy(() => import('./components/Sources'))
+const SubjectPlan = lazy(() => import('./components/SubjectPlan'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,13 +44,15 @@ export default function App() {
           <Route path="/toolkit" element={<Toolkit />} />
           <Route path="/glossary" element={<Glossary />} />
           <Route path="/sources" element={<Sources />} />
+          <Route path="/software" element={<SubjectPlan subject={subjectById.software} />} />
+          <Route path="/ai" element={<SubjectPlan subject={subjectById.ai} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
       </div>
       <footer className="foot">
         <p>
-          Runs on your machine. Progress is saved in this browser only. Concepts follow the books and community
+          Free and <a href="https://github.com/AidanInceer/explained">open source</a>. Progress is saved in this browser only. Concepts follow the books and community
           references on the <Link to="/sources">sources page</Link>.
         </p>
       </footer>

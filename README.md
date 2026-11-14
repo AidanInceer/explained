@@ -1,6 +1,16 @@
-# Data Engineering Explained
+# Explained
 
-A website that teaches data engineering as a map of short lessons. Each lesson is one idea, a drawing, and the reason behind each choice.
+A website that teaches technical subjects as maps of short lessons. Each lesson is one idea, a drawing, and the reason behind each choice.
+
+| Subject | State |
+|---|---|
+| Data engineering | Written: the map at `/` |
+| Software engineering | Planned: a skeleton map of lesson titles at `/software` |
+| AI (maths, hardware, machine learning, LLMs) | Planned: a skeleton map of lesson titles at `/ai` |
+
+The plans are in `src/data/plans/`, drawn as maps by `src/map/plan-layout.ts`. Pick a lesson from one and propose it with the "Lesson proposal" issue form.
+
+Data engineering has:
 
 - **83 lessons on nine lines**: Foundations, Storage, Modeling, Pipelines, Processing, Architecture, Operations, Worked designs, Build it yourself.
 - **40 figures**: diagrams, decision helpers, animations and step-by-step system designs.
@@ -29,7 +39,7 @@ Open http://localhost:5199. Changes to lessons and code show at once.
 
 ## Contribute
 
-Corrections, clearer explanations and new lessons are welcome. Most changes need only Markdown: each lesson is one file in `src/content/`. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the lesson format, the writing style and how to add a figure.
+Corrections, clearer explanations and new lessons are welcome. Most changes need only Markdown: each lesson is one file in `src/content/`. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the lesson format, the writing style, how to add a figure, and the `develop` → `main` branch flow. Claude Code users: see `CLAUDE.md` and the skills in `.claude/skills/`.
 
 ## How it is built
 
@@ -66,14 +76,21 @@ All keys are in `localStorage` and start with `dee.`. Change a key's version if 
 
 ## Deploy
 
-The site is live at https://aidaninceer.github.io/data-engineering-explained/. Each push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes it to GitHub Pages.
+| Branch | Address |
+|---|---|
+| `main` | https://aidaninceer.github.io/explained/ (the live site) |
+| `develop` | https://aidaninceer.github.io/explained/develop/ (a preview, to test changes before they go live) |
 
-To see the GitHub Pages build on your machine, run `npm run preview:pages` and open http://localhost:5200/data-engineering-explained/.
+A push to either branch runs `.github/workflows/deploy.yml`. It checks and builds both branches, then publishes them together as one GitHub Pages site. If `develop` fails to build on a push to `main`, the live site still deploys, without the preview. CI (`.github/workflows/ci.yml`) runs on every pull request and on each push to `main` and `develop`.
+
+To release, open a pull request from `develop` into `main` (see "Branches and releases" in [CONTRIBUTING.md](CONTRIBUTING.md)).
+
+To see the GitHub Pages build on your machine, run `npm run preview:pages` and open http://localhost:5200/explained/.
 
 How the build works under a sub-path:
 
 - `vite build --base=/<path>/` sets the path. The router (`src/main.tsx`) and the links in lesson text (`build/vite-plugin-lessons.ts`) take it from there. Development uses `/`.
-- GitHub Pages cannot send `index.html` for every address, so the workflow copies it to `404.html`. Addresses such as `/lesson/cdc` then open directly.
+- GitHub Pages cannot send `index.html` for every address, so the workflow copies it to `404.html`. Addresses such as `/lesson/cdc` then open directly. A small script in `index.html` sends unknown addresses under `develop/` on to the preview build.
 
 Other static hosts also work: build with `npm run build` and serve `dist/`. The host must send `index.html` for any address that is not a file (Netlify or Cloudflare Pages: a `_redirects` file with `/* /index.html 200`; Vercel: a rewrite of `/(.*)` to `/index.html`). With a custom domain, the site is at the root and no `--base` is needed.
 

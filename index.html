@@ -3,13 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Engineering Explained</title>
-    <meta name="description" content="Data engineering taught as a map of short lessons: storage, modeling, pipelines, streaming, architecture and operations, with drawings, quizzes and worked designs." />
+    <title>Explained</title>
+    <meta name="description" content="Technical subjects taught as maps of short lessons, with drawings, quizzes and worked designs. Data engineering now; software engineering and AI planned." />
     <meta name="theme-color" content="#132029" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Data Engineering Explained" />
-    <meta property="og:description" content="Data engineering taught as a map of short lessons, with drawings, quizzes and worked designs." />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23132029'/%3E%3Cg fill='%23fff'%3E%3Crect x='2.95' y='10.35' width='3.13' height='11.3' rx='.6'/%3E%3Crect x='7.04' y='10.35' width='3.13' height='11.3' rx='.6'/%3E%3Crect x='11.13' y='10.35' width='3.13' height='11.3' rx='.6'/%3E%3C/g%3E%3Cg fill='%237fa6ff'%3E%3Crect x='17.74' y='10.35' width='11.31' height='3.13' rx='.6'/%3E%3Crect x='17.74' y='14.44' width='11.31' height='3.13' rx='.6'/%3E%3Crect x='17.74' y='18.53' width='11.31' height='3.13' rx='.6'/%3E%3C/g%3E%3C/svg%3E" />
+    <meta property="og:title" content="Explained" />
+    <meta property="og:description" content="Technical subjects taught as maps of short lessons, with drawings, quizzes and worked designs." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23132029'/%3E%3Cg fill='%23fff'%3E%3Crect x='5.5' y='8' width='9' height='9' rx='1.3'/%3E%3Crect x='5.5' y='19' width='9' height='9' rx='1.3'/%3E%3Crect x='16.5' y='19' width='9' height='9' rx='1.3'/%3E%3C/g%3E%3Crect x='18' y='5' width='9' height='9' rx='1.3' fill='%237fa6ff'/%3E%3C/svg%3E" />
+    <script>
+      // On GitHub Pages, 404.html is a copy of this page and opens for every unknown address. An address under
+      // develop/ belongs to the preview build: send it there with the path in "?p=", and put the path back here.
+      ;(function (l, base) {
+        var dev = base + 'develop/'
+        var p = new URLSearchParams(l.search).get('p')
+        if (p) history.replaceState(null, '', base + p.replace(/^\//, '') + l.hash)
+        else if (base.slice(-9) !== '/develop/' && l.pathname.indexOf(dev) === 0 && l.pathname !== dev)
+          l.replace(dev + '?p=' + encodeURIComponent(l.pathname.slice(dev.length)) + l.hash)
+      })(location, '%BASE_URL%')
+    </script>
   </head>
   <body>
     <div id="root"></div>

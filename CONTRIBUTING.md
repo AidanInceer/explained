@@ -135,6 +135,27 @@ The site is for readers whose first language may not be English, and for new and
 - **Technology notes** (`src/data/tech.ts`): groups of tools. `match` is the words in a lesson that open the note. Add the home page of each tool to `src/data/tool-urls.ts`. Logos come from the [simple-icons](https://simpleicons.org) package; a tool with no logo shows its initials.
 - **Sources** (`src/data/sources.ts`): add a source here before a lesson cites it.
 
+## Planned subjects
+
+Software engineering and AI are plans: maps of lesson titles with no text yet. They are in `src/data/plans/software.ts` and `src/data/plans/ai.ts`. You do not set map places: the layout (`src/map/plan-layout.ts`) places each lesson from its order and prerequisites.
+
+```ts
+{
+  name: 'Calculus',          // the line
+  blurb: 'How outputs change when inputs move.',
+  color: '#7A3FD1',
+  tier: 0,                   // row of lines on the map, 0 at the top. A tier has 1 line (wide) or 2 or 3 side by side
+  lessons: [
+    l('derivatives', 'Derivatives', 'How fast the output changes when the input moves.', ['functions']),
+    l('integrals', 'Integrals', 'Add up many small pieces.', ['derivatives'], 'deeper'),
+  ],
+}
+```
+
+- `l(id, title, summary, prerequisites, 'deeper')`. The id is kebab-case and unique in the subject.
+- A prerequisite on the same line must be listed earlier. A prerequisite on another line must be in a higher tier.
+- `npm run check` tests each plan and names any lesson that breaks these rules.
+
 ## Figures
 
 A figure is a React component with no props, in a file in `src/figures/`. Register it with a name in `src/figures/index.tsx`, then use the name in a lesson with `::fig <name> | caption`.
@@ -153,8 +174,20 @@ A figure is a React component with no props, in a file in `src/figures/`. Regist
 - If you change the shape of data in `localStorage`, change the version in its key (for example `dee.marks.v2` to `dee.marks.v3`).
 - Add a test for a change to the lesson format (`src/lessons/`) or the checks.
 
+## Branches and releases
+
+- `develop` is where changes go first. Open your pull request **into `develop`**.
+- Each push to `develop` publishes a preview at `https://aidaninceer.github.io/explained/develop/`. Test your change there.
+- `main` is the live site at `https://aidaninceer.github.io/explained/`. A maintainer releases by merging a pull request from `develop` into `main`.
+- CI runs on every pull request and on each push to `develop` and `main`.
+
+```
+feature branch ──PR──▶ develop ──(preview)──PR──▶ main ──▶ live site
+```
+
 ## Pull requests
 
 - One change in each pull request. A new lesson and its figure can be one pull request.
 - Say what you changed and why. For a new lesson, add a screenshot of its place on the map.
 - CI runs `npm run check` and `npm run build`. Both must pass.
+- If you use Claude Code, `CLAUDE.md` and the skills in `.claude/skills/` describe this workflow.

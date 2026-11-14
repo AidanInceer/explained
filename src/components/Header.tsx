@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS } from '../data/curriculum'
+import { SITE_NAME } from '../data/site'
+import { SUBJECTS, subjectOfPath } from '../data/subjects'
 import { search } from '../lib/search'
 import { useProgress } from '../lib/progress'
 import { useQuizScores } from '../lib/quizStore'
@@ -69,6 +71,7 @@ export default function Header() {
   const scores = useQuizScores()
   const quizzes = Object.values(scores).filter((s) => s.correct === s.total).length
   const onLesson = loc.pathname.startsWith('/lesson/')
+  const subject = subjectOfPath(loc.pathname)
 
   useEffect(() => {
     setOpen(false)
@@ -90,12 +93,23 @@ export default function Header() {
   return (
     <header className="top">
       <div className="top-in">
-      <Link to="/" className="wordmark" aria-label="Data Engineering Explained, home">
+      <Link to="/" className="wordmark" aria-label={`${SITE_NAME}, home`}>
         <SiteMark />
-        <span>
-          Data Engineering <em>Explained</em>
-        </span>
+        <span>{SITE_NAME}</span>
       </Link>
+      <nav className="subjects" aria-label="Subjects">
+        {SUBJECTS.map((s) => (
+          <Link
+            key={s.id}
+            to={s.path}
+            className={[s.id === subject.id ? 'active' : '', s.status].join(' ')}
+            aria-current={s.id === subject.id ? 'true' : undefined}
+            title={s.status === 'planned' ? `${s.name}: planned, no lesson text yet` : s.name}
+          >
+            {s.short}
+          </Link>
+        ))}
+      </nav>
       <nav className="top-nav" aria-label="Main" ref={navEl}>
         <NavLink to="/" end className={({ isActive }) => (isActive || onLesson ? 'active' : '')}>
           Lessons
