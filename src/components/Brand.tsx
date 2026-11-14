@@ -107,7 +107,7 @@ export default function Brand() {
       <h1>Name and logo options</h1>
       <p className="lead">
         Logos for the current name in five rounds, newest first, then four names with the domains that were looked up for each. The header uses
-        the “de.” tile until you choose.
+        number 38.
       </p>
       <Logos />
       <h2>Four names</h2>

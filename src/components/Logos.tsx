@@ -393,6 +393,8 @@ function fill(o: { cw: number; cg: number; rh: number; rw: number; H: number; be
 // 32 with no empty space around it: the drawing is as wide as its box.
 const L1: Mark = ({ size = 26 }) => box(size, 30, 13, fill({ cw: 3, cg: 2, rh: 3, rw: 13, H: 13, between: 4 }))
 // The same with heavier bars.
+/** The site logo (option 38): three ink columns, then three blue rows. */
+export const SiteMark: Mark = ({ size = 40 }) => L2({ size })
 const L2: Mark = ({ size = 26 }) => box(size, 30, 13, fill({ cw: 3.6, cg: 1.1, rh: 3.6, rw: 13, H: 13, between: 4 }))
 // Full height: both halves are as tall as the box.
 const L3: Mark = ({ size = 26 }) => box(size, 32, 32, fill({ cw: 4, cg: 1.6, rh: 7.6, rw: 13.2, H: 30, between: 3.6, x: 0.2, y: 1, rx: 1 }))
@@ -425,7 +427,7 @@ const L5: Mark = ({ size = 26 }) =>
 
 export const LOGOS5: typeof LOGOS = [
   { name: '32, edge to edge', mark: L1, idea: 'Exactly 32. The drawing now fills the width of its box, with no empty space above and below.', note: 'A wide mark. Good next to the name in the header. As a square browser-tab icon it stays small.' },
-  { name: '32, heavier, edge to edge', mark: L2, idea: 'The same, with thicker bars and smaller gaps.', note: 'Holds better when small.' },
+  { name: '32, heavier, edge to edge', mark: L2, idea: 'The same, with thicker bars and smaller gaps.', note: 'Chosen. This is the logo in the header now.' },
   { name: 'Full height', mark: L3, idea: 'Both halves are as tall as the box, so the mark is a full square.', note: 'The largest in the box. The rows must be thicker than the columns to fill the height.' },
   { name: 'Stacked', mark: L4, idea: 'Columns above, rows below, as one square.', note: 'Fills the box with equal gaps. The order is top to bottom, not left to right.' },
   { name: 'Large, on the dark tile', mark: L5, idea: 'Tall columns and rows that fill the tile.', note: 'The best browser-tab icon of the five. Light blue rows on dark.' },

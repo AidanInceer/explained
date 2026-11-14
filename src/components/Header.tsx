@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { LESSONS, trackById } from '../curriculum'
 import { GLOSSARY } from '../glossary'
 import { useProgress } from '../lib/progress'
-import { MarkTile } from './Brand'
+import { SiteMark } from './Logos'
 
 interface Hit {
   key: string
@@ -65,7 +65,7 @@ export default function Header() {
     <header className="top">
       <div className="top-in">
       <Link to="/" className="wordmark" aria-label="Data Engineering Explained, home">
-        <MarkTile />
+        <SiteMark />
         <span>
           Data Engineering <em>Explained</em>
         </span>
