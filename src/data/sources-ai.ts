@@ -291,6 +291,27 @@ export const AI_SOURCES = {
     kind: 'Paper',
     why: 'Gated memory cells that let recurrent networks keep information over long sequences.',
   },
+  datasheets: {
+    title: 'Datasheets for Datasets',
+    by: 'Timnit Gebru and others, Communications of the ACM, 2021',
+    kind: 'Paper',
+    url: 'https://arxiv.org/abs/1803.09010',
+    why: 'Questions every dataset should answer: why it was made, what is in it, how it was collected and labelled.',
+  },
+  gendershades: {
+    title: 'Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification',
+    by: 'Joy Buolamwini and Timnit Gebru, FAT*, 2018',
+    kind: 'Paper',
+    url: 'https://proceedings.mlr.press/v81/buolamwini18a.html',
+    why: 'Commercial face systems were far less accurate for darker-skinned women, because of who was in the data.',
+  },
+  labelerrors: {
+    title: 'Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks',
+    by: 'Curtis G. Northcutt, Anish Athalye and Jonas Mueller, NeurIPS Datasets and Benchmarks, 2021',
+    kind: 'Paper',
+    url: 'https://arxiv.org/abs/2103.14749',
+    why: 'Popular benchmark test sets contain many wrong labels, enough to change which model looks best.',
+  },
   karpathy: {
     title: 'Neural Networks: Zero to Hero',
     by: 'Andrej Karpathy',
