@@ -257,6 +257,20 @@ export const AI_SOURCES = {
     url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj',
     why: 'The law that sorts AI systems by risk and sets duties for each level.',
   },
+  zero: {
+    title: 'ZeRO: Memory Optimizations Toward Training Trillion Parameter Models',
+    by: 'Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase and Yuxiong He, SC20, 2020',
+    kind: 'Paper',
+    url: 'https://arxiv.org/abs/1910.02054',
+    why: 'Split weights, gradients and optimiser state across GPUs, so data parallelism scales to huge models.',
+  },
+  megatron: {
+    title: 'Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism',
+    by: 'Mohammad Shoeybi and others, 2019',
+    kind: 'Paper',
+    url: 'https://arxiv.org/abs/1909.08053',
+    why: 'Tensor parallelism for transformers: each layer split across the GPUs of one server.',
+  },
   karpathy: {
     title: 'Neural Networks: Zero to Hero',
     by: 'Andrej Karpathy',
