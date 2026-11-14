@@ -24,6 +24,13 @@ export const SOFTWARE_SOURCES = {
     kind: 'Book',
     why: 'The internet from the application down to the wire: HTTP, DNS, TCP, IP and routing.',
   },
+  missing: {
+    title: 'The Missing Semester of Your CS Education',
+    by: 'Anish Athalye, Jon Gjengset and Jose Javier Gonzalez Ortiz, MIT, 2020',
+    kind: 'Website',
+    url: 'https://missing.csail.mit.edu',
+    why: 'Free lectures on the tools that courses skip: the shell, scripts, editors, Git and debugging.',
+  },
   sicp: {
     title: 'Structure and Interpretation of Computer Programs, 2nd edition',
     by: 'Harold Abelson and Gerald Jay Sussman with Julie Sussman, MIT Press, 1996',
@@ -56,6 +63,20 @@ export const SOFTWARE_SOURCES = {
     kind: 'Website',
     url: 'https://developer.mozilla.org',
     why: 'The reference for HTML, CSS, JavaScript, HTTP and the browser’s APIs, with guides for each.',
+  },
+  tshandbook: {
+    title: 'The TypeScript Handbook',
+    by: 'Microsoft',
+    kind: 'Website',
+    url: 'https://www.typescriptlang.org/docs/handbook/intro.html',
+    why: 'Static types added to JavaScript, explained with short examples.',
+  },
+  pep484: {
+    title: 'PEP 484: Type Hints',
+    by: 'Guido van Rossum, Jukka Lehtosalo and Łukasz Langa, 2014',
+    kind: 'Paper',
+    url: 'https://peps.python.org/pep-0484/',
+    why: 'The proposal that added optional type hints to Python, and the reasons for gradual typing.',
   },
   rfc9110: {
     title: 'RFC 9110: HTTP Semantics',
