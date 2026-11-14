@@ -1,6 +1,7 @@
 /* The drawings of the planned subjects (PlanSystem.tsx). The frame, tiles, lines and packets come from system.css. */
-.ps .mk-top { min-height: 48px; }
-.ps-hint { margin: 0; font: 400 14.5px/1.4 var(--text); color: var(--ink-2); }
+.ps .mk-top { height: 48px; min-height: 0; }
+/* One line, always the same height: the bar must not move when the reader points at a part. */
+.ps-hint { margin: 0; font: 400 14.5px/1.4 var(--text); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ps-hint b { font: 650 14.5px/1.4 var(--sans); color: var(--ink); }
 .ps .fd-part { cursor: default; outline: none; }
 .ps .fd-part.zone > .fd-zone { fill: transparent; }

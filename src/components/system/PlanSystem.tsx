@@ -475,6 +475,7 @@ export default function PlanSystem({ sys, titles }: { sys: SystemPlan; titles: R
   const byId = useMemo(() => Object.fromEntries(sys.parts.map((p) => [p.id, p])), [sys])
   const routes = useMemo(() => sys.flows.map((f) => routeNodes(asNode(byId[f.from]), asNode(byId[f.to])).d), [sys, byId])
   const shown = hover ? byId[hover] : null
+  const hint = shown ? `${shown.lessons.length} ${shown.lessons.length === 1 ? 'lesson' : 'lessons'}: ${shown.lessons.map((id) => titles[id] ?? id).join(', ')}.` : undefined
   const zones = sys.parts.filter((p) => p.kind === 'zone')
   const rest = sys.parts.filter((p) => p.kind !== 'zone')
 
@@ -486,13 +487,13 @@ export default function PlanSystem({ sys, titles }: { sys: SystemPlan; titles: R
         <i className="mk-c bl" aria-hidden="true" />
         <i className="mk-c br" aria-hidden="true" />
         <div className="mk-top">
-          <p className="mk-top-main ps-hint">
+          <p className="mk-top-main ps-hint" title={hint}>
             {shown ? (
               <>
-                <b>{shown.label}.</b> Planned lessons: {shown.lessons.map((id) => titles[id] ?? id).join(', ')}.
+                <b>{shown.label}.</b> {hint}
               </>
             ) : (
-              <>Point at a part to see the planned lessons that teach it.</>
+              <>Point at a part to see the lessons that teach it.</>
             )}
           </p>
           {!still && (
