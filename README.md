@@ -8,7 +8,7 @@ A website that teaches technical subjects as maps of short lessons. Each lesson 
 | Software engineering | Planned: a skeleton map of lesson titles at `/software` |
 | AI (maths, hardware, machine learning, LLMs) | Planned: a skeleton map of lesson titles at `/ai` |
 
-The plans are in `src/data/subjects.ts`. Pick a lesson from one and propose it with the "Lesson proposal" issue form.
+The plans are in `src/data/plans/`, drawn as maps by `src/map/plan-layout.ts`. Pick a lesson from one and propose it with the "Lesson proposal" issue form.
 
 Data engineering has:
 

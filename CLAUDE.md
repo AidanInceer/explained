@@ -15,7 +15,9 @@ complete. Software engineering and AI are plans: lists of lessons that do not ha
 - `src/content/<id>.md` — one data engineering lesson per file: YAML block at the top, Markdown text below.
 - `build/vite-plugin-lessons.ts` — reads, checks and parses lesson files at build time.
 - `src/lessons/` — lesson format (`format.ts`), checks (`validate.ts`), term marking (`link.ts`), loading (`load.ts`).
-- `src/data/` — tracks, sources, glossary, technology notes, and `subjects.ts` with the plans for the other subjects.
+- `src/data/` — tracks, sources, glossary, technology notes, and `subjects.ts` (the list of subjects).
+- `src/data/plans/` — planned lessons for software engineering and AI. `src/map/plan-layout.ts` places them on a map
+  and checks them.
 - `src/map/layout.ts` — where each line sits on the map.
 - `src/components/` — pages. `lesson/` is the lesson page and its parts.
 - `CONTRIBUTING.md` — the full lesson format and the writing style. Read it before you write lesson text.

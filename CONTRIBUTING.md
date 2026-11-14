@@ -135,6 +135,27 @@ The site is for readers whose first language may not be English, and for new and
 - **Technology notes** (`src/data/tech.ts`): groups of tools. `match` is the words in a lesson that open the note. Add the home page of each tool to `src/data/tool-urls.ts`. Logos come from the [simple-icons](https://simpleicons.org) package; a tool with no logo shows its initials.
 - **Sources** (`src/data/sources.ts`): add a source here before a lesson cites it.
 
+## Planned subjects
+
+Software engineering and AI are plans: maps of lesson titles with no text yet. They are in `src/data/plans/software.ts` and `src/data/plans/ai.ts`. You do not set map places: the layout (`src/map/plan-layout.ts`) places each lesson from its order and prerequisites.
+
+```ts
+{
+  name: 'Calculus',          // the line
+  blurb: 'How outputs change when inputs move.',
+  color: '#7A3FD1',
+  tier: 0,                   // row of lines on the map, 0 at the top. A tier has 1 line (wide) or 2 or 3 side by side
+  lessons: [
+    l('derivatives', 'Derivatives', 'How fast the output changes when the input moves.', ['functions']),
+    l('integrals', 'Integrals', 'Add up many small pieces.', ['derivatives'], 'deeper'),
+  ],
+}
+```
+
+- `l(id, title, summary, prerequisites, 'deeper')`. The id is kebab-case and unique in the subject.
+- A prerequisite on the same line must be listed earlier. A prerequisite on another line must be in a higher tier.
+- `npm run check` tests each plan and names any lesson that breaks these rules.
+
 ## Figures
 
 A figure is a React component with no props, in a file in `src/figures/`. Register it with a name in `src/figures/index.tsx`, then use the name in a lesson with `::fig <name> | caption`.

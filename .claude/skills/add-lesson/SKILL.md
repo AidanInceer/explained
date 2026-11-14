@@ -27,6 +27,7 @@ Read `CONTRIBUTING.md` sections "Lessons" and "Writing style" first. They are th
 
 ## Planned lessons (software engineering, AI)
 
-These subjects are lists in `src/data/subjects.ts`, with no lesson files yet. To write one, first ask the
+These subjects are plans in `src/data/plans/`, with no lesson files yet. To change a plan, follow "Planned subjects"
+in `CONTRIBUTING.md`, then run `npm run check`. To write one, first ask the
 maintainer how the subject should be split into its own content folder and map. Do not put them in
 `src/content/`: that folder is the data engineering map.
