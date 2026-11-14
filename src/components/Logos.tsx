@@ -131,6 +131,140 @@ export const LOGOS: { name: string; mark: Mark; idea: string; note: string; word
   { name: 'Stream and batch', mark: StreamBatch, idea: 'Events one by one above, one block below.', note: 'Shows the central choice of the field. Needs the name next to it to be read.' },
 ]
 
+/* ---- round two: refinements of 10, 3 and 8, and the pipeline and bronze-to-gold idea ---- */
+const BRONZE = '#b8692e'
+const SILVER = '#9aa6ad'
+const GOLD = '#e8b21e'
+
+const DotsBar: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      {[5.5, 12.5, 19.5, 26.5].map((x) => (
+        <circle key={x} cx={x} cy="10.5" r="3" fill={BLUE} />
+      ))}
+      <rect x="2.5" y="18" width="27" height="6" rx="3" fill="currentColor" />
+    </>,
+  )
+
+const DotsBarTile: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <rect x="1" y="1" width="30" height="30" rx="8" fill="#132029" />
+      {[8, 13.3, 18.7, 24].map((x) => (
+        <circle key={x} cx={x} cy="11.5" r="2.1" fill="#7fa6ff" />
+      ))}
+      <rect x="6" y="17" width="20" height="6.5" rx="2.4" fill="#fff" />
+    </>,
+  )
+
+const RowColumn: Mark = ({ size = 26 }) => {
+  const at = [3, 12.5, 22]
+  return svg(
+    size,
+    <>
+      {at.map((y, r) =>
+        at.map((x, c) => (
+          <rect key={`${r}${c}`} x={x} y={y} width="7" height="7" rx="1.8" fill={r === 1 && c === 1 ? GOLD : c === 1 ? BLUE : 'currentColor'} opacity={r === 1 || c === 1 ? 1 : 0.2} />
+        )),
+      )}
+    </>,
+  )
+}
+
+const RowsColumnsTile: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <rect x="1" y="1" width="30" height="30" rx="8" fill="#132029" />
+      {[7, 13.5, 20].map((y) => (
+        <rect key={y} x="6" y={y} width="8.5" height="5" rx="1.4" fill="#fff" />
+      ))}
+      {[17.5, 21.6, 25.7].map((x) => (
+        <rect key={x} x={x - 0.6} y="7" width="3" height="18" rx="1.4" fill="#7fa6ff" />
+      ))}
+    </>,
+  )
+
+const Slabs: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <path d="M4 9a5 5 0 0 1 5-5h1.6v24H9a5 5 0 0 1-5-5Z" fill="currentColor" />
+      <rect x="12.6" y="4" width="6.8" height="24" fill={GREEN} />
+      <path d="M21.4 4H23a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5h-1.6Z" fill="currentColor" />
+    </>,
+  )
+
+const SlabsBSG: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <path d="M4 9a5 5 0 0 1 5-5h1.6v24H9a5 5 0 0 1-5-5Z" fill={BRONZE} />
+      <rect x="12.6" y="4" width="6.8" height="24" fill={SILVER} />
+      <path d="M21.4 4H23a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5h-1.6Z" fill={GOLD} />
+    </>,
+  )
+
+const ThreeStops: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <path d="M3 16h26" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="6.5" cy="16" r="4.1" fill={BRONZE} />
+      <circle cx="16" cy="16" r="4.1" fill={SILVER} />
+      <circle cx="25.5" cy="16" r="4.1" fill={GOLD} />
+    </>,
+  )
+
+const PipeBSG: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <path d="M3 9.5h10" stroke={BRONZE} strokeWidth="7" fill="none" />
+      <path d="M13 9.5h2.5a7 7 0 0 1 7 7V18" stroke={SILVER} strokeWidth="7" fill="none" />
+      <path d="M22.5 18v11" stroke={GOLD} strokeWidth="7" fill="none" />
+    </>,
+  )
+
+const Steps: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      <path d="M3 20h8.7v8H5a2 2 0 0 1-2-2Z" fill={BRONZE} />
+      <path d="M11.7 12h8.6v16h-8.6Z" fill={SILVER} />
+      <path d="M20.3 4H27a2 2 0 0 1 2 2v20a2 2 0 0 1-2 2h-6.7Z" fill={GOLD} />
+    </>,
+  )
+
+const Chevrons: Mark = ({ size = 26 }) =>
+  svg(
+    size,
+    <>
+      {[
+        [3.5, BRONZE],
+        [12, SILVER],
+        [20.5, GOLD],
+      ].map(([x, c]) => (
+        <path key={x} d={`M${x} 6l8 10-8 10`} fill="none" stroke={c as string} strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+      ))}
+    </>,
+  )
+
+export const LOGOS2: typeof LOGOS = [
+  { name: 'Dots and bar', mark: DotsBar, idea: 'From 10. Stream above, batch below, at equal weight.', note: 'Four dots, not five, and the bar is as thin as the dots. Calmer than 10, and it still reads as two kinds of flow.' },
+  { name: 'Dots and bar, on a tile', mark: DotsBarTile, idea: 'From 10, inside a dark tile.', note: 'The tile holds the two parts together at browser-tab size. It looks the same on light and dark.' },
+  { name: 'Row and column', mark: RowColumn, idea: 'From 3. One table, with one row and one column marked.', note: 'Says “row or column?” in one shape. The cell where they meet is gold.' },
+  { name: 'Rows to columns, on a tile', mark: RowsColumnsTile, idea: 'From 3, with equal bars, inside a dark tile.', note: 'Closest to the first version. The tile and the even weights correct its weakness at small size.' },
+  { name: 'Three slabs', mark: Slabs, idea: 'From 8, with no outline. Three parts, and one is read.', note: 'The boldest of the ten. Clear at 16 pixels.' },
+  { name: 'Bronze, silver, gold slabs', mark: SlabsBSG, idea: '8 and the layers together: the three stages as three parts of one table.', note: 'The colours carry the meaning, so it is weaker in one colour.' },
+  { name: 'Three stops', mark: ThreeStops, idea: 'A pipeline with three stops: bronze, silver, gold.', note: 'It is also a line of the lesson map, so it says “pipeline” and “this site” at once.' },
+  { name: 'Pipe, bronze to gold', mark: PipeBSG, idea: 'One pipe that turns a corner, and the data gets better along it.', note: 'The most literal pipeline. The bend makes it distinct from a plain bar.' },
+  { name: 'Steps', mark: Steps, idea: 'Each layer is a step up in quality.', note: 'Simple and strong. Out of context it can be read as a bar chart.' },
+  { name: 'Three chevrons', mark: Chevrons, idea: 'Three transformations in a row, each one a stage.', note: 'Shows direction, which the other marks do not. Light strokes, so check it at small size.' },
+]
+
 function Word({ hl }: { hl?: boolean }) {
   return hl ? (
     <span className="lg-word">
@@ -143,20 +277,17 @@ function Word({ hl }: { hl?: boolean }) {
   )
 }
 
-export default function Logos() {
+function Set({ title, lead, items, from }: { title: string; lead: string; items: typeof LOGOS; from: number }) {
   return (
     <section className="logos">
-      <h2>Ten logo options</h2>
-      <p className="brand-more">
-        Each one is shown large, on dark, at browser-tab size, and next to the name as it would be in the header. Tell
-        me the numbers that you like, and what to change.
-      </p>
+      <h2>{title}</h2>
+      <p className="brand-more">{lead}</p>
       <div className="lg-grid">
-        {LOGOS.map((l, i) => (
+        {items.map((l, i) => (
           <article key={l.name} className="lg-card">
             <header>
               <b>
-                {i + 1}. {l.name}
+                {from + i}. {l.name}
               </b>
             </header>
             <div className="lg-show">
@@ -180,5 +311,24 @@ export default function Logos() {
         ))}
       </div>
     </section>
+  )
+}
+
+export default function Logos() {
+  return (
+    <>
+      <Set
+        title="Round two: ten refinements"
+        lead="Built on 10, 3 and 8 of the first round, and on the pipeline and bronze-to-gold idea. Numbers continue from the first round."
+        items={LOGOS2}
+        from={11}
+      />
+      <Set
+        title="Round one"
+        lead="The first ten. Each one is shown large, on dark, at browser-tab size, and next to the name as it would be in the header."
+        items={LOGOS}
+        from={1}
+      />
+    </>
   )
 }

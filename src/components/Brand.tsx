@@ -97,6 +97,7 @@ const OPTIONS: Option[] = [
   },
 ]
 
+const SHORT_FREE = ['de-explain.dev', 'deexplain.dev', 'explainde.dev', 'explain-de.dev', 'de-explained.dev', 'de-explained.com', 'de-explain.com', 'deexplain.com', 'de-explained.org', 'dataengexplained.com', 'dataengexplained.dev', 'dataeng-explained.dev', 'deexplained.io', 'de-explained.io']
 const OTHERS_FREE = ['plainpipelines.com', 'plainpipelines.dev', 'firstpipeline.dev', 'sourcetosink.dev', 'pipelineprimer.dev', 'grainwise.dev', 'thedataline.dev', 'learnupstream.dev', 'upstream.school']
 const OTHERS_TAKEN = ['firstpipeline.com', 'sourcetosink.com', 'pipelineprimer.com', 'pipewise.dev']
 
@@ -105,7 +106,7 @@ export default function Brand() {
     <main className="page brand">
       <h1>Name and logo options</h1>
       <p className="lead">
-        Ten logos for the current name, then four names with the domains that were looked up for each. The header uses
+        Twenty logos for the current name in two rounds, then four names with the domains that were looked up for each. The header uses
         the “de.” tile until you choose.
       </p>
       <Logos />
@@ -159,6 +160,15 @@ export default function Brand() {
           </article>
         ))}
       </div>
+
+      <h2>Short forms of the current name</h2>
+      <p className="brand-more">
+        No registration:{' '}
+        {SHORT_FREE.map((d) => (
+          <code key={d}>{d}</code>
+        ))}
+      </p>
+      <p className="brand-more">Already registered: <code className="taken">deexplained.com</code></p>
 
       <h2>Other names that were looked up</h2>
       <p className="brand-more">
