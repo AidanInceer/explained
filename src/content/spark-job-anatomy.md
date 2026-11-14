@@ -1,3 +1,16 @@
+---
+title: Anatomy of a Spark job
+summary: Transformations build a plan and do nothing. An action runs it as jobs, stages and tasks. A stage ends at each shuffle.
+track: processing
+level: core
+minutes: 9
+at: [0, 1]
+prereqs: [distributed-processing]
+tech: [batch, clouds]
+refs:
+  - spark: Part II, structured APIs, and Ch. 15, How Spark Runs on a Cluster
+  - ddia: Ch. 10, “Beyond MapReduce”
+---
 The lesson on [distributed batch processing](/lesson/distributed-processing) explained the idea: partitions, parallel work, and a shuffle when rows must meet. This lesson shows how Apache Spark turns your code into that work. With these terms you can read the Spark UI, and the two tuning lessons that follow need them.
 
 ## The parts of a running application

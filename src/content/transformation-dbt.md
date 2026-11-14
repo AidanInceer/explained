@@ -1,3 +1,16 @@
+---
+title: SQL transformations and dbt
+summary: Each model is one SELECT statement in a file. The tool works out the order, builds the tables, runs the tests and writes the documentation.
+track: pipelines
+level: core
+minutes: 10
+at: [1, 1]
+prereqs: [etl-vs-elt]
+tech: [transformation, warehouses, ci]
+refs:
+  - dbt: Guide overview, staging, intermediate and marts
+  - fode: Ch. 8, “Transformations”
+---
 In an [ELT](/lesson/etl-vs-elt) design the raw data is already in the warehouse, and the transformations are SQL that runs there. The open question is how to manage hundreds of SQL statements that depend on each other. The most common answer is **dbt** (data build tool). SQLMesh, Dataform and Coalesce work on the same idea, so the concepts here apply to them too.
 
 ## The idea: a model is a SELECT

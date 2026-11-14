@@ -1,3 +1,16 @@
+---
+title: Orchestration and DAGs
+summary: An orchestrator runs tasks in dependency order, retries failures and records what happened. The dependency graph is a DAG.
+track: ops
+level: core
+minutes: 8
+at: [0, 0]
+prereqs: [etl-vs-elt]
+tech: [orchestrators, iac, clouds]
+refs:
+  - fode: Ch. 2, “Orchestration” undercurrent
+  - wiki: "Concepts: Orchestration"
+---
 A real pipeline is many steps. Extract orders. Extract customers. Clean each one. Join them. Test the result. Update the dashboard. Some steps depend on others, and some can run at the same time. An **orchestrator** is the system that runs them in the correct order, at the correct time, and handles failures.
 
 ## Why a scheduler is not sufficient

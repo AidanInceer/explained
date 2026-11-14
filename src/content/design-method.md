@@ -1,3 +1,17 @@
+---
+title: How to design a pipeline
+summary: "Work from the right side to the left: who uses the data and how fresh it must be, then the model, then the sources, then the simplest path between them."
+track: designs
+level: core
+minutes: 10
+at: [2, 0]
+prereqs: [choosing-a-stack, data-quality]
+tech: [clouds, orchestrators, ingestion]
+refs:
+  - fode: Ch. 3, “Principles of good data architecture”
+  - ddia: Ch. 12, “Data Integration”
+  - kimball: Ch. 18, Dimensional Modeling Process and Tasks
+---
 The other lines of the map each explain one part. This line puts the parts together. It gives a method to design a complete pipeline, and then uses it on six systems with six different shapes:
 
 | Design | Shape |

@@ -1,3 +1,15 @@
+---
+title: Source systems and data shapes
+summary: Data starts in application databases, APIs, files and event streams. Each source has a shape, a rate of change and an owner who is not you.
+track: foundations
+level: core
+minutes: 8
+at: [2, 2]
+prereqs: [lifecycle]
+tech: [oltp, saas, brokers]
+refs:
+  - fode: Ch. 5, Data Generation in Source Systems
+---
 Data engineers do not create data. Other systems do: an application records an order, a sensor records a temperature, a person fills in a spreadsheet. These are **source systems**. The first stage of the [lifecycle](/lesson/lifecycle) is to understand them, because their limits become your limits.
 
 ## The common kinds of source

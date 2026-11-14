@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { createStore, readJSON, writeJSON } from './storage'
 
 /** A highlight or underline that a reader made. Kept in this browser only. */
 export interface Mark {
@@ -13,53 +13,26 @@ export interface Mark {
 }
 
 const KEY = 'dee.marks.v2'
-const listeners = new Set<() => void>()
-
-function load(): Record<string, Mark[]> {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Record<string, Mark[]>
-  } catch {
-    return {}
-  }
-}
-
-let all = load()
-
-function commit(next: Record<string, Mark[]>) {
-  all = next
-  try {
-    localStorage.setItem(KEY, JSON.stringify(next))
-  } catch {
-    /* storage unavailable: marks last for this visit only */
-  }
-  listeners.forEach((l) => l())
-}
-
+const store = createStore(readJSON<Record<string, Mark[]>>(KEY, {}), (next) => writeJSON(KEY, next))
 const NONE: Mark[] = []
 
-export function useMarks(lesson: string): Mark[] {
-  return useSyncExternalStore(
-    (cb) => {
-      listeners.add(cb)
-      return () => listeners.delete(cb)
-    },
-    () => all[lesson] ?? NONE,
-  )
-}
+export const useMarks = (lesson: string): Mark[] => store.use((all) => all[lesson] ?? NONE)
 
 export function addMark(lesson: string, m: Omit<Mark, 'id'>) {
+  const all = store.get()
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
-  commit({ ...all, [lesson]: [...(all[lesson] ?? []), { ...m, id }] })
+  store.set({ ...all, [lesson]: [...(all[lesson] ?? []), { ...m, id }] })
 }
 
 export function removeMark(lesson: string, id: string) {
-  commit({ ...all, [lesson]: (all[lesson] ?? []).filter((m) => m.id !== id) })
+  const all = store.get()
+  store.set({ ...all, [lesson]: (all[lesson] ?? []).filter((m) => m.id !== id) })
 }
 
 export function clearMarks(lesson: string) {
-  const next = { ...all }
+  const next = { ...store.get() }
   delete next[lesson]
-  commit(next)
+  store.set(next)
 }
 
 /** Wrap the characters [start, end) of an element's text in <mark> elements. */

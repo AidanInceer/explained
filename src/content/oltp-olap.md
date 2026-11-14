@@ -1,3 +1,16 @@
+---
+title: OLTP and OLAP
+summary: Applications read and write a few rows at a time. Analysis reads millions of rows and a few columns. One database design cannot do both well.
+track: foundations
+level: core
+minutes: 7
+at: [2, 3]
+prereqs: [source-systems]
+tech: [oltp, warehouses]
+refs:
+  - ddia: Ch. 3, “Transaction Processing or Analytics?”
+  - fode: Ch. 5, Data Generation in Source Systems
+---
 Almost every design decision in data engineering follows from one fact: there are two different kinds of database work, and a system built for one is poor at the other.
 
 ## Two workloads

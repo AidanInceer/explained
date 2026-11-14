@@ -1,3 +1,16 @@
+---
+title: Open table formats
+summary: Iceberg, Delta Lake and Hudi add a metadata layer over Parquet files. That layer gives atomic commits, schema changes and time travel.
+track: storage
+level: deeper
+minutes: 9
+at: [0, 5]
+prereqs: [warehouse-lake-lakehouse]
+tech: [tableformats, batch]
+refs:
+  - lakehouse: Section 3, metadata layers
+  - wiki: "Concepts: Open table formats"
+---
 A [lakehouse](/lesson/warehouse-lake-lakehouse) depends on one component: the table format. This lesson explains what it does and how.
 
 ## The problem

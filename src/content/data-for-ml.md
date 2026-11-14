@@ -1,3 +1,16 @@
+---
+title: Data for machine learning and AI
+summary: Models need point-in-time correct training data, the same features at training and at serving, and for language models a search index over documents.
+track: architecture
+level: deeper
+minutes: 9
+at: [0, 6]
+prereqs: [privacy-in-practice]
+tech: [ml, nosql]
+refs:
+  - mlsys: Ch. 4, Training Data, and Ch. 5, Feature Engineering
+  - fode: Ch. 9, “Machine learning”
+---
 Machine learning and AI systems are consumers of data, with requirements that are different from those of a dashboard. A wrong number on a dashboard is seen by a person. A wrong number in training data makes a model that is wrong in a way that nobody sees. Data engineers build the supply side of these systems.
 
 ## What a model needs from data

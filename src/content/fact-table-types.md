@@ -1,3 +1,16 @@
+---
+title: Three kinds of fact table
+summary: Transaction facts record events. Periodic snapshots record a level at regular times. Accumulating snapshots follow one thing through a process.
+track: modeling
+level: core
+minutes: 9
+at: [1, 2]
+prereqs: [dimensional-modeling]
+tech: [transformation, warehouses]
+refs:
+  - kimball: "Ch. 4, Inventory: the three fact table types"
+  - kimball: Ch. 2, “Basic Fact Table Techniques”
+---
 A fact table records measurements. Kimball describes three kinds, and each answers a different type of question. Most real models need all three, built from the same source events.
 
 ::fig fact-types | The same stock room and the same orders, as three kinds of fact table.

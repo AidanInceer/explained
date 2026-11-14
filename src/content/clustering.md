@@ -1,3 +1,16 @@
+---
+title: Sorting, clustering and indexes
+summary: Inside a partition, sorted data lets the engine skip files by their minimum and maximum values. This is the analytic replacement for an index.
+track: storage
+level: deeper
+minutes: 8
+at: [1, 3]
+prereqs: [partitioning]
+tech: [warehouses, tableformats, rtolap]
+refs:
+  - ddia: Ch. 3, “Sort Order in Column Storage”
+  - dbinternals: Part I, B-Trees and LSM trees
+---
 [Partitioning](/lesson/partitioning) lets a query skip whole folders. But you can partition by only one or two columns of low cardinality, such as date. What about a filter on `customer_id`, which has millions of values? The answer is the **order of the rows** inside the files.
 
 ## How an OLTP database finds a row: the index

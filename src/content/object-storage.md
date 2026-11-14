@@ -1,3 +1,15 @@
+---
+title: Object storage
+summary: S3, GCS and Azure Blob store files under keys, at low cost and without a size limit. They are not file systems, and the differences matter.
+track: storage
+level: core
+minutes: 7
+at: [0, 3]
+prereqs: [partitioning]
+tech: [object, clouds, tableformats]
+refs:
+  - fode: Ch. 6, “Object storage”
+---
 Almost every modern data platform keeps its data in **object storage**: Amazon S3, Google Cloud Storage or Azure Blob Storage. Data lakes are object storage. Lakehouse tables are files in object storage. Cloud warehouses such as Snowflake and BigQuery use it internally.
 
 ## What an object store is

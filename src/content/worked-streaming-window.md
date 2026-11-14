@@ -1,3 +1,16 @@
+---
+title: "Worked example: one window, event by event"
+summary: Eight events, two of them late, go through a one-minute window. The state, the watermark and the output are shown after each event.
+track: processing
+level: deeper
+minutes: 10
+at: [1, 5]
+prereqs: [stream-engines]
+tech: [stream, brokers]
+refs:
+  - streaming: Ch. 2, The What, Where, When, and How of Data Processing
+  - dataflow: Section 2
+---
 The lesson on [windows, event time and watermarks](/lesson/windows-and-time) gave the definitions. Definitions of streaming are hard to hold in the mind, so this lesson traces eight events through one small job and shows the state after each one.
 
 ::fig windows | The three kinds of window. This lesson uses the first one, tumbling.

@@ -1,3 +1,15 @@
+---
+title: Secrets and access for pipelines
+summary: A pipeline needs credentials for every system it touches. Give each job its own identity, the least access that works, and no password in any file.
+track: ops
+level: core
+minutes: 8
+at: [1, 2]
+prereqs: [testing-ci-cd]
+tech: [iac, clouds, ci]
+refs:
+  - fode: Ch. 10, Security and Privacy
+---
 A pipeline connects to many systems: a source database, an API, object storage, a warehouse. Each connection needs proof of identity. How that proof is stored and what it permits is a large part of the security of a data platform. A leaked credential of a pipeline is often worse than a leaked credential of a person, because the pipeline can read everything.
 
 ## Two questions: who are you, and what may you do

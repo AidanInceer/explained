@@ -1,3 +1,16 @@
+---
+title: Ways to ingest data
+summary: Query the database, read its log, call an API, collect files, or receive events. Each source type has one method that fits it best.
+track: pipelines
+level: core
+minutes: 10
+at: [0, 1]
+prereqs: [etl-vs-elt]
+tech: [ingestion, cdc, brokers]
+refs:
+  - fode: Ch. 7, Ingestion
+  - wiki: "Concepts: Data ingestion"
+---
 Ingestion is the movement of data from a [source system](/lesson/source-systems) into your platform. Many pipeline failures start here, because it is the stage that depends on systems you do not control.
 
 There are a small number of methods. The skill is to match the method to the source.

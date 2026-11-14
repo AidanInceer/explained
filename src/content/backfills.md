@@ -1,3 +1,16 @@
+---
+title: Backfills and late data
+summary: A backfill runs a pipeline again for past dates, after a defect or a logic change. Late data is the same problem, arriving every day.
+track: pipelines
+level: deeper
+minutes: 8
+at: [0, 4]
+prereqs: [idempotency]
+tech: [orchestrators, tableformats]
+refs:
+  - functional: Sections on immutable partitions and backfills
+  - fode: Ch. 7, “Late-arriving data”
+---
 A pipeline normally processes new data: today’s orders, the last hour of events. A **backfill** runs it for the past. You will do this more often than you expect.
 
 ## When you need a backfill

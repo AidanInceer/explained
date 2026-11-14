@@ -1,3 +1,17 @@
+---
+title: Key-value, document and other stores
+summary: Relational is the default. Key-value, document, wide-column, search, time-series and vector stores each give up something to be fast at one access pattern.
+track: storage
+level: core
+minutes: 9
+at: [1, 1]
+prereqs: [row-vs-column]
+tech: [nosql, oltp]
+refs:
+  - ddia: Ch. 2, Data Models and Query Languages
+  - fode: Ch. 5, “Source system practical details”
+  - dbinternals: Part I, Storage Engines
+---
 The relational database is the default, and for good reasons: it is flexible, it has transactions, and everyone knows SQL. But some access patterns are served poorly by rows in tables. A group of other stores, often called **NoSQL**, each give up something general to be very good at one thing.
 
 A data engineer meets these stores in two places: as **sources** to extract from, and as **serving stores** to load results into.

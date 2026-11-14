@@ -1,3 +1,16 @@
+---
+title: How a platform grows, and how to migrate
+summary: Platforms pass through four stages as a company grows. Moving between them is a migration, and migrations fail in known ways.
+track: architecture
+level: deeper
+minutes: 10
+at: [1, 4]
+prereqs: [lakehouse-or-warehouse]
+tech: [transformation, orchestrators, warehouses]
+refs:
+  - fode: Ch. 3, “Architect for scalability”, “Always be architecting”
+  - ddia: Ch. 4, “Dataflow Through Databases”, on rolling changes
+---
 No company starts with a mature data platform, and no company should. Platforms grow in stages, and each stage is correct for its time. Reis and Housley write that architecture is never finished. This lesson describes the usual stages, and then the hard part: how to move from one to the next without a break in service.
 
 ## Four stages

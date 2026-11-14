@@ -1,3 +1,16 @@
+---
+title: Conceptual, logical, physical
+summary: "Model in three steps: the business things and how they relate, then tables and keys, then types, partitions and engine details."
+track: modeling
+level: core
+minutes: 8
+at: [1, 0]
+prereqs: [stakeholders-requirements]
+tech: [catalog, transformation]
+refs:
+  - fode: Ch. 8, “Conceptual, logical, and physical data models”
+  - beam: Part 1, modelling business events
+---
 A data model is a description of what the data means and how its parts relate. Good models are not designed in one step. They go through three levels, from the language of the business to the details of the engine.
 
 ::fig model-levels | One subject at three levels. Each level adds detail and is checked by a different person.

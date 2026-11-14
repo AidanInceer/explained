@@ -1,3 +1,16 @@
+---
+title: Distributed batch processing
+summary: Split the data into partitions, process them on many machines, and move rows between machines only when a join or group needs it.
+track: processing
+level: core
+minutes: 9
+at: [0, 0]
+prereqs: [partitioning, sql-and-queries]
+tech: [batch, clouds]
+refs:
+  - ddia: Ch. 10, Batch Processing
+  - fode: Ch. 8, “Batch Transformations”
+---
 When data is too large for one machine to process in an acceptable time, you divide the work between many machines. Spark, Trino, BigQuery and Snowflake all do this, and they all do it in the same basic way.
 
 ## Divide, process, combine

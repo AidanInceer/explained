@@ -1,3 +1,16 @@
+---
+title: "How work is delivered: the SDLC"
+summary: "Plan, build, test, review, release, operate. Data work follows the same loop, with one addition: the data changes even when the code does not."
+track: foundations
+level: core
+minutes: 9
+at: [4, 3]
+prereqs: [software-engineering]
+tech: [ci, vcs, iac]
+refs:
+  - accelerate: Ch. 2 and Ch. 4, delivery performance and technical practices
+  - fode: Ch. 2, “DataOps” undercurrent
+---
 The **software development lifecycle** (SDLC) is the sequence of activities that takes a change from an idea to something that runs in production and is maintained. Each team has one, written down or not. A good one makes changes small, safe and frequent.
 
 ::fig sdlc | The loop that each change goes through.

@@ -1,3 +1,16 @@
+---
+title: ETL and ELT
+summary: "Both extract, transform and load. The difference is where the transform runs: before the warehouse, or inside it."
+track: pipelines
+level: core
+minutes: 7
+at: [0, 0]
+prereqs: [oltp-olap]
+tech: [ingestion, transformation, warehouses]
+refs:
+  - fode: Ch. 7 and Ch. 8
+  - wiki: "Concepts: ETL vs ELT"
+---
 A pipeline does three things to data. It **extracts** it from a source, **transforms** it into a useful shape, and **loads** it into a target. The two common designs do these in a different order.
 
 ::fig etl-elt | Change between the two. The steps are the same. The location of the transform is different.

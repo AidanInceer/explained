@@ -1,0 +1,21 @@
+name: Bug report
+description: Something in the site does not work.
+labels: [bug]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to see the problem
+      placeholder: "1. Open /lesson/cdc\n2. Select ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device

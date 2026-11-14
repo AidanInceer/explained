@@ -1,3 +1,16 @@
+---
+title: Cloud basics
+summary: A cloud is rented compute, storage and network, with an identity system in front. Four ideas explain most of the bill and most of the access errors.
+track: foundations
+level: core
+minutes: 9
+at: [3, 2]
+prereqs: [lifecycle]
+tech: [clouds, object, iac]
+refs:
+  - fode: Ch. 4, “Location”, “Cost optimization”
+  - fode: Ch. 6, Storage
+---
 Nearly all new data platforms run in a cloud: Amazon Web Services (AWS), Google Cloud or Microsoft Azure. You do not need to be a cloud architect. You do need four ideas, because they explain most of the bill and most of the “access denied” errors.
 
 ## 1. You rent three things

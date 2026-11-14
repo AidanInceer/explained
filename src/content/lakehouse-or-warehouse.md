@@ -1,3 +1,16 @@
+---
+title: "Warehouse or lakehouse: the decision"
+summary: The same six questions, answered for three companies, give three different platforms. The method matters more than the answer.
+track: architecture
+level: core
+minutes: 10
+at: [1, 3]
+prereqs: [choosing-a-stack]
+tech: [warehouses, tableformats, catalog]
+refs:
+  - fode: Ch. 3, “Data warehouse”, “Data lake”, “Convergence”
+  - lakehouse: Sections 1 and 2
+---
 The lesson on [warehouse, lake and lakehouse](/lesson/warehouse-lake-lakehouse) explained what each one is. The lesson on [choosing an analytic engine](/lesson/choosing-engine) listed the products. This lesson makes the decision, three times, for three invented companies. The same questions give three different answers, and that is the point.
 
 ::fig lakehouse | The three architectures again, as a reference for the decisions below.

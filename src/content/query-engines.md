@@ -1,3 +1,17 @@
+---
+title: How an engine runs a query
+summary: The engine parses the SQL, makes a plan, and chooses a join method from table sizes. Reading the plan tells you why a query is slow.
+track: processing
+level: deeper
+minutes: 10
+at: [0, 2]
+prereqs: [spark-job-anatomy]
+tech: [batch, warehouses]
+refs:
+  - fode: Ch. 8, “The life of a query”, “The query optimizer”
+  - spark: Part II, structured API execution
+  - ddia: Ch. 10, “Reduce-Side Joins”, “Map-Side Joins”
+---
 You write SQL that says *what* you want. The engine decides *how* to get it. When a query is slow, the cause is nearly always in that “how”. To find it you must be able to read the plan.
 
 This applies to all the engines: Snowflake, BigQuery, Spark, Trino, DuckDB and Postgres go through the same steps.

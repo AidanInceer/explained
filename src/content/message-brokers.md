@@ -1,3 +1,16 @@
+---
+title: Queues, logs and brokers
+summary: A queue gives each message to one worker and then deletes it. A log keeps every message for all readers. Kafka, Kinesis, Pub/Sub, SQS and RabbitMQ differ on this point.
+track: processing
+level: core
+minutes: 9
+at: [1, 1]
+prereqs: [streaming-basics]
+tech: [brokers, formats]
+refs:
+  - ddia: Ch. 11, “Messaging Systems”
+  - kafka: Ch. 1, Meet Kafka
+---
 A **message broker** is a system that takes messages from producers and gives them to consumers. The producer does not need to know who the consumers are, or if they are running at this moment. This separation is the reason to use one.
 
 There are two designs, and they behave very differently. Many problems come from using one where the other was needed.

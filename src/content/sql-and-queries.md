@@ -1,3 +1,16 @@
+---
+title: SQL, the working language
+summary: SQL says what result you want, not how to compute it. Joins, grouping and window functions cover most of the daily work.
+track: foundations
+level: core
+minutes: 10
+at: [1, 3]
+prereqs: [source-systems]
+tech: [warehouses, oltp, transformation]
+refs:
+  - fode: Ch. 8, “Queries”
+  - ddia: Ch. 2, “Query Languages for Data”
+---
 SQL is the language that almost every data system understands. Warehouses, lakehouse engines, stream processors and transformation tools all use it. If you learn one thing well before anything else, learn SQL.
 
 SQL is **declarative**. You describe the result you want, and the engine decides how to compute it. You do not write loops. This is why the same query can run on a laptop and on a cluster of 500 machines.

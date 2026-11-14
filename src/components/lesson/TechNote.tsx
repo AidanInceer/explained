@@ -1,5 +1,5 @@
-import type { TechNote as Note, Tool } from '../tech'
-import { TOOL_URL } from '../toolUrls'
+import type { TechNote as Note, Tool } from '../../data/tech'
+import { TOOL_URL } from '../../data/tool-urls'
 
 /** Brand glyph on a white tile. Very light brand colours are drawn in ink so that they stay visible. */
 function Logo({ tool }: { tool: Tool }) {

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { LESSONS, SOURCES, type SourceId } from '../curriculum'
+import { LESSONS } from '../data/curriculum'
+import { SOURCES, type SourceId } from '../data/sources'
 
 const KINDS = ['Book', 'Paper', 'Essay', 'Website', 'Community']
 const PLURAL: Record<string, string> = { Book: 'Books', Paper: 'Papers', Essay: 'Essays', Website: 'Websites', Community: 'Community' }

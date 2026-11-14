@@ -1,3 +1,15 @@
+---
+title: Serving data and reverse ETL
+summary: Data has value only when it is used. Dashboards, extracts, APIs, machine learning and writes back into business tools each need a different delivery.
+track: pipelines
+level: core
+minutes: 8
+at: [1, 2]
+prereqs: [transformation-dbt]
+tech: [bi, reverse, rtolap]
+refs:
+  - fode: Ch. 9, Serving Data for Analytics, Machine Learning, and Reverse ETL
+---
 Serving is the last stage of the [lifecycle](/lesson/lifecycle), and the only one that the business sees. A perfect pipeline that nobody reads has no value. Reis and Housley describe three main uses: analytics, machine learning and reverse ETL.
 
 Each consumer needs a different form of delivery. The table is the same. The way it is reached is not.

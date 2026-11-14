@@ -1,3 +1,16 @@
+---
+title: Windows, event time and watermarks
+summary: To aggregate an endless stream you cut it into windows. Events arrive late, so you must choose which clock to trust and how long to wait.
+track: processing
+level: core
+minutes: 9
+at: [1, 2]
+prereqs: [message-brokers]
+tech: [stream, brokers]
+refs:
+  - streaming: Ch. 1 to 3
+  - dataflow: Sections 1 and 2
+---
 "How many orders were there?" has no answer on a stream, because the stream does not end. You must ask "how many orders *in each minute*?" The parts that you cut the stream into are **windows**. Deciding which window an event belongs to is the central problem of stream processing.
 
 ## Three kinds of window

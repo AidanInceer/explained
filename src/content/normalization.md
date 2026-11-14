@@ -1,3 +1,16 @@
+---
+title: Normalization
+summary: Store each fact once. Normal forms remove the duplicates that cause update errors, at the cost of more joins.
+track: modeling
+level: core
+minutes: 8
+at: [0, 0]
+prereqs: [oltp-olap, sql-and-queries]
+tech: [oltp, warehouses]
+refs:
+  - ddia: Ch. 2, Data Models and Query Languages
+  - fode: Ch. 8, “Data Modeling”
+---
 Normalization is the method for designing the tables of an application database. You need it for two reasons: most of your sources are normalized, and analytic modeling is defined by how it departs from normalization.
 
 ## The problem: the same fact in many places

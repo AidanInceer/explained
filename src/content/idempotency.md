@@ -1,3 +1,16 @@
+---
+title: Idempotent pipelines
+summary: A job is idempotent when running it twice gives the same result as running it once. This makes retries and backfills safe.
+track: pipelines
+level: core
+minutes: 8
+at: [0, 3]
+prereqs: [incremental-loading]
+tech: [orchestrators, tableformats]
+refs:
+  - functional: Whole essay
+  - fode: Ch. 7, “Idempotency” in ingestion considerations
+---
 Pipelines fail, and then they are run again. A scheduler retries a task after a timeout. An engineer runs last Tuesday's job again after a correction. If a second run changes the result, each retry is a risk. If it does not, a retry is a safe and routine operation.
 
 A job is **idempotent** when running it many times with the same input gives the same result as running it once.

@@ -1,3 +1,16 @@
+---
+title: Observability, lineage and contracts
+summary: Know when data is late or wrong before a user does, trace which tables are affected, and agree with producers on what will not change.
+track: ops
+level: deeper
+minutes: 8
+at: [0, 3]
+prereqs: [data-quality]
+tech: [quality, catalog, monitor]
+refs:
+  - fode: Ch. 2, “DataOps” and “Data Management”
+  - reddit: Recurring threads on data contracts
+---
 [Data tests](/lesson/data-quality) find the problems that you thought of. This lesson is about three practices for the other problems: to find out that something is wrong, to find what it affects, and to prevent the cause at the source.
 
 ## Observability: know before the user does

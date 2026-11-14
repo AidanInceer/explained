@@ -1,3 +1,16 @@
+---
+title: Data mesh
+summary: An organisation design, not a tool. The teams that produce data own it as a product, on a shared self-serve platform.
+track: architecture
+level: deeper
+minutes: 8
+at: [1, 5]
+prereqs: [governance-security]
+tech: [catalog, clouds]
+refs:
+  - mesh: Whole article
+  - fode: Ch. 3, “Data Mesh”
+---
 Data mesh is different from the other subjects on this map. It is not a technology. It is a proposal for how to organise the *people and ownership* around data in a large company. Zhamak Dehghani described it in 2019.
 
 ## The problem that it addresses

@@ -1,3 +1,16 @@
+---
+title: Skew, shuffles and small files
+summary: "Most slow distributed jobs have one of four causes: a skewed key, too much shuffle, too little memory for a partition, or too many small files."
+track: processing
+level: deeper
+minutes: 9
+at: [0, 4]
+prereqs: [worked-slow-query]
+tech: [batch, tableformats]
+refs:
+  - spark: Part IV, performance tuning
+  - ddia: Ch. 10, “Handling skew”
+---
 A distributed job that is slow or that fails usually has one of four causes. This lesson uses Apache Spark for the names, because it is the most common engine for large batch work, but the same four causes appear in every distributed engine.
 
 Start with the Spark UI, or the query profile of your platform. Do not change settings before you have seen where the time goes.

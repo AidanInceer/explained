@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { ScenarioItem } from '../lib/content'
+import type { ScenarioItem } from '../../lessons/types'
 
 const VERDICT = { best: 'Best fit', ok: 'Works, with a cost', poor: 'Poor fit' }
 

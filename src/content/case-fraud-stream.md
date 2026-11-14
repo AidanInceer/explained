@@ -1,3 +1,17 @@
+---
+title: "Worked design: payment fraud checks"
+summary: A card payment must be scored in less than a second. A streaming design with state for each card, and a batch path that trains the model.
+track: designs
+level: deeper
+minutes: 12
+at: [4, 1]
+prereqs: [design-method, stream-engines]
+tech: [stream, nosql, ml]
+refs:
+  - streaming: Ch. 2 and Ch. 7
+  - mlsys: Ch. 7, “Batch prediction versus online prediction”
+  - ddia: Ch. 11, Stream Processing
+---
 This worked design is one where streaming is necessary. The reason is in the first requirement: a program must decide in less than a second, and the checkout waits for the answer. The company and its numbers are invented for the example.
 
 Compare it with the [online shop](/lesson/case-online-shop) and the [flight booking system](/lesson/case-flight-booking). The method is the same. The requirement is different, so the design is different.

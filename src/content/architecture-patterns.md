@@ -1,3 +1,16 @@
+---
+title: Medallion, Lambda and Kappa
+summary: "Three common shapes for a platform: layers of refinement, a batch path next to a stream path, or streams only."
+track: architecture
+level: core
+minutes: 9
+at: [0, 1]
+prereqs: [warehouse-lake-lakehouse, streaming-basics]
+tech: [tableformats, stream, batch]
+refs:
+  - fode: Ch. 3, Designing Good Data Architecture
+  - ddia: Ch. 12, “The Lambda Architecture”
+---
 A data platform is many components. An architecture pattern is a known way to arrange them. This lesson covers three that you will hear in almost every design discussion.
 
 ## Medallion: layers of refinement

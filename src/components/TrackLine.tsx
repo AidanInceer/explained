@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { lessonsOf, trackById, type TrackId } from '../curriculum'
+import { lessonsOf } from '../data/curriculum'
+import { trackById, type TrackId } from '../data/tracks'
 import { setDone, useProgress } from '../lib/progress'
 import { quizText, useQuizScores } from '../lib/quizStore'
 

@@ -1,3 +1,16 @@
+---
+title: AI in data engineering work
+summary: Language models write and explain SQL, draft tests and documentation, and read logs. They also make confident errors, so the review habits matter more, not less.
+track: foundations
+level: core
+minutes: 10
+at: [4, 4]
+prereqs: [sdlc]
+tech: [semantic, ml, ci]
+refs:
+  - fode: Ch. 11, The Future of Data Engineering
+  - reddit: Recurring threads on AI tools in data engineering work
+---
 Large language models are now a normal tool in data engineering work. They are good at some tasks and unreliable at others, and the difference is predictable. This lesson is about using them as an engineer. The lesson on [data for machine learning and AI](/lesson/data-for-ml) covers the other direction: building the data supply for AI systems.
 
 This area changes fast. Treat product names as examples, and check what is current.

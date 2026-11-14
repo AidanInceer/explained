@@ -1,3 +1,17 @@
+---
+title: Designing for failure
+summary: Every part will fail at some time. Retries with backoff, timeouts, dead-letter queues, replay and a recovery plan decide if a failure is an event or an incident.
+track: architecture
+level: core
+minutes: 10
+at: [0, 3]
+prereqs: [event-driven]
+tech: [brokers, orchestrators, monitor]
+refs:
+  - ddia: Ch. 8, The Trouble with Distributed Systems
+  - sre: Ch. 22, Addressing Cascading Failures
+  - fode: Ch. 3, “Plan for failure”
+---
 In a system with many parts, something is always failing. A machine restarts, an API is slow, a file is malformed, a network link drops for two seconds. Reis and Housley list “plan for failure” as a principle of good data architecture. The aim is not a system that never fails. It is a system where a failure of one part is a small event, not an incident.
 
 ## Four numbers to agree first

@@ -1,3 +1,16 @@
+---
+title: Cost and performance
+summary: Cloud platforms charge for bytes scanned or for compute time. A small number of queries and tables cause most of the bill, and they can be found.
+track: ops
+level: deeper
+minutes: 9
+at: [1, 4]
+prereqs: [observability-lineage, clustering]
+tech: [warehouses, clouds]
+refs:
+  - fode: Ch. 4, “Cost optimization and business value”, “FinOps”
+  - reddit: Recurring threads on warehouse cost
+---
 On your own hardware, a bad query was slow. In the cloud, a bad query is slow and it sends a bill. Compute that scales without limit also spends without limit. The control of cost is now a normal part of data engineering, and the practice has a name: **FinOps**.
 
 Cost and performance are the same subject. Nearly every method that makes a query faster does so by reading or moving less data, and that also makes it cheaper.

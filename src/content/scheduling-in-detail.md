@@ -1,3 +1,16 @@
+---
+title: Scheduling in detail
+summary: Logical dates, catch-up, sensors, dependencies between DAGs, pools and timeouts. These settings cause most of the confusion in an orchestrator.
+track: ops
+level: core
+minutes: 9
+at: [0, 1]
+prereqs: [orchestration]
+tech: [orchestrators, transformation]
+refs:
+  - fode: Ch. 2, “Orchestration” undercurrent
+  - functional: Sections on reproducible, partitioned tasks
+---
 The lesson on [orchestration and DAGs](/lesson/orchestration) covered the idea: tasks, dependencies, retries. This lesson covers the settings that cause confusion in daily use. The terms are from Apache Airflow, because it is the most common orchestrator. Dagster and Prefect have the same ideas under other names.
 
 ::fig dag | The DAG from the orchestration lesson. Select a task to make it fail, and see which tasks do not run.

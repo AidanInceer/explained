@@ -1,3 +1,16 @@
+---
+title: A free stack, and the order to build in
+summary: DuckDB, dbt, Python, Git and a free scheduler are a complete stack at no cost. Go from end to end in days, then improve one part at a time.
+track: build
+level: core
+minutes: 5
+at: [1, 1]
+prereqs: [first-project]
+tech: [transformation, ci]
+refs:
+  - wiki: Learning resources
+  - dbt: Project structure, as used in the example stack
+---
 You have [a question of your own](/lesson/first-project). This lesson gives the tools to answer it at no cost, and the order to build in.
 
 ## A stack that costs nothing

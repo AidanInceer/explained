@@ -1,3 +1,17 @@
+---
+title: Batch and streaming
+summary: Batch processes a bounded set of data on a schedule. Streaming processes each event as it arrives. The choice is about how fresh the answer must be.
+track: foundations
+level: core
+minutes: 8
+at: [3, 3]
+prereqs: [source-systems]
+tech: [brokers, stream, orchestrators]
+refs:
+  - fode: Ch. 7, “Batch versus streaming”
+  - streaming: Ch. 1, Streaming 101
+  - ddia: Ch. 10 and Ch. 11
+---
 There are two ways to process data. You can collect it and process a set of it at intervals, or you can process each record when it arrives. The first is **batch**. The second is **streaming**.
 
 ::fig batch-stream | The same events go through the two designs. Change how often the batch job runs, and look at the age of the newest row in each target.

@@ -1,3 +1,16 @@
+---
+title: Row and column storage
+summary: A row store keeps each record together. A column store keeps each column together, so analytic queries read less and compress better.
+track: storage
+level: core
+minutes: 8
+at: [0, 0]
+prereqs: [oltp-olap]
+tech: [oltp, warehouses, formats]
+refs:
+  - ddia: Ch. 3, “Column-Oriented Storage”
+  - dremel: Sections 4 and 5
+---
 A table is a grid in your head. On disk it is a sequence of bytes, and something must decide the order. There are two choices, and the choice decides which queries are fast.
 
 ## Two ways to write a table to disk

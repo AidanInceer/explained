@@ -1,3 +1,15 @@
+---
+title: Slowly changing dimensions
+summary: When a customer moves city, do old orders show the old city or the new one? Type 1 overwrites. Type 2 keeps history.
+track: modeling
+level: core
+minutes: 8
+at: [0, 2]
+prereqs: [dimensional-modeling]
+tech: [transformation, warehouses]
+refs:
+  - kimball: Ch. 5, “Slowly Changing Dimension Basics”
+---
 Dimensions change. A customer moves to a different city. A product moves to a different category. A salesperson changes region. The changes are infrequent, which is why Kimball named these *slowly changing dimensions*, or SCD.
 
 The question is what happens to history. Ana lived in Lisbon and placed an order. She then moved to Porto. In a report of sales by city, does that first order count for Lisbon or for Porto?

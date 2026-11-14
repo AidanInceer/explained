@@ -1,58 +1,81 @@
 # Data Engineering Explained
 
-A local website that teaches the core concepts of data engineering as a map of lessons. Nine lines (Foundations, Storage, Modeling, Pipelines, Processing, Architecture, Operations, Worked designs, Build it yourself), 83 lessons and 40 figures. Lessons open one part at a time, and terms from lessons off the path get a definition at the side. A Toolkit page (`src/components/Toolkit.tsx`) lists the languages to know, with links, and the abilities of a good data engineer. The figures include decision helpers, an animated batch and streaming comparison, and seven step-by-step design drawings. Lessons can also contain `::scenario` blocks (`?` situation, then `+` best, `~` workable, `-` poor options, each as `option | reason`). Each lesson has a place on the map (`at: [column, row]` in `src/curriculum.ts`) and must be below all of its prerequisites. No login. Progress is saved in the browser.
+A website that teaches data engineering as a map of short lessons. Each lesson is one idea, a drawing, and the reason behind each choice.
 
-## Run
+- **83 lessons on nine lines**: Foundations, Storage, Modeling, Pipelines, Processing, Architecture, Operations, Worked designs, Build it yourself.
+- **40 figures**: diagrams, decision helpers, animations and step-by-step system designs.
+- **Quizzes and scenarios** in the lessons, and a definition at the side for terms that a lesson off the reader's path explains.
+- **A glossary, a toolkit page and a sources page.** Every lesson cites the books, papers and essays it summarises.
+- **No account and no server.** Progress, quiz answers and highlights stay in the reader's browser.
+
+## Run it
+
+You need [Node.js](https://nodejs.org) 20.19 or later (the version in `.nvmrc` is the one CI uses).
 
 ```powershell
 npm install
 npm run dev
 ```
 
-Open http://localhost:5199.
+Open http://localhost:5199. Changes to lessons and code show at once.
 
-`npm run build` type-checks and writes a static site to `dist`. `npm run preview` serves it.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server on port 5199 |
+| `npm run check` | Type check and all tests. Run this before you open a pull request |
+| `npm test` | Tests only. `npm run test:watch` runs them again on each change |
+| `npm run build` | Type check, then a static site in `dist/` |
+| `npm run preview` | Serve `dist/` on port 5199 |
 
-## Structure
+## Contribute
+
+Corrections, clearer explanations and new lessons are welcome. Most changes need only Markdown: each lesson is one file in `src/content/`. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the lesson format, the writing style and how to add a figure.
+
+## How it is built
+
+React, TypeScript and Vite. There is no back end.
 
 | Path | Contents |
 |---|---|
-| `src/curriculum.ts` | Lines, lessons, prerequisites, sources. The map is drawn from this file |
-| `src/content/<lesson-id>.md` | Lesson text |
-| `src/figures/` | Diagrams and interactive explainers |
-| `src/glossary.ts` | Glossary terms, each linked to a lesson |
-| `src/components/` | Map, lesson page, quiz, search, glossary, sources |
+| `src/content/<id>.md` | One lesson: its data (title, line, place on the map, prerequisites, sources) and its text |
+| `src/data/` | Lines (`tracks.ts`), sources, glossary, technology notes, tool links, Toolkit page |
+| `src/figures/` | Diagrams and interactive figures. `index.tsx` gives each one the name that lessons use |
+| `src/lessons/` | The lesson format: types, parser, checks, and term marking in the browser |
+| `src/map/layout.ts` | Where each line and lesson sits on the map |
+| `src/components/` | Pages and parts of pages. `lesson/` has the lesson page |
+| `src/lib/` | Reader data in the browser (progress, quiz answers, highlights) and search |
+| `build/vite-plugin-lessons.ts` | Reads and checks the lesson files at build time |
 
-## Add a lesson
+How a lesson gets to the screen:
 
-1. Add an entry to `LESSONS` in `src/curriculum.ts`. The `id` is the file name and the URL.
-2. Write `src/content/<id>.md`.
+1. At build time, `build/vite-plugin-lessons.ts` reads every file in `src/content/`. It checks the data at the top of each file and stops with a clear message if something is wrong.
+2. The data of all lessons becomes one small module (`virtual:lessons`). The map, the lists and the search use it.
+3. The text of each lesson becomes HTML parts in its own small file. The browser loads it when the lesson opens, so there is no Markdown parser in the site.
+4. In the browser, `src/lessons/link.ts` marks technology names and terms that open a note at the side.
 
-Lesson files are Markdown with three additions:
+### Data in the browser
 
-```
-::fig partitions | Caption text.
+All keys are in `localStorage` and start with `dee.`. Change a key's version if you change the shape of its value.
 
-::quiz
-? Question
-- Wrong option
-+ Correct option
-! Explanation shown after an answer.
-::end
-```
+| Key | Contents |
+|---|---|
+| `dee.progress.v1` | Lessons marked as understood |
+| `dee.quiz.v1`, `dee.quizscore.v1` | Quiz answers and results |
+| `dee.marks.v2` | Highlights and underlines, as text positions in each block of a lesson |
+| `dee.wide.v1`, `dee.read.v1` | Reading preferences: wide view, all parts open |
 
-A callout is a blockquote that starts with a bold label: `> **Pitfall.** ...`
+## Deploy
 
-To add a figure, export a React component from a file in `src/figures/` and register its name in `src/figures/index.tsx`.
+`npm run build` writes a static site to `dist/`. Any static host can serve it (GitHub Pages, Netlify, Cloudflare Pages, Vercel, S3 and a CDN).
+
+The site uses addresses such as `/lesson/cdc`, so the host must send `index.html` for any address that is not a file. For example:
+
+- Netlify or Cloudflare Pages: a `dist/_redirects` file with `/* /index.html 200`.
+- Vercel: a rewrite of `/(.*)` to `/index.html`.
+- GitHub Pages: copy `dist/index.html` to `dist/404.html`. If the site is not at the root of the domain, also set `base` in `vite.config.ts` and `basename` on the router in `src/main.tsx`.
+
+Files in `dist/assets/` have a content hash in their names, so they can be cached for a long time. Do not cache `index.html` for long.
 
 ## Sources
 
-Lessons summarise *Fundamentals of Data Engineering* (Reis, Housley), *Designing Data-Intensive Applications* (Kleppmann), *The Data Warehouse Toolkit* (Kimball, Ross), *Streaming Systems* (Akidau, Chernyak, Lax), the Data Engineering Wiki, r/dataengineering, and the papers and essays listed on the Sources page.
-
-## Reader features (all stored in the browser, no server)
-
-- **Progress**: localStorage key `dee.progress.v1`.
-- **Highlights and underlines**: select text in a lesson. Stored under `dee.marks.v1` as text offsets in each block of the lesson.
-- **Technology notes**: `src/tech.ts` holds the groups of tools and which lessons show them. The first mention of a group in a lesson becomes a marked term. `src/toolUrls.ts` holds the link for each tool. Logos come from the `simple-icons` package; tools without an icon get initials.
-- **Opening drawing**: `src/components/BigPicture.tsx`.
-
+Lessons summarise *Fundamentals of Data Engineering* (Reis, Housley), *Designing Data-Intensive Applications* (Kleppmann), *The Data Warehouse Toolkit* (Kimball, Ross), *Streaming Systems* (Akidau, Chernyak, Lax), the Data Engineering Wiki, r/dataengineering, and the papers and essays on the Sources page (`src/data/sources.ts`).

@@ -1,4 +1,4 @@
-/** Home page or documentation of each tool named in a technology note. */
+/** Home page or documentation of each tool named in a technology note (`src/data/tech.ts`). Keys are the tool names. */
 export const TOOL_URL: Record<string, string> = {
   'Apache Airflow': 'https://airflow.apache.org',
   'Astronomer (Astro)': 'https://www.astronomer.io',

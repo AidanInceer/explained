@@ -1,3 +1,16 @@
+---
+title: "Worked design: sensor data from machines"
+summary: Ten thousand machines send a reading each second, sometimes days late. A design with a gateway, a stream, downsampling and a time-series store.
+track: designs
+level: deeper
+minutes: 12
+at: [3, 1]
+prereqs: [design-method, windows-and-time]
+tech: [brokers, stream, nosql]
+refs:
+  - streaming: Ch. 2 and Ch. 3, windows and watermarks
+  - fode: Ch. 5, “IoT devices and edge”
+---
 This design is about **machines that report on themselves**. The data is simple: a few numbers and a time. The difficulty is the volume, the unreliable connections, and the fact that one stream must serve users who need a minute and users who need ten years. The company and its numbers are invented for the example.
 
 ## The situation

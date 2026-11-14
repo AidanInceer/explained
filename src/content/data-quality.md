@@ -1,3 +1,16 @@
+---
+title: Data quality and testing
+summary: Code tests check the logic. Data tests check the rows that arrived today. You need both, and the data tests must be able to stop the pipeline.
+track: ops
+level: core
+minutes: 8
+at: [0, 2]
+prereqs: [scheduling-in-detail]
+tech: [quality, transformation]
+refs:
+  - fode: Ch. 2, “DataOps” undercurrent
+  - wiki: "Concepts: Data quality"
+---
 A pipeline can run without an error and still give wrong numbers. The code did what it was written to do. The data was not what the code expected. This is the difference between software testing and data testing, and a data engineer must do both.
 
 ## Two things can be wrong

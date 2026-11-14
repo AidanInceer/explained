@@ -1,3 +1,16 @@
+---
+title: Change data capture
+summary: Read the database’s own transaction log and emit every insert, update and delete as an event.
+track: pipelines
+level: deeper
+minutes: 8
+at: [1, 3]
+prereqs: [incremental-loading]
+tech: [cdc, brokers, oltp]
+refs:
+  - ddia: Ch. 11, “Change Data Capture”
+  - log: Part two, data integration
+---
 Change data capture, or CDC, is a method of extraction that gets every change to a database as a sequence of events. It solves the problems that [high-water mark loads](/lesson/incremental-loading) cannot solve.
 
 ## The database already keeps a list of changes

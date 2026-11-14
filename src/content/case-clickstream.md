@@ -1,3 +1,16 @@
+---
+title: "Worked design: product analytics from clicks"
+summary: Events from a web and mobile application become sessions, funnels and a usage chart inside the product. One event stream serves batch and real-time users.
+track: designs
+level: core
+minutes: 12
+at: [1, 1]
+prereqs: [design-method, streaming-basics]
+tech: [brokers, rtolap, transformation]
+refs:
+  - kimball: Ch. 15, Electronic Commerce, on clickstream data
+  - ddia: Ch. 11, Stream Processing
+---
 This design is about **events that your own applications produce**: page views, clicks, searches, feature use. There is no source database to copy. You decide what is recorded, and that freedom is the main risk. The company and its numbers are invented for the example.
 
 Compare it with the [online shop](/lesson/case-online-shop): that design copied business tables in batch. This one collects a stream, and serves it in two ways.

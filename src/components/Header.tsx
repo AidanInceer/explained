@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { LESSONS, trackById } from '../curriculum'
-import { GLOSSARY } from '../glossary'
+import { LESSONS } from '../data/curriculum'
+import { search } from '../lib/search'
 import { useProgress } from '../lib/progress'
 import { useQuizScores } from '../lib/quizStore'
 import SiteMark from './SiteMark'
@@ -54,34 +54,6 @@ function NavFlow({ nav, path }: { nav: RefObject<HTMLElement | null>; path: stri
       ))}
     </>
   )
-}
-
-interface Hit {
-  key: string
-  to: string
-  title: string
-  sub: string
-  color?: string
-}
-
-function search(q: string): Hit[] {
-  const s = q.trim().toLowerCase()
-  if (s.length < 2) return []
-  const lessons: Hit[] = LESSONS.filter((l) => (l.title + ' ' + l.summary).toLowerCase().includes(s)).map((l) => ({
-    key: 'l' + l.id,
-    to: `/lesson/${l.id}`,
-    title: l.title,
-    sub: `Lesson on the ${trackById[l.track].name} line`,
-    color: trackById[l.track].color,
-  }))
-  const terms: Hit[] = GLOSSARY.filter((g) => g.term.toLowerCase().includes(s)).map((g) => ({
-      key: 'g' + g.term,
-      to: `/lesson/${g.lesson}`,
-      title: g.term,
-      sub: g.def,
-      color: trackById[LESSONS.find((l) => l.id === g.lesson)!.track].color,
-    }))
-  return [...lessons, ...terms].slice(0, 8)
 }
 
 export default function Header() {

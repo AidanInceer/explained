@@ -1,3 +1,16 @@
+---
+title: Choosing an analytic engine
+summary: Postgres, DuckDB, BigQuery, Snowflake, Redshift, Databricks, ClickHouse. What each one is, and which fits which size of data and team.
+track: storage
+level: core
+minutes: 10
+at: [1, 5]
+prereqs: [warehouse-lake-lakehouse]
+tech: [warehouses, rtolap, batch]
+refs:
+  - fode: Ch. 4, Choosing Technologies Across the Data Engineering Lifecycle
+  - reddit: "Recurring threads: “Snowflake or BigQuery or Databricks?”"
+---
 “Which warehouse should we use?” is one of the most frequent questions in the r/dataengineering community. This lesson describes the main engines as groups, says what each one is, and gives a method to choose. Products change quickly, so treat the names as examples of each group and check the current documentation and prices before you decide.
 
 ## The groups

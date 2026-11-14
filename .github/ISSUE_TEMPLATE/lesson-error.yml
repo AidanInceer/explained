@@ -1,0 +1,18 @@
+name: Error in a lesson
+description: A wrong fact, an unclear explanation, a broken figure or a typo.
+labels: [content]
+body:
+  - type: input
+    id: lesson
+    attributes:
+      label: Lesson address
+      placeholder: /lesson/idempotency
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Quote the text if you can, and say what it should say. Add a source if it is a fact.
+    validations:
+      required: true

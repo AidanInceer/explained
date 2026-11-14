@@ -1,3 +1,16 @@
+---
+title: Privacy in practice
+summary: A person asks to be deleted. You must find their data in every layer, every backup and every export. The design decides if this takes an hour or a month.
+track: architecture
+level: deeper
+minutes: 9
+at: [0, 5]
+prereqs: [governance-security]
+tech: [catalog, tableformats, clouds]
+refs:
+  - fode: Ch. 10, Security and Privacy
+  - ddia: Ch. 12, “Privacy and Tracking”
+---
 The lesson on [governance and security](/lesson/governance-security) gave the principles. This lesson is about the work. Privacy rules such as the GDPR in Europe and the CCPA in California give people rights over their data, and those rights become requirements on your pipelines.
 
 This is an engineering overview, not legal advice. The exact duties depend on the law that applies and on your company’s legal team. Your part is to make the platform able to meet them.

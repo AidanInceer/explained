@@ -1,3 +1,16 @@
+---
+title: Use AI, and still learn
+summary: An assistant can write the whole project in an afternoon. How to use it so that the knowledge stays with you, and what the project shows an employer.
+track: build
+level: core
+minutes: 5
+at: [2, 2]
+prereqs: [project-stack]
+tech: [ci]
+refs:
+  - functional: Whole essay, for the habits to practise
+  - reddit: Recurring threads on portfolio projects
+---
 Your project [runs from end to end](/lesson/project-stack). This lesson is about two things that decide what it is worth: what you learned from it, and what it shows to other people.
 
 ## Use AI, and still learn

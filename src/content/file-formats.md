@@ -1,3 +1,16 @@
+---
+title: File formats
+summary: CSV and JSON are for people and interchange. Avro is for rows in motion. Parquet is for analytics at rest.
+track: storage
+level: core
+minutes: 8
+at: [0, 1]
+prereqs: [row-vs-column]
+tech: [formats, tableformats]
+refs:
+  - ddia: Ch. 4, Encoding and Evolution
+  - wiki: "Concepts: Data serialization formats"
+---
 In a lake, and between systems, data is stored in files. The file format decides how large the data is, how fast it reads, and what happens when the schema changes.
 
 ## The four formats to know

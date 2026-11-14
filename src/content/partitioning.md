@@ -1,3 +1,16 @@
+---
+title: Partitioning and pruning
+summary: Split a table into folders by a column such as date. A query with a filter on that column skips every other folder.
+track: storage
+level: core
+minutes: 8
+at: [0, 2]
+prereqs: [file-formats]
+tech: [tableformats, warehouses, object]
+refs:
+  - fode: Ch. 6, Storage
+  - ddia: Ch. 6, Partitioning
+---
 The fastest way to read data is to not read it. Partitioning arranges a table so that the engine can skip most of it.
 
 ## The idea

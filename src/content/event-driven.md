@@ -1,3 +1,16 @@
+---
+title: Events, CDC and the outbox
+summary: A service must change its database and tell other systems about it. Two separate writes can disagree. The outbox pattern and CDC make them one.
+track: architecture
+level: core
+minutes: 9
+at: [0, 2]
+prereqs: [architecture-patterns]
+tech: [brokers, cdc, oltp]
+refs:
+  - ddia: Ch. 11, “Keeping Systems in Sync”, “Event Sourcing”
+  - log: Part two, data integration
+---
 A service does something: it accepts an order. Other systems must know: the warehouse, the email service, the fraud check, the search index. How the first system tells the others is one of the most important decisions in an architecture, and data engineers live with the result.
 
 ## Three ways to connect systems

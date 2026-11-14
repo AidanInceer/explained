@@ -1,3 +1,15 @@
+---
+title: "Sizing a job: partitions, memory, cores"
+summary: "Simple arithmetic gives a first cluster size: data volume to partitions, partitions to tasks, tasks to cores and memory. Then measure and adjust."
+track: processing
+level: deeper
+minutes: 8
+at: [0, 5]
+prereqs: [spark-tuning]
+tech: [batch, clouds]
+refs:
+  - spark: Part IV, production applications and tuning
+---
 “How large must the cluster be?” has no exact answer before the job has run. But simple arithmetic gives a reasonable start, and it also tells you when a number is clearly wrong. This lesson works through one example. The names are from Spark. The reasoning applies to any distributed engine.
 
 ## The quantities

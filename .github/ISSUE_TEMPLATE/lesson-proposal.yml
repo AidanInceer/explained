@@ -1,0 +1,28 @@
+name: Lesson proposal
+description: A new lesson, or a large change to a lesson.
+labels: [content, proposal]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Lesson title
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What will the reader understand after the lesson?
+    validations:
+      required: true
+  - type: textarea
+    id: place
+    attributes:
+      label: Place on the map
+      description: Which line (track), and which lessons should come before it?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Books, papers or documentation that the lesson will be based on.

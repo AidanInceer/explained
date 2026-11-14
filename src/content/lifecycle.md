@@ -1,3 +1,15 @@
+---
+title: The data engineering lifecycle
+summary: Generation, ingestion, transformation and serving, with storage under all of them. Every tool fits one of these stages.
+track: foundations
+level: core
+minutes: 7
+at: [2, 1]
+prereqs: [what-is-de]
+tech: [ingestion, warehouses, bi]
+refs:
+  - fode: Ch. 2, The Data Engineering Lifecycle
+---
 The data engineering lifecycle, from *Fundamentals of Data Engineering*, is the most useful single picture of the field. It describes the stages that data goes through, not the tools. When you meet a new tool, ask which stage it serves.
 
 ::fig lifecycle | The lifecycle from Reis and Housley. Storage is not a step in the sequence. It is under every step.

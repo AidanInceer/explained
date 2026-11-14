@@ -1,3 +1,15 @@
+---
+title: "Worked example: an API extract that survives"
+summary: A small Python extract with pagination, rate limits, retries, a saved cursor and an idempotent load. Each part exists because of one specific failure.
+track: pipelines
+level: deeper
+minutes: 10
+at: [1, 5]
+prereqs: [merge-patterns]
+tech: [ingestion, orchestrators, saas]
+refs:
+  - fode: Ch. 7, “APIs”, “Ingestion considerations”
+---
 The usual advice is to buy connectors for common sources. But sooner or later there is a source with no connector: a partner’s system, an internal tool, a small vendor. Then you write an extract. This lesson builds one in Python, and each part is added because of one specific failure.
 
 The source is an invented HTTP API that returns invoices.

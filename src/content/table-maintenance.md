@@ -1,3 +1,16 @@
+---
+title: Table maintenance
+summary: "Tables in a lakehouse need regular care: compact small files, remove old snapshots, delete files that nothing refers to, and keep statistics current."
+track: storage
+level: deeper
+minutes: 8
+at: [0, 6]
+prereqs: [table-formats]
+tech: [tableformats, orchestrators, batch]
+refs:
+  - lakehouse: Section 3, metadata layers
+  - wiki: "Concepts: Open table formats"
+---
 A managed warehouse maintains its own storage. A lakehouse built on an [open table format](/lesson/table-formats) often does not: the files are yours, and so is the housekeeping. Without it, a table gets slower and more expensive each week, with no change to any query.
 
 There are four jobs. Managed lakehouse platforms run some of them for you, so check what yours does before you schedule your own.

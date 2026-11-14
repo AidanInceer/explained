@@ -1,3 +1,16 @@
+---
+title: Merge, upsert and deduplicate
+summary: "Four SQL patterns do most of the loading work: overwrite a partition, delete and insert, merge by key, and keep the latest row for each key."
+track: pipelines
+level: core
+minutes: 9
+at: [1, 4]
+prereqs: [idempotency]
+tech: [transformation, warehouses, tableformats]
+refs:
+  - functional: Sections on immutable partitions
+  - kimball: Ch. 19, ETL Subsystems and Techniques
+---
 The lesson on [idempotent pipelines](/lesson/idempotency) gives the principle: a second run must give the same result as the first. This lesson gives the SQL. Four patterns cover nearly all loading work, and it is important to know which one fits which case.
 
 ## The problem they solve

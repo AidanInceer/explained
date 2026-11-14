@@ -1,3 +1,17 @@
+---
+title: The day-to-day work
+summary: Most of the job is not new pipelines. It is requests, failed runs, backfills, reviews, small changes and the messages that explain them.
+track: foundations
+level: core
+minutes: 9
+at: [0, 3]
+prereqs: [stakeholders-requirements]
+tech: [orchestrators, vcs, monitor]
+refs:
+  - fode: Ch. 1, “Whom data engineers work with”
+  - reddit: "Recurring threads: “What does your day look like?”"
+  - sre: Ch. 5, Eliminating Toil
+---
 Courses teach how to build a new pipeline. In a job, that is perhaps a quarter of the time. The rest is the work of keeping existing pipelines correct and useful. This lesson describes that work, because it is what you will be judged on.
 
 ## Where the time goes

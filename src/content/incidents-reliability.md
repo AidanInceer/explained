@@ -1,3 +1,16 @@
+---
+title: SLAs, incidents and on-call
+summary: Agree how fresh and how correct each dataset must be, measure it, and have a practised response for the day it fails.
+track: ops
+level: deeper
+minutes: 8
+at: [0, 5]
+prereqs: [debugging-pipelines]
+tech: [monitor, quality]
+refs:
+  - sre: Ch. 4, Service Level Objectives
+  - sre: "Ch. 15, Postmortem Culture: Learning from Failure"
+---
 Every pipeline fails at some time. A reliable data team is not one with no failures. It is one that has agreed what “working” means, that finds a failure before the users do, and that learns from each one. These practices come from site reliability engineering, and Google’s *Site Reliability Engineering* book is the standard reference. They apply to data with small changes.
 
 ## Say what “working” means: SLI, SLO, SLA

@@ -1,3 +1,16 @@
+---
+title: "Worked example: a slow query made fast"
+summary: One report query, from 14 minutes to 20 seconds in four changes. Each change is read from the plan first, then made, then measured.
+track: processing
+level: deeper
+minutes: 10
+at: [0, 3]
+prereqs: [query-engines]
+tech: [warehouses, batch]
+refs:
+  - fode: Ch. 8, “Improving query performance”
+  - spark: Part IV, performance tuning
+---
 This lesson follows one slow query through four corrections. The numbers are from an invented case, but each step is one that occurs in real work. The method is the point: **read the plan, change one thing, measure, repeat**.
 
 ## The query

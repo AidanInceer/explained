@@ -1,3 +1,16 @@
+---
+title: "Worked example: model a subscription business"
+summary: "From five source tables to facts, dimensions and three metrics: monthly recurring revenue, churn and retention. Each decision is shown with its reason."
+track: modeling
+level: core
+minutes: 11
+at: [1, 4]
+prereqs: [semantic-layer]
+tech: [transformation, semantic, bi]
+refs:
+  - kimball: Ch. 2, Kimball Dimensional Modeling Techniques Overview
+  - kimball: Ch. 18, Dimensional Modeling Process and Tasks
+---
 This lesson applies the modeling line to one case, from start to finish. The company is invented: it sells a software product by monthly or yearly subscription. The leadership wants three numbers: **monthly recurring revenue** (MRR), **churn** and **retention**.
 
 Subscription businesses are a good exercise, because the important numbers are levels and changes of level, and a plain table of transactions does not give them directly.

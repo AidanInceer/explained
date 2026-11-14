@@ -1,3 +1,8 @@
+/**
+ * Terms for the Glossary page and the search. Each term points to the lesson that explains it.
+ * When a lesson uses a term from a lesson that is not on its path (not one of its prerequisites, or theirs),
+ * the first use gets a definition at the side. Text in brackets after a term is not matched in lesson text.
+ */
 export interface Term {
   term: string
   def: string

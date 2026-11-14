@@ -1,3 +1,16 @@
+---
+title: Dimensional modeling
+summary: Put measurements in fact tables and context in dimension tables. Declare the grain first. The result is the star schema.
+track: modeling
+level: core
+minutes: 10
+at: [0, 1]
+prereqs: [normalization, data-model-levels]
+tech: [transformation, bi]
+refs:
+  - kimball: Ch. 1 and 2
+  - fode: Ch. 8, “Kimball”
+---
 Dimensional modeling is the most widely used method for designing analytic tables. Ralph Kimball described it in the 1990s. It is still the default because it matches how people ask questions.
 
 ## Facts and dimensions

@@ -1,3 +1,17 @@
+---
+title: Stakeholders and requirements
+summary: A request such as “I need a sales dashboard” is not a requirement. Find the decision behind it, then the grain, freshness and accuracy it needs.
+track: foundations
+level: core
+minutes: 10
+at: [0, 2]
+prereqs: [lifecycle]
+tech: [bi, catalog]
+refs:
+  - beam: Part 1, modelstorming with the 7Ws
+  - kimball: Ch. 17, Kimball DW/BI Lifecycle Overview
+  - fode: Ch. 1, “Data engineers and other technical roles”, “Business leadership”
+---
 Most data projects that fail do not fail for a technical reason. The pipeline works, and the result is not what the person needed. The cause is nearly always the same: the engineer built the *request*, and did not find the *requirement*.
 
 A request is what someone says: “I need a sales dashboard.” A requirement is what must be true for their work to succeed: “Each Monday I move budget between regions, and I need last week’s net sales for each region, in agreement with finance.”

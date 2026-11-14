@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { lessonById, trackById } from '../curriculum'
-import { GLOSSARY } from '../glossary'
+import { lessonById } from '../data/curriculum'
+import { trackById } from '../data/tracks'
+import { GLOSSARY } from '../data/glossary'
 
 export default function Glossary() {
   const [q, setQ] = useState('')

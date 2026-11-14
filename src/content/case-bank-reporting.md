@@ -1,3 +1,16 @@
+---
+title: "Worked design: a regulatory report at a bank"
+summary: Nobody needs it fast. Everybody needs it exact, explained and repeatable two years later. A batch design built around audit, history and reconciliation.
+track: designs
+level: deeper
+minutes: 12
+at: [1, 2]
+prereqs: [case-online-shop, scd]
+tech: [catalog, warehouses, orchestrators]
+refs:
+  - kimball: Ch. 10, Financial Services
+  - fode: Ch. 10, Security and Privacy
+---
 This design is the opposite of the streaming cases. Nobody needs the result fast. The report is produced once a quarter. But each number in it must be exact, each number must be explainable, and the bank must be able to produce the same report again two years later. The requirement is not speed. It is **proof**. The bank and its details are invented for the example, and this is an engineering illustration, not a description of a specific regulation.
 
 Compare it with the [online shop](/lesson/case-online-shop). Both are batch. The shop design is as simple as possible. This one adds controls at every step, because the cost of an error is of a different kind.

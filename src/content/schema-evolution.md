@@ -1,3 +1,16 @@
+---
+title: Schema evolution
+summary: Columns are added, renamed and removed while old data and old readers still exist. Some changes are safe and some break every consumer.
+track: modeling
+level: deeper
+minutes: 9
+at: [0, 4]
+prereqs: [modeling-styles, file-formats]
+tech: [formats, tableformats, brokers]
+refs:
+  - ddia: Ch. 4, Encoding and Evolution
+  - fode: Ch. 7, “Schema evolution”
+---
 A schema is the list of columns of a dataset, with their names and types. It does not stay the same. The application team adds a field, splits a column, or changes a number into a string. **Schema evolution** is the set of rules that lets a schema change while old data and old readers continue to work.
 
 It is one of the most frequent causes of pipeline failure, because the change is made by a different team from the one that it breaks.

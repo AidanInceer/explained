@@ -1,3 +1,16 @@
+---
+title: Stream processing engines
+summary: Flink, Spark Structured Streaming, Kafka Streams and streaming databases all keep state and checkpoint it. They differ in latency, operations work and language.
+track: processing
+level: deeper
+minutes: 9
+at: [1, 4]
+prereqs: [delivery-semantics]
+tech: [stream, brokers]
+refs:
+  - streaming: Ch. 7, The Practicalities of Persistent State
+  - ddia: Ch. 11, “Stream Processing”
+---
 A broker moves events. A **stream processing engine** computes on them while they move: it filters, joins, and aggregates over [windows](/lesson/windows-and-time), continuously and with [delivery guarantees](/lesson/delivery-semantics).
 
 ## What every engine must solve

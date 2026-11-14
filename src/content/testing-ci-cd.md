@@ -1,3 +1,17 @@
+---
+title: CI/CD for pipelines
+summary: "Every change runs through automated checks before it reaches production: lint, unit tests, a build against sample data, and a comparison with the current output."
+track: ops
+level: core
+minutes: 9
+at: [1, 1]
+prereqs: [environments-iac, orchestration]
+tech: [ci, quality]
+refs:
+  - accelerate: Ch. 4, continuous delivery
+  - dbt: Best practices
+  - fode: Ch. 2, “DataOps” undercurrent
+---
 **Continuous integration** (CI) runs automated checks on each change before it is merged. **Continuous delivery** (CD) releases the merged change to production by an automated pipeline. Together they turn “I think this is correct” into “this passed the same checks as every other change”.
 
 The [SDLC lesson](/lesson/sdlc) gives the reasons. This lesson shows what the pipeline contains for data work.

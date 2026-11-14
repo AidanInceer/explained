@@ -1,3 +1,16 @@
+---
+title: Software engineering habits
+summary: A pipeline is software. Version control, code review, tests and small functions apply to SQL and Python in the same way as to an application.
+track: foundations
+level: core
+minutes: 9
+at: [4, 2]
+prereqs: [lifecycle]
+tech: [vcs, ci]
+refs:
+  - fode: Ch. 2, “Software Engineering” undercurrent
+  - accelerate: Part 1, the technical practices
+---
 A pipeline is a program. It has inputs, logic and outputs, it has defects, and other people must be able to change it after you. The habits that software engineers use to keep programs correct apply to data work with almost no change. Reis and Housley list software engineering as one of the undercurrents of the [lifecycle](/lesson/lifecycle) for this reason.
 
 A team that writes SQL in a web console and saves it nowhere does not have these habits. That team is slow, because nobody can make a change with confidence.

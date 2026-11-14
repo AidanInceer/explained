@@ -1,3 +1,16 @@
+---
+title: Metrics and the semantic layer
+summary: Two dashboards show two revenue numbers. A semantic layer defines each metric once, and every tool reads that definition.
+track: modeling
+level: deeper
+minutes: 8
+at: [1, 3]
+prereqs: [fact-table-types]
+tech: [semantic, bi]
+refs:
+  - fode: Ch. 9, “Semantic and metrics layers”
+  - reddit: Recurring threads on metrics layers
+---
 The marketing dashboard shows revenue of 4.2 million for May. The finance dashboard shows 3.9 million. The two are “correct”: one includes tax and the other does not, one counts by order date and the other by payment date. The meeting that should have been about the business is now about which number is true.
 
 This is the most common failure of trust in data, and tables alone do not prevent it. A fact table stores amounts. It does not store the definition of “revenue”.

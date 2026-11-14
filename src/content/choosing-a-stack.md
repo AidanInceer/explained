@@ -1,3 +1,16 @@
+---
+title: Choosing a stack
+summary: The correct platform for five people is wrong for five hundred. Choose for the team and the latency you have, and plan what you will change later.
+track: architecture
+level: core
+minutes: 10
+at: [1, 2]
+prereqs: [architecture-patterns]
+tech: [clouds, ingestion, orchestrators]
+refs:
+  - fode: Ch. 4, Choosing Technologies Across the Data Engineering Lifecycle
+  - reddit: "Recurring threads: “What stack for a small team?”"
+---
 A data stack is the set of tools that covers the [lifecycle](/lesson/lifecycle): ingestion, storage, transformation, orchestration, serving and monitoring. There are hundreds of products. The correct stack is not the most modern one. It is the one that your team can operate and that meets your requirements.
 
 Chapter 4 of *Fundamentals of Data Engineering* is about this choice, and its main point is that architecture comes first and tools second. Decide what you need. Then find tools that do it.

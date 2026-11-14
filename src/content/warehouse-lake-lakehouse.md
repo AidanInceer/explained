@@ -1,3 +1,16 @@
+---
+title: Warehouse, lake, lakehouse
+summary: A warehouse is a managed analytic database. A lake is files in object storage. A lakehouse puts warehouse guarantees on lake files.
+track: storage
+level: core
+minutes: 9
+at: [0, 4]
+prereqs: [object-storage]
+tech: [warehouses, object, tableformats]
+refs:
+  - fode: Ch. 3, Designing Good Data Architecture
+  - lakehouse: Whole paper, 8 pages
+---
 These three words describe where analytic data is kept. Each one came as an answer to the limits of the one before it.
 
 ::fig lakehouse | The difference is who controls the files, and whether there are transactions.

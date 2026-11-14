@@ -1,3 +1,16 @@
+---
+title: "Worked design: an online shop"
+summary: Orders, payments and shipments for a company with two data people. A managed batch ELT design, and what to change when the company grows.
+track: designs
+level: core
+minutes: 12
+at: [0, 1]
+prereqs: [design-method, transformation-dbt]
+tech: [ingestion, warehouses, transformation]
+refs:
+  - kimball: Ch. 3, Retail Sales, and Ch. 6, Order Management
+  - fode: Ch. 4, “Build versus buy”
+---
 This is the first worked design. It uses the [seven-step method](/lesson/design-method) on a common situation: a small company, transactional data, and a data team of two people. The company and its numbers are invented for the example.
 
 The correct design here is intentionally plain. A large part of good engineering is to see when the plain design is enough.

@@ -1,3 +1,16 @@
+---
+title: Environments and infrastructure as code
+summary: Development, staging and production are separate copies of the platform. Describe them in code so that they stay the same and can be rebuilt.
+track: ops
+level: core
+minutes: 8
+at: [1, 0]
+prereqs: [sdlc]
+tech: [iac, vcs, ci]
+refs:
+  - fode: Ch. 2, “Infrastructure as code”, “Pipelines as code”
+  - accelerate: Ch. 4, technical practices
+---
 You must be able to change a pipeline without a risk to the data that people use. For that, the change needs a place to run that is not production. Such a place is an **environment**.
 
 ## The usual environments

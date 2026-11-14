@@ -1,3 +1,17 @@
+---
+title: What data engineers do
+summary: Data engineers move data from the systems that create it to the people and programs that use it, and keep it correct on the way.
+track: foundations
+level: core
+minutes: 6
+at: [2, 0]
+prereqs: []
+tech: [clouds, warehouses, orchestrators]
+refs:
+  - fode: Ch. 1, Data Engineering Described
+  - wiki: "FAQ: What is Data Engineering?"
+  - reddit: Community wiki, “Getting started”
+---
 A shop sells a pair of shoes. The till records the sale in a database. A week later, someone asks how many shoes were sold in each city last month, and whether the discount helped.
 
 The till's database cannot answer that question well. It holds the current state of the shop, it is busy serving customers, and it does not know about the marketing system that sent the discount. Someone must copy the sales out, join them with the other data, correct what is wrong, and put the result where an analyst can query it. That work is data engineering.

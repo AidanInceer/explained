@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import type { QuizQuestion } from '../lib/content'
-import { savedPicks, savePick, saveScore } from '../lib/quizStore'
+import type { QuizQuestion } from '../../lessons/types'
+import { savedPicks, savePick, saveScore } from '../../lib/quizStore'
 
 function Question({
   item,

@@ -1,3 +1,16 @@
+---
+title: Governance and security
+summary: Know what data you hold, who can see it, and how long you keep it. Give each user and job the least access that works.
+track: architecture
+level: core
+minutes: 8
+at: [0, 4]
+prereqs: [designing-for-failure]
+tech: [catalog, clouds]
+refs:
+  - fode: Ch. 10, Security and Privacy
+  - fode: Ch. 2, “Data Management” undercurrent
+---
 A data platform collects the most valuable and the most sensitive data of a company in one place. Governance and security are the controls on that data: who can find it, who can read it, and how it is kept safe. In *Fundamentals of Data Engineering* they are undercurrents. They apply at every stage, and they cannot be added at the end.
 
 ## Governance: can people find, understand and trust the data?

@@ -1,3 +1,16 @@
+---
+title: Full and incremental loads
+summary: Copy everything each run, or copy only what changed. Incremental loads need a reliable way to find the changes.
+track: pipelines
+level: core
+minutes: 9
+at: [0, 2]
+prereqs: [ingestion-patterns]
+tech: [ingestion, transformation]
+refs:
+  - fode: Ch. 7, Ingestion
+  - kimball: Ch. 19 and 20, ETL subsystems
+---
 Each time a pipeline runs, it must decide how much data to copy. The two basic answers are all of it, or only what changed.
 
 ## Full load

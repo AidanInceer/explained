@@ -1,3 +1,16 @@
+---
+title: Delivery guarantees
+summary: At-most-once can lose data. At-least-once can duplicate it. Exactly-once is at-least-once plus a way to remove the duplicates.
+track: processing
+level: deeper
+minutes: 8
+at: [1, 3]
+prereqs: [windows-and-time, idempotency]
+tech: [stream, brokers]
+refs:
+  - streaming: Ch. 5, Exactly-Once and Side Effects
+  - ddia: Ch. 11, “Fault Tolerance”
+---
 A consumer reads a message, does some work, and records its progress. It can fail between any two of those steps. What occurs after the restart is the system's **delivery guarantee**. There are three, and their names promise more than they give.
 
 ::fig delivery | The consumer fails at one point near message 3. The order of the work and the progress record decides the result.

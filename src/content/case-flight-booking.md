@@ -1,3 +1,17 @@
+---
+title: "Worked design: a flight booking system"
+summary: Bookings change many times before the flight leaves. A design with change data capture, a lakehouse, and a fact table that follows each booking.
+track: designs
+level: deeper
+minutes: 14
+at: [2, 1]
+prereqs: [design-method, cdc, fact-table-types]
+tech: [cdc, tableformats, orchestrators]
+refs:
+  - kimball: Ch. 12, Transportation
+  - ddia: Ch. 11, “Change Data Capture”
+  - fode: Ch. 3, Designing Good Data Architecture
+---
 The [online shop](/lesson/case-online-shop) needed a plain batch design. This system has three properties that make it harder: the main record changes many times, some users need data within the hour, and the data includes sensitive personal details. The airline and its numbers are invented for the example.
 
 ## The situation

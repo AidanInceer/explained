@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState, type R
 import { Link } from 'react-router-dom'
 import { H, type Node } from '../../figures/whiteboard'
 import { ARROWS, BY, CHECKS, CI, DAG, HGT, NODES, NOTES, SCREENS, SCREEN_H, SCREEN_W, STAGES, W, type Flow } from './data'
-import { LESSONS } from '../../curriculum'
+import { LESSONS } from '../../data/curriculum'
 import './system.css'
 
 /* The home page drawing: one invented airline's data platform, with data moving on every line.
@@ -510,8 +510,19 @@ function useFlowEngine(
       }
       raf = requestAnimationFrame(frame)
     }
-    raf = requestAnimationFrame(frame)
+    // Draw frames only while the drawing is on screen. Off screen, the clock stops and nothing is drawn.
+    const run = (on: boolean) => {
+      cancelAnimationFrame(raf)
+      raf = 0
+      if (!on) return
+      prev = performance.now()
+      raf = requestAnimationFrame(frame)
+    }
+    const io = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([e]) => run(e.isIntersecting))
+    run(true)
+    io?.observe(root)
     return () => {
+      io?.disconnect()
       cancelAnimationFrame(raf)
       g.replaceChildren()
     }

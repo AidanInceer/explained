@@ -1,3 +1,16 @@
+---
+title: Streams and logs
+summary: A stream is a table that never ends. Kafka stores it as an append-only log, split into partitions that consumers read at their own pace.
+track: processing
+level: core
+minutes: 9
+at: [1, 0]
+prereqs: [batch-vs-streaming]
+tech: [brokers, stream]
+refs:
+  - log: Part one
+  - ddia: Ch. 11, “Partitioned Logs”
+---
 A batch job processes a dataset that has an end: yesterday's orders. A streaming job processes a dataset that does not: orders, as they occur, without stopping. The data is the same. The difference is that you do not wait for it to be complete, because it never is.
 
 ## Bounded and unbounded data

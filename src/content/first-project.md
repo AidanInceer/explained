@@ -1,3 +1,16 @@
+---
+title: Start from something that annoys you
+summary: You cannot practise at company scale, and you do not need to. Choose a problem of your own that data could improve. You will keep it running.
+track: build
+level: core
+minutes: 6
+at: [0, 0]
+prereqs: [case-online-shop]
+tech: [batch, transformation]
+refs:
+  - reddit: Community wiki and recurring threads on portfolio projects
+  - wiki: Learning resources
+---
 Reading explains the ideas. You learn the job by building a pipeline, running it each day, and repairing it when it breaks. This lesson is about how to do that with no employer and no budget.
 
 ## The problem with practice

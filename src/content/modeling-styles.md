@@ -1,3 +1,16 @@
+---
+title: Inmon, Data Vault and wide tables
+summary: Kimball is not the only approach. Each alternative moves the cost between load time, query time and change.
+track: modeling
+level: deeper
+minutes: 9
+at: [0, 3]
+prereqs: [scd]
+tech: [transformation, warehouses]
+refs:
+  - fode: Ch. 8, “Inmon”, “Data Vault”, “Wide Denormalized Tables”
+  - reddit: "Recurring threads: “Is Kimball still relevant?”"
+---
 [Dimensional modeling](/lesson/dimensional-modeling) is the usual default, and it is not the only method. This lesson gives the three main alternatives and when each is a reasonable choice.
 
 ## Inmon: a normalized warehouse first

@@ -1,3 +1,16 @@
+---
+title: How to debug a pipeline
+summary: A number is wrong. Work backward along the lineage, halve the search at each step, and compare a good day with a bad day.
+track: ops
+level: core
+minutes: 10
+at: [0, 4]
+prereqs: [observability-lineage]
+tech: [quality, monitor, vcs]
+refs:
+  - sre: Ch. 12, Effective Troubleshooting
+  - fode: Ch. 2, “DataOps” undercurrent
+---
 Debugging is a skill of its own, and a large part of the [day-to-day work](/lesson/working-day). Engineers who debug well are not the ones who know the most. They follow a method and do not guess. The chapter on troubleshooting in Google’s *Site Reliability Engineering* describes the same loop: observe, form a theory, test it, repeat.
 
 There are two kinds of problem, and they need different starting points.
