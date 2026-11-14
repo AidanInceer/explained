@@ -31,12 +31,12 @@ export const SOFTWARE_SYSTEM: SystemPlan = {
     { id: 'pay', x: 568, y: 294, w: 216, h: 46, label: 'Payments', sub: 'charges, refunds', glyph: 'api', lessons: ['failure', 'apis', 'errors'] },
     // background jobs
     { id: 'queue', x: 584, y: 56, w: 124, label: 'Queue', sub: 'job messages', glyph: 'log', count: { start: 214, unit: 'jobs', per: [1, 1] }, lessons: ['queues'] },
-    { id: 'worker', x: 760, y: 56, w: 124, label: 'Worker', sub: 'background tasks', glyph: 'cpu', lessons: ['queues', 'concurrency', 'background-work'] },
+    { id: 'worker', x: 760, y: 56, w: 124, label: 'Worker', sub: 'background tasks', glyph: 'cpu', lessons: ['queues', 'concurrency'] },
     // stored data
     { id: 'db', x: 846, y: 172, w: 130, h: 58, label: 'Database', sub: 'Postgres, ACID', glyph: 'db', count: { start: 392140, unit: 'rows', per: [2, 9] }, lessons: ['app-databases', 'transactions', 'trees-graphs', 'big-o'] },
     { id: 'cache', x: 846, y: 248, w: 130, h: 46, label: 'Cache', sub: 'Redis', glyph: 'bolt', lessons: ['caching', 'hash-maps'] },
     // outside services
-    { id: 'email', x: 1030, y: 56, w: 156, label: 'Email', sub: 'receipts, resets', glyph: 'mail', count: { start: 9120, unit: 'sent', per: [1, 1] }, lessons: ['background-work'] },
+    { id: 'email', x: 1030, y: 56, w: 156, label: 'Email', sub: 'receipts, resets', glyph: 'mail', count: { start: 9120, unit: 'sent', per: [1, 1] }, lessons: ['queues'] },
     { id: 'push', x: 1030, y: 122, w: 156, h: 46, label: 'Push messages', glyph: 'phone', lessons: ['background-work'] },
     { id: 'psp', x: 1030, y: 290, w: 156, label: 'Payment provider', sub: 'API + webhooks', glyph: 'api', lessons: ['apis', 'secrets', 'failure'] },
     // under it all
