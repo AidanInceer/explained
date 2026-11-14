@@ -3,7 +3,7 @@ minutes: 8
 tech: []
 refs:
   - islp: Section 5.1, “Cross-Validation”, opening, on the validation set approach
-  - mlsys: Ch. 4, “Training Data”, on data splits and leakage
+  - mlsys: Ch. 4, “Training Data”, and Ch. 5, “Feature Engineering”, section on data leakage
 ---
 A model that scores 99% on the data it was trained on may score 60% on anything new. The only way to know how it will do on new data is to test it on data it has never seen. So before training, you set some data aside. How you split the data decides whether your results mean anything.
 

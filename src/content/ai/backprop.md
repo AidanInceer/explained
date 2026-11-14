@@ -6,7 +6,7 @@ refs:
   - dlbook: Section 6.5, “Back-Propagation and Other Differentiation Algorithms”
   - karpathy: '“The spelled-out intro to neural networks and backpropagation: building micrograd”'
 ---
-To train a network with [gradient descent](/lesson/gradient-descent), you need the gradient of the loss with respect to every weight: millions or billions of [partial derivatives](/lesson/partial-derivatives), at every step. **Backpropagation** computes all of them in one backward pass through the network, for about the cost of the forward pass. It is [the chain rule](/lesson/chain-rule), applied layer by layer from the loss back to the input.
+To train a network with [gradient descent](/lesson/gradient-descent), you need the gradient of the loss with respect to every weight: millions or billions of [partial derivatives](/lesson/partial-derivatives), at every step. **Backpropagation** computes all of them in one backward pass through the network, for about twice the cost of the forward pass. It is [the chain rule](/lesson/chain-rule), applied layer by layer from the loss back to the input.
 
 ## Forward, then backward
 

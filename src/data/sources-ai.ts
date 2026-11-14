@@ -237,8 +237,8 @@ export const AI_SOURCES = {
     why: 'Many metrics across many scenarios, and why one benchmark number is not enough.',
   },
   owaspllm: {
-    title: 'OWASP Top 10 for Large Language Model Applications',
-    by: 'OWASP Foundation',
+    title: 'OWASP Top 10 for Large Language Model Applications, 2025 edition',
+    by: 'OWASP Foundation, 2024',
     kind: 'Website',
     url: 'https://genai.owasp.org',
     why: 'Prompt injection, data leaks and other risks of applications built on language models.',
@@ -401,7 +401,7 @@ export const AI_SOURCES = {
     by: 'David Silver and others, Nature, 2016',
     kind: 'Paper',
     url: 'https://www.nature.com/articles/nature16961',
-    why: 'Learning from human games, then from self-play, with search: the first program to beat a top professional at Go.',
+    why: 'Learning from human games, then from self-play, with search: the first program to beat a professional player at Go on a full-size board.',
   },
   worldmodels: {
     title: 'World Models',

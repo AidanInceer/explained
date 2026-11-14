@@ -36,7 +36,7 @@ For a typical model, most parameters are in the feed-forward layers and the atte
 
 ## Variants
 
-- **Decoder-only** (GPT, Claude, Llama and most chat models): causal attention, predicts the next token. The kind described here.
+- **Decoder-only** (GPT, Llama and most chat models): causal attention, predicts the next token. The kind described here.
 - **Encoder-only** (BERT): attention in both directions, used to understand text, for classification and embeddings.
 - **Encoder–decoder** (the original transformer, T5): an encoder reads the input, a decoder writes the output while attending to it. Used for translation.
 

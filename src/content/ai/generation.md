@@ -19,7 +19,7 @@ This is **autoregressive** generation: each output depends on all the outputs be
 
 ## Two phases
 
-- **Prefill**: process the whole prompt at once. All prompt tokens go through the model in parallel, like training, which uses the GPU well. A long prompt takes longer, but not proportionally longer.
+- **Prefill**: process the whole prompt at once. All prompt tokens go through the model in parallel, like training, which uses the GPU well. A long prompt takes longer, but each prompt token costs far less time than an output token.
 - **Decode**: generate the answer token by token. Each step processes only one new token per sequence, which is slow per token, because every step must read all the model's weights, as [Memory is the bottleneck](/lesson/memory-bandwidth) explained.
 
 So you see two delays: the **time to first token**, mostly prefill, and the **time per output token**, mostly decode.

@@ -50,7 +50,7 @@ A neat fact: the first column of a matrix is where the first axis direction `[1,
 
 ## Why AI cares
 
-A layer of a neural network holds a matrix of **weights**. It takes the input vector, multiplies it by the matrix, and gets a new vector, a new view of the same data. With a 784 × 128 weight matrix, a layer turns a 784-pixel image into 128 numbers. Training changes the numbers in these matrices; the next lesson, [Matrix multiplication](/lesson/matrix-multiply), shows how layers chain.
+A layer of a neural network holds a matrix of **weights**. It takes the input vector, multiplies it by the matrix, and gets a new vector, a new view of the same data. With a 128 × 784 weight matrix, a layer turns a 784-pixel image into 128 numbers. Training changes the numbers in these matrices; the next lesson, [Matrix multiplication](/lesson/matrix-multiply), shows how layers chain.
 
 ## Remember
 

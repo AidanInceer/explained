@@ -38,7 +38,7 @@ Here is the trick that makes training possible. Suppose a network has many layer
 1. **Forward pass**: run the input through the network, layer by layer, and keep each intermediate result.
 2. **Backward pass**: start at the loss, where `d loss/d loss = 1`. Move backwards through the layers. At each step, multiply by that layer's local derivative. Each layer receives "how much does the loss change if my output changes?" from the layer after it, and passes "how much does the loss change if my input changes?" to the layer before it.
 
-Along the way, each weight's derivative is computed from the value flowing past it. One backward pass gives the derivative for every weight, for about the cost of the forward pass. This is **backpropagation**, which the Neural networks line covers in full.
+Along the way, each weight's derivative is computed from the value flowing past it. One backward pass gives the derivative for every weight, for about twice the cost of the forward pass. This is **backpropagation**, which the Neural networks line covers in full.
 
 > **For experienced readers.** This is reverse-mode automatic differentiation. It is efficient because a network has many inputs (weights) and one output (the loss): going backwards computes all input derivatives in one pass.
 

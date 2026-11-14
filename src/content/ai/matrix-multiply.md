@@ -31,7 +31,7 @@ Multiplication is **associative**, though: (A × B) × C = A × (B × C). You ca
 
 ## Why it is everywhere in AI
 
-**A layer on many inputs at once.** In [Matrices](/lesson/matrices), a layer multiplied one input vector by a weight matrix. Stack 64 inputs as the rows of a matrix X (64 × 784), and one product X × W (784 × 128) processes all 64 at once, giving a 64 × 128 result. This is a **batch**, and it is how models are trained and served.
+**A layer on many inputs at once.** In [Matrices](/lesson/matrices), a layer multiplied one input vector by a weight matrix. Stack 64 inputs as the rows of a matrix X (64 × 784). Write the same weights with rows and columns swapped, as W (784 × 128). Then one product X × W processes all 64 at once, giving a 64 × 128 result. This is a **batch**, and it is how models are trained and served.
 
 **Layers in a chain.** Two layers apply two matrices one after the other. Without anything between them, they would collapse into one matrix, which is why networks put a bend, an activation function, between layers.
 
@@ -39,7 +39,7 @@ Multiplication is **associative**, though: (A × B) × C = A × (B × C). You ca
 
 ## The cost
 
-Multiplying an m × n matrix by an n × p matrix takes m × n × p multiplications, and about as many additions. For two 4,096 × 4,096 matrices that is about 69 billion multiplications. Large models do this thousands of times for each token they read.
+Multiplying an m × n matrix by an n × p matrix takes m × n × p multiplications, and about as many additions. For two 4,096 × 4,096 matrices that is about 69 billion multiplications. Training a large model takes the work of hundreds of billions of such products.
 
 The work is huge, but very regular: the same small operation, repeated, with no decisions in between. That is exactly what GPUs are built for: thousands of small units each computing a part at the same time, as the lesson [Why GPUs](/lesson/gpus) on the physical layer line explains.
 

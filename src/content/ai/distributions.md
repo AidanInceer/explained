@@ -34,7 +34,7 @@ Some quantities are not like that. City populations, income, file sizes, words i
 - In the English language, a few words such as "the" are extremely common, and most words are rare. Language models must handle both.
 - The mean of a long-tailed distribution is pulled far up by the few huge values, and is a poor summary. Use the **median**, and percentiles.
 
-> **Pitfall.** Assuming a normal distribution where the tail is long underestimates extreme events. "A 5 σ event" that should happen once in millions of years shows up every few years in markets and in server response times.
+> **Pitfall.** Assuming a normal distribution where the tail is long underestimates extreme events. "A 6 σ event" that should happen once in millions of years shows up every few years in markets and in server response times.
 
 ## Densities
 
