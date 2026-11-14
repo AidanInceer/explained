@@ -59,6 +59,30 @@ const EDGES = LESSONS.flatMap((l) =>
   }),
 )
 
+/** Small drawings for the map key: the same shapes as on the map. */
+function KeyIcon({ kind }: { kind: 'core' | 'deeper' | 'done' | 'next' | 'same' | 'cross' }) {
+  return (
+    <svg className="key-icon" viewBox="0 0 24 16" width="24" height="16" aria-hidden="true">
+      {kind === 'core' && <rect x="5" y="1.5" width="13" height="13" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="2.2" />}
+      {kind === 'deeper' && <rect x="5" y="1.5" width="13" height="13" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="1.6" strokeDasharray="2.6 2" />}
+      {kind === 'done' && (
+        <>
+          <rect x="5" y="1.5" width="13" height="13" rx="3" fill="var(--ink)" stroke="var(--ink)" strokeWidth="2.2" />
+          <path d="M8.3 8.2l2.3 2.3 4.2-4.6" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </>
+      )}
+      {kind === 'next' && (
+        <>
+          <rect x="5" y="1.5" width="13" height="13" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="2.2" />
+          <rect x="8.2" y="4.7" width="6.6" height="6.6" rx="1.2" fill="#2f6bff" />
+        </>
+      )}
+      {kind === 'same' && <path d="M1 8h22" stroke="var(--ink)" strokeWidth="3.5" strokeLinecap="round" />}
+      {kind === 'cross' && <path d="M1 8h22" stroke="#9eaaa5" strokeWidth="1.4" strokeDasharray="3 3" />}
+    </svg>
+  )
+}
+
 /** The same small icon tiles as the system drawing. */
 const AimIcon = ({ d }: { d: string }) => (
   <svg className="aim-icon" viewBox="0 0 20 20" width="30" height="30" aria-hidden="true">
@@ -176,41 +200,65 @@ export default function Home() {
             The last two lines put it together: whole system designs, then a project of your own.
           </p>
         </div>
-        <aside className="board">
+        <aside className="board" aria-label="Your progress and how to read the map">
           <Corners />
-          <h2>
-            {done.size} of {LESSONS.length} lessons understood
-          </h2>
-          <div className="meter" role="img" aria-label={`${done.size} of ${LESSONS.length} lessons understood`}>
-            {LESSONS.map((l) => (
-              <i key={l.id} style={{ background: done.has(l.id) ? (l.track === 'foundations' ? '#b9c6c9' : trackById[l.track].color) : undefined }} />
-            ))}
+          <div className="board-top">
+            <h2>Your progress</h2>
+            <span>Saved in this browser</span>
           </div>
-          <p>
-            Read the map downward. A line into a lesson comes from something that helps to know first. Nothing is locked.
-          </p>
-          <ul className="legend">
-            <li>
-              <span className="dot" /> Core lesson
-            </li>
-            <li>
-              <span className="dot deeper" /> Goes deeper (advanced)
-            </li>
-            <li>
-              <span className="dot done" /> Understood
-            </li>
-            <li>
-              <span className="ln thick" /> Same subject
-            </li>
-            <li>
-              <span className="ln" /> From another subject
-            </li>
-          </ul>
-          {started && (
-            <button className="link-btn" onClick={() => confirm('Clear all progress in this browser?') && resetProgress()}>
-              Clear progress
-            </button>
-          )}
+          <div className="board-body">
+            <p className="board-count">
+              <b>{done.size}</b> of {LESSONS.length} lessons understood
+            </p>
+            {/* One row of squares for each subject. A square fills in the subject's colour when you mark the lesson as understood. */}
+            <ul className="board-rows" aria-label="Progress in each subject">
+              {TRACKS.map((t) => {
+                const ls = lessonsOf(t.id)
+                const n = ls.filter((l) => done.has(l.id)).length
+                return (
+                  <li key={t.id} aria-label={`${t.name}: ${n} of ${ls.length}`}>
+                    <span className="board-name">{t.name}</span>
+                    <span className="board-sq" aria-hidden="true">
+                      {ls.map((l) => (
+                        <i key={l.id} className={done.has(l.id) ? 'on' : ''} style={{ ['--line' as string]: t.color }} />
+                      ))}
+                    </span>
+                    <span className="board-n">
+                      {n}/{ls.length}
+                    </span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+          <div className="board-key">
+            <p>Read the map downward. A line into a lesson comes from something that helps to know first. Nothing is locked.</p>
+            <ul className="legend">
+              <li>
+                <KeyIcon kind="core" /> Core lesson
+              </li>
+              <li>
+                <KeyIcon kind="deeper" /> Goes deeper
+              </li>
+              <li>
+                <KeyIcon kind="done" /> Understood
+              </li>
+              <li>
+                <KeyIcon kind="next" /> Next for you
+              </li>
+              <li>
+                <KeyIcon kind="same" /> Same subject
+              </li>
+              <li>
+                <KeyIcon kind="cross" /> From another subject
+              </li>
+            </ul>
+            {started && (
+              <button className="link-btn" onClick={() => confirm('Clear all progress in this browser?') && resetProgress()}>
+                Clear progress
+              </button>
+            )}
+          </div>
         </aside>
       </section>
 

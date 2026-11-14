@@ -134,10 +134,12 @@ export default function Header() {
         <NavFlow nav={navEl} path={loc.pathname} />
       </nav>
       <Link to="/" className="top-progress" title={`${done.size} ${done.size === 1 ? 'lesson' : 'lessons'} marked as understood. ${quizzes} ${quizzes === 1 ? 'quiz' : 'quizzes'} with all answers correct.`}>
-        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
-          <circle cx="10" cy="10" r="8" fill="none" stroke="var(--rule)" strokeWidth="3" />
-          <circle cx="10" cy="10" r="8" fill="none" stroke="var(--good)" strokeWidth="3" strokeLinecap="round" pathLength="100" strokeDasharray={`${(done.size / LESSONS.length) * 100} 100`} transform="rotate(-90 10 10)" />
-        </svg>
+        {/* Ten small squares, one for each tenth of the lessons, like the progress rows on the map. */}
+        <span className="top-meter" aria-hidden="true">
+          {Array.from({ length: 10 }, (_, k) => (
+            <i key={k} className={done.size > 0 && k < Math.max(1, Math.round((done.size / LESSONS.length) * 10)) ? 'on' : ''} />
+          ))}
+        </span>
         <span>
           {done.size} of {LESSONS.length}
         </span>
