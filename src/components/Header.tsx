@@ -21,10 +21,7 @@ function search(q: string): Hit[] {
     sub: `Lesson on the ${trackById[l.track].name} line`,
     color: trackById[l.track].color,
   }))
-  const seen = new Set(lessons.map((h) => h.to))
-  const terms: Hit[] = GLOSSARY.filter((g) => g.term.toLowerCase().includes(s))
-    .filter((g) => !seen.has(`/lesson/${g.lesson}#${g.term}`))
-    .map((g) => ({
+  const terms: Hit[] = GLOSSARY.filter((g) => g.term.toLowerCase().includes(s)).map((g) => ({
       key: 'g' + g.term,
       to: `/lesson/${g.lesson}`,
       title: g.term,

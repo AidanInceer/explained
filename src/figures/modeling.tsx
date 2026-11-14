@@ -39,8 +39,8 @@ export function Scd() {
         </button>
       </div>
 
-      <div className="fx" style={{ marginTop: 16 }}>
-        <div className="grow" style={{ overflowX: 'auto' }}>
+      <div className="fcol" style={{ marginTop: 16, gap: 14 }}>
+        <div style={{ overflowX: 'auto' }}>
           <table className="tbl">
             <caption>dim_customer</caption>
             <thead>
@@ -83,7 +83,7 @@ export function Scd() {
             </tbody>
           </table>
         </div>
-        <div className="grow" style={{ overflowX: 'auto' }}>
+        <div style={{ overflowX: 'auto' }}>
           <table className="tbl">
             <caption>fact_orders</caption>
             <thead>

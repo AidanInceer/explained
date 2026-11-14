@@ -103,7 +103,7 @@ export default function Home() {
                 </h2>
                 <div className="meter" role="img" aria-label={`${done.size} of ${LESSONS.length} lessons understood`}>
                   {LESSONS.map((l) => (
-                    <i key={l.id} style={{ background: done.has(l.id) ? trackById[l.track].color : undefined }} />
+                    <i key={l.id} style={{ background: done.has(l.id) ? (l.track === 'foundations' ? '#b9c6c9' : trackById[l.track].color) : undefined }} />
                   ))}
                 </div>
                 <p>

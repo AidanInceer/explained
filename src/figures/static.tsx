@@ -7,14 +7,14 @@ const Arrow = () => (
 export function Lifecycle() {
   return (
     <div>
-      <div className="fx">
-        <div className="box dash grow">
+      <div className="fx tight">
+        <div className="box dash" style={{ flex: '0 0 132px' }}>
           <h4>Generation</h4>
           <p>Apps, devices and APIs create data. You do not control these.</p>
         </div>
         <Arrow />
-        <div className="grow fcol" style={{ flex: '3 1 0' }}>
-          <div className="fx">
+        <div className="grow fcol">
+          <div className="fx tight">
             <div className="box tint grow">
               <h4>Ingestion</h4>
               <p>Move data out of the source.</p>
@@ -153,7 +153,7 @@ export function Cdc() {
           <p>Debezium or a managed service follows the log as a replica would. The source tables are not queried.</p>
         </div>
         <h4 style={{ margin: '6px 0 0' }}>4. One event for each change</h4>
-        <pre style={{ margin: 0, fontSize: 12, fontFamily: 'var(--mono)', background: 'var(--paper)', padding: 10, borderRadius: 8, lineHeight: 1.45 }}>
+        <pre style={{ margin: 0, fontSize: 12, fontFamily: 'var(--mono)', background: 'var(--paper)', color: 'var(--ink)', padding: 10, borderRadius: 8, lineHeight: 1.45 }}>
           {`{ "op": "u", "table": "customers",
   "before": { "id": 7, "city": "Lisbon" },
   "after":  { "id": 7, "city": "Porto" },

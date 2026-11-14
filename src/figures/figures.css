@@ -2,6 +2,10 @@
 .fx { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
 .fx.center { align-items: center; }
 .fx > .grow { flex: 1 1 0; min-width: 0; }
+.fx.tight { gap: 6px; flex-wrap: nowrap; }
+.fx.tight .box { padding: 9px 10px; }
+.fx.tight .box h4 { font-size: 14px; }
+.fx.tight .arrow { font-size: 16px; }
 .fcol { display: flex; flex-direction: column; gap: 8px; }
 
 .seg { display: inline-flex; flex-wrap: wrap; border: 1.5px solid var(--ink); border-radius: 9px; overflow: hidden; margin-bottom: 16px; }
@@ -54,7 +58,8 @@
 /* partitions */
 .parts { display: grid; grid-template-columns: repeat(7, minmax(64px, 1fr)); gap: 6px; }
 .part { border: 1.5px solid var(--rule); border-radius: 8px; padding: 8px 6px; text-align: center; color: var(--ink-3); }
-.part b { display: block; font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.part small { display: block; font-family: var(--mono); font-size: 10.5px; opacity: 0.8; }
+.part b { display: block; font-family: var(--mono); font-size: 14px; font-weight: 600; }
 .part i { display: block; font-style: normal; font-size: 12px; margin-top: 3px; }
 .part.scan { border-color: var(--line); background: var(--line); color: #fff; }
 
@@ -112,3 +117,11 @@
 .under { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 .under span { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--rule); color: var(--ink-2); }
 .logline { font-family: var(--mono); font-size: 12px; padding: 4px 8px; border-radius: 5px; background: var(--paper); white-space: nowrap; }
+
+@media (max-width: 620px) {
+  .fx, .fx.tight { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+  .fx > *, .fx.tight > * { flex: none !important; max-width: none !important; }
+  .fx > .arrow { transform: rotate(90deg); align-self: center; }
+  .cg-row { grid-template-columns: 78px 1fr; }
+  .cg-who { grid-column: 2; margin: -6px 0 8px; }
+}

@@ -15,7 +15,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--paper);
@@ -256,7 +256,9 @@ button, input { font: inherit; color: inherit; }
   .wordmark span { font-size: 15px; }
   .search { order: 3; width: 100%; }
   .top-nav { margin-left: auto; }
-  .lesson { grid-template-columns: 1fr; gap: 0; padding: 22px 18px 60px; }
+  .lesson { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 22px 18px 60px; }
+  .prose table { display: block; overflow-x: auto; }
+  .fig-body { padding: 14px; }
   .lesson-side { position: static; margin-bottom: 26px; }
   .lesson-side h2, .lesson-side > p, .lesson-side .track-line { display: none; }
   .lesson-side .back { margin-bottom: 0; }

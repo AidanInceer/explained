@@ -111,7 +111,8 @@ export function Partitions() {
       <div className="parts">
         {DAYS.map((d, i) => (
           <div key={d} className={`part ${filter.scan(i) ? 'scan' : ''}`}>
-            <b>event_date={d}/</b>
+            <small>event_date=</small>
+            <b>{d}</b>
             <i>{GB} GB</i>
           </div>
         ))}

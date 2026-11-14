@@ -24,7 +24,7 @@ export function Consumers() {
             <b style={{ fontSize: 14 }}>Partition {p}</b>
             <div className="cg-log">
               {[0, 1, 2, 3, 4, 5, 6].map((o) => (
-                <span key={o} style={{ background: C_COLORS[owner(p)], opacity: 0.45 + o * 0.09 }}>
+                <span key={o} style={{ background: C_COLORS[owner(p)], opacity: 0.6 + o * 0.066 }}>
                   {o}
                 </span>
               ))}
