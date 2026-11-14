@@ -35,6 +35,7 @@ export function readLessonFiles(dir: string) {
 
 export default function lessons(): Plugin {
   let dir = ''
+  let base = '/'
   let server: ViteDevServer | undefined
 
   const reload = (file: string) => {
@@ -48,6 +49,7 @@ export default function lessons(): Plugin {
     name: 'dee-lessons',
     configResolved(config) {
       dir = normalizePath(resolve(config.root, 'src/content'))
+      base = config.base
     },
     configureServer(s) {
       server = s
@@ -70,7 +72,9 @@ export default function lessons(): Plugin {
       if (id.endsWith(QUERY)) {
         const path = id.slice(0, -QUERY.length)
         const { body } = splitLessonFile(readFileSync(path, 'utf8'))
-        return `export default ${JSON.stringify(parseLessonBody(body))}`
+        // Links in lesson text start with "/". When the site is built for a sub-path, add it, so a link also works in a new tab.
+        const json = JSON.stringify(parseLessonBody(body))
+        return `export default ${base === '/' ? json : json.replaceAll('href=\\"/', `href=\\"${base}`)}`
       }
     },
   }

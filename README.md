@@ -66,13 +66,16 @@ All keys are in `localStorage` and start with `dee.`. Change a key's version if 
 
 ## Deploy
 
-`npm run build` writes a static site to `dist/`. Any static host can serve it (GitHub Pages, Netlify, Cloudflare Pages, Vercel, S3 and a CDN).
+The site is live at https://aidaninceer.github.io/data-engineering-explained/. Each push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes it to GitHub Pages.
 
-The site uses addresses such as `/lesson/cdc`, so the host must send `index.html` for any address that is not a file. For example:
+To see the GitHub Pages build on your machine, run `npm run preview:pages` and open http://localhost:5200/data-engineering-explained/.
 
-- Netlify or Cloudflare Pages: a `dist/_redirects` file with `/* /index.html 200`.
-- Vercel: a rewrite of `/(.*)` to `/index.html`.
-- GitHub Pages: copy `dist/index.html` to `dist/404.html`. If the site is not at the root of the domain, also set `base` in `vite.config.ts` and `basename` on the router in `src/main.tsx`.
+How the build works under a sub-path:
+
+- `vite build --base=/<path>/` sets the path. The router (`src/main.tsx`) and the links in lesson text (`build/vite-plugin-lessons.ts`) take it from there. Development uses `/`.
+- GitHub Pages cannot send `index.html` for every address, so the workflow copies it to `404.html`. Addresses such as `/lesson/cdc` then open directly.
+
+Other static hosts also work: build with `npm run build` and serve `dist/`. The host must send `index.html` for any address that is not a file (Netlify or Cloudflare Pages: a `_redirects` file with `/* /index.html 200`; Vercel: a rewrite of `/(.*)` to `/index.html`). With a custom domain, the site is at the root and no `--base` is needed.
 
 Files in `dist/assets/` have a content hash in their names, so they can be cached for a long time. Do not cache `index.html` for long.
 

@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "tsc --noEmit && vitest run"
+    "check": "tsc --noEmit && vitest run",
+    "preview:pages": "vite build --base=/data-engineering-explained/ && vite preview --base=/data-engineering-explained/ --port 5200 --strictPort"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

@@ -18,6 +18,9 @@ import Scenario from './Scenario'
 import SideNote, { type Note } from './SideNote'
 import { useMarkTool } from './useMarkTool'
 
+/** The site's base path, with a final "/". */
+const BASE = import.meta.env.BASE_URL
+
 export default function LessonPage() {
   const { id = '' } = useParams()
   const lesson = lessonById[id]
@@ -102,11 +105,11 @@ export default function LessonPage() {
       setNote(note?.pinned && note.key === at.key && note.kind === at.kind ? null : { ...at, pinned: true })
       return
     }
-    // Internal links inside rendered markdown should not reload the page.
+    // Internal links inside rendered markdown should not reload the page. Their address includes the site's base path.
     const href = target.closest('a')?.getAttribute('href')
     if (href?.startsWith('/')) {
       e.preventDefault()
-      nav(href)
+      nav(href.startsWith(BASE) ? href.slice(BASE.length - 1) : href)
       return
     }
     const markEl = target.closest<HTMLElement>('mark.um')
