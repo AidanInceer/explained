@@ -106,7 +106,7 @@ export default function Brand() {
     <main className="page brand">
       <h1>Name and logo options</h1>
       <p className="lead">
-        Thirty logos for the current name in three rounds, then four names with the domains that were looked up for each. The header uses
+        Logos for the current name in four rounds, newest first, then four names with the domains that were looked up for each. The header uses
         the “de.” tile until you choose.
       </p>
       <Logos />

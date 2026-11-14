@@ -329,6 +329,42 @@ export const LOGOS3: typeof LOGOS = [
   { name: 'Outline tile', mark: DE10, idea: 'Blue columns and ink rows inside a thin frame.', note: 'Lighter than a filled tile. The frame is thin at small size.' },
 ]
 
+/* ---- round four: only three columns, then three rows. Two equal squares, one bar weight, one gap. ---- */
+function mini(o: { t?: number; g?: number; rx?: number; c: string; r: string; between?: number }) {
+  const t = o.t ?? 3
+  const g = o.g ?? 2
+  const side = 3 * t + 2 * g
+  const between = o.between ?? 4
+  const x0 = (32 - (2 * side + between)) / 2
+  const y0 = (32 - side) / 2
+  const rx = o.rx ?? 0.6
+  return (
+    <>
+      {[0, 1, 2].map((i) => (
+        <rect key={`c${i}`} x={x0 + i * (t + g)} y={y0} width={t} height={side} rx={rx} fill={o.c} />
+      ))}
+      {[0, 1, 2].map((i) => (
+        <rect key={`r${i}`} x={x0 + side + between} y={y0 + i * (t + g)} width={side} height={t} rx={rx} fill={o.r} />
+      ))}
+    </>
+  )
+}
+const M1: Mark = ({ size = 26 }) => svg(size, mini({ c: 'currentColor', r: 'currentColor' }))
+const M2: Mark = ({ size = 26 }) => svg(size, mini({ c: 'currentColor', r: BLUE }))
+const M3: Mark = ({ size = 26 }) => svg(size, mini({ t: 3.6, g: 1.1, c: 'currentColor', r: 'currentColor' }))
+const M4: Mark = ({ size = 26 }) => svg(size, mini({ rx: 1.5, c: 'currentColor', r: 'currentColor' }))
+const M5: Mark = ({ size = 26 }) => svg(size, inTile('#132029', mini({ c: '#fff', r: '#fff' })))
+const M6: Mark = ({ size = 26 }) => svg(size, inTile(BLUE, mini({ c: '#fff', r: '#fff' })))
+
+export const LOGOS4: typeof LOGOS = [
+  { name: 'Columns, rows', mark: M1, idea: 'Three columns, then three rows. One colour, one bar weight, one gap.', note: 'The plainest form. Two equal squares, and nothing else.' },
+  { name: 'Columns, rows, two colours', mark: M2, idea: 'The same, with the rows in blue.', note: 'The colour separates the two halves a little more.' },
+  { name: 'Heavier bars', mark: M3, idea: 'Thicker bars and smaller gaps.', note: 'Stronger at browser-tab size. Each half is closer to a solid square.' },
+  { name: 'Round ends', mark: M4, idea: 'The same bars with round ends.', note: 'Softer. A small change, visible only at large size.' },
+  { name: 'On a dark tile', mark: M5, idea: 'White bars on the dark tile.', note: 'The same on light and dark backgrounds.' },
+  { name: 'On a blue tile', mark: M6, idea: 'White bars on a blue tile.', note: 'Stands out in a row of browser tabs.' },
+]
+
 function Word({ hl }: { hl?: boolean }) {
   return hl ? (
     <span className="lg-word">
@@ -381,6 +417,12 @@ function Set({ title, lead, items, from }: { title: string; lead: string; items:
 export default function Logos() {
   return (
     <>
+      <Set
+        title="Round four: three columns, three rows"
+        lead="The minimal form. No letter shapes: two equal squares, one of columns and one of rows."
+        items={LOGOS4}
+        from={31}
+      />
       <Set
         title="Round three: D from columns, E from rows"
         lead="Built on 14, reversed as you asked: the columns come first and form a D, the rows come second and form an E."
