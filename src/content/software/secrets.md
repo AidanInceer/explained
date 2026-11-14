@@ -3,7 +3,7 @@ minutes: 7
 tech: []
 refs:
   - twelve: III, “Config”
-  - owasp: A02, “Cryptographic Failures”, and A05, “Security Misconfiguration”
+  - owasp: A02, “Security Misconfiguration”, and A04, “Cryptographic Failures”
 ---
 A **secret** is anything that grants access: a database password, an API key, a signing key, a token for a cloud account. Whoever holds it can act as your system. Secrets leak in boring ways: committed to Git, printed in a log, pasted in a chat, left in an old laptop's files. Handling them well is mostly discipline.
 

@@ -3,7 +3,7 @@ minutes: 9
 tech: []
 refs:
   - seceng: Ch. 5, “Cryptography”
-  - owasp: A02, “Cryptographic Failures”
+  - owasp: A04, “Cryptographic Failures”
 ---
 Three tools from cryptography appear everywhere in software: **hashing**, **encryption** and **signatures**. They are often confused, and using the wrong one is a common, serious mistake. Each does one job. You will almost never implement them yourself, but you must choose the right one.
 

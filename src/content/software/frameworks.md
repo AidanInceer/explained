@@ -27,7 +27,7 @@ function BasketCount({ items }) {
 }
 ```
 
-When `items` changes, the framework calls the function again, compares the new result with what is on screen, and changes only the parts that differ. You never write "now update the count". The count is always correct, because it is always computed from the data.
+When `items` changes, the framework works out what must change on screen, and changes only those parts. React does this by calling the function again and comparing the new result with the last one; Svelte compiles the component into code that updates exactly the affected parts. You never write "now update the count". The count is always correct, because it is always computed from the data.
 
 ## Components
 

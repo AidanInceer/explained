@@ -20,7 +20,7 @@ Each build has a **version** that users see, such as 2.4.0, and a **build number
 
 ## Store review
 
-Both stores review apps before they are published. Apple reviews every update by hand against its guidelines; most reviews finish within a day or two, but a rejection costs another round. Google Play's review is mostly automated and is usually faster. Common rejections: crashes, broken links, missing account deletion, unclear data use, and payments that bypass the store's rules.
+Both stores review apps before they are published. Apple reviews every update against its guidelines, with automated checks and people involved; most reviews finish within a day or two, but a rejection costs another round. Google Play's review is mostly automated and is usually faster. Common rejections: crashes, broken links, missing account deletion, unclear data use, and payments that bypass the store's rules.
 
 So you cannot ship an urgent fix in minutes. Plan for that.
 

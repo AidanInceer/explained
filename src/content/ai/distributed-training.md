@@ -19,7 +19,7 @@ The mix depends on the model's size, the cluster's network, and how much memory 
 
 ## Keeping chips busy
 
-The measure that matters is **model FLOPs utilisation** (MFU): the share of the hardware's peak arithmetic that goes into useful training. Well-run large jobs often reach about 40–60%. The rest is lost to:
+The measure that matters is **model FLOPs utilisation** (MFU): the share of the hardware's peak arithmetic that goes into useful training. Well-run large jobs often reach about 35–55%. The rest is lost to:
 
 - **Communication**: waiting for gradients or activations from other GPUs. Good systems **overlap** communication with computation: send one layer's gradients while computing the next.
 - **Pipeline bubbles**: GPUs idle while the pipeline fills and drains. More, smaller micro-batches shrink them.

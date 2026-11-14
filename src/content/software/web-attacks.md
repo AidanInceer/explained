@@ -2,7 +2,7 @@
 minutes: 9
 tech: []
 refs:
-  - owasp: A03, “Injection”, and A01, “Broken Access Control”
+  - owasp: A05, “Injection”, and A01, “Broken Access Control”
   - mdn: “Cross-site scripting (XSS)”, “Cross-site request forgery (CSRF)”, and “Content Security Policy”
 ---
 Most attacks on web applications use a handful of well-known techniques. They work because the same mistakes are made again and again. Each one has a standard defence that frameworks now give you by default, if you do not work around them. Know the attacks so that you recognise when your code steps outside those defences.

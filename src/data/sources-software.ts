@@ -262,10 +262,10 @@ export const SOFTWARE_SOURCES = {
     why: 'Concepts and tutorials for running containers on a cluster.',
   },
   owasp: {
-    title: 'OWASP Top 10, 2021 edition',
-    by: 'OWASP Foundation, 2021',
+    title: 'OWASP Top 10, 2025 edition',
+    by: 'OWASP Foundation, 2025',
     kind: 'Website',
-    url: 'https://owasp.org/www-project-top-ten/',
+    url: 'https://top10.owasp.org/2025/',
     why: 'The most common web application security risks, with how to prevent each one.',
   },
   seceng: {

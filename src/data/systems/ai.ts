@@ -29,7 +29,7 @@ export const AI_SYSTEM: SystemPlan = {
     { id: 'books', x: 16, y: 222, w: 150, h: 46, label: 'Books + code', glyph: 'file', lessons: ['datasets'] },
     { id: 'images', x: 16, y: 282, w: 150, h: 46, label: 'Images + sound', glyph: 'app', lessons: ['vision-transformers', 'multimodal', 'speech'] },
     { id: 'clean', x: 212, y: 160, w: 130, h: 58, label: 'Clean + dedupe', sub: 'filters, hashes', glyph: 'check', count: { start: 92410, unit: 'kept', per: [3, 11] }, lessons: ['datasets', 'ml-data-quality', 'data-bias', 'augmentation'] },
-    { id: 'tok', x: 212, y: 244, w: 130, h: 58, label: 'Tokeniser', sub: 'BPE, token ids', glyph: 'table', lessons: ['tokens', 'embeddings', 'bits'] },
+    { id: 'tok', x: 212, y: 244, w: 130, h: 58, label: 'Tokeniser', sub: 'BPE, token ids', glyph: 'table', lessons: ['tokens', 'embeddings'] },
     // pretraining
     { id: 'train', x: 388, y: 150, w: 412, h: 222, label: 'Pretraining', kind: 'zone', chips: { names: ['batch', 'forward', 'loss', 'backward', 'update'], y: 324, cycle: true }, lessons: ['pretraining', 'next-token', 'training-loop', 'loss-functions', 'cross-entropy', 'gradient-descent', 'learning-rate', 'scaling-laws', 'distributed-training', 'loss-curves'] },
     { id: 'gpu', x: 404, y: 182, w: 112, h: 126, label: 'GPU cluster', sub: 'thousands of GPUs', kind: 'screen', screen: 'chip', lessons: ['how-chips-compute', 'gpus', 'numbers-in-hardware', 'memory-bandwidth', 'many-chips', 'power-cost'] },

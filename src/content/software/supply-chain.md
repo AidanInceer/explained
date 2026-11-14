@@ -2,7 +2,7 @@
 minutes: 8
 tech: []
 refs:
-  - owasp: A06, “Vulnerable and Outdated Components”, and A08, “Software and Data Integrity Failures”
+  - owasp: A03, “Software Supply Chain Failures”, and A08, “Software or Data Integrity Failures”
   - seag: Ch. 21, “Dependency Management”
 ---
 Most of the code your application runs, you did not write. It comes from packages, and their packages, as [Packages and dependencies](/lesson/packages) showed. Each of them is trusted with the same power as your own code. When one of them has a hole, or is changed by an attacker, you are affected too. This is the **software supply chain**.

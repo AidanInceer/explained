@@ -3,7 +3,7 @@ minutes: 8
 tech: []
 refs:
   - seceng: Ch. 2, “Who Is the Opponent?”, and Ch. 27, “Secure Systems Development”
-  - owasp: Introduction, and A04, “Insecure Design”
+  - owasp: Introduction, and A06, “Insecure Design”
 ---
 Security is not a feature that you add at the end. It is a way of looking at a system: what is worth stealing or breaking, who might try, and how they would get in. **Threat modelling** is the habit of asking these questions while you design, when fixes are cheap, instead of after an attack, when they are not.
 

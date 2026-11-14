@@ -48,7 +48,7 @@ This explains several common techniques:
 
 - **Batching** many users' requests together, so each weight read serves many tokens.
 - **Quantisation** to fewer bits, from [Numbers in hardware](/lesson/numbers-in-hardware): fewer bytes to read per token.
-- **Caching** the attention keys and values of earlier tokens, so they are not recomputed.
+- **Caching** the attention keys and values of earlier tokens, so they are not recomputed. This saves compute, but it uses memory and adds reads, so long contexts make each token slower.
 
 ## Remember
 

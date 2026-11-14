@@ -2,7 +2,7 @@
 minutes: 7
 tech: []
 refs:
-  - staffeng: Part I, “Staff Engineer Archetypes”, and “Operating at Staff”
+  - staffeng: The chapters on Staff archetypes and on operating at Staff
   - pragprog: Topic 1, “It's Your Life”, and Topic 6, “Your Knowledge Portfolio”
 ---
 Early in a career, an engineer is given tasks: "add this field", "fix this bug". Growth is the move from doing tasks to **owning problems**: understanding why the work matters, deciding what to do, seeing it through, and making the people around you more effective. Titles differ between companies, but this path is much the same everywhere.

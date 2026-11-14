@@ -9,7 +9,7 @@ On a computer, a program can run in the background as long as it likes. On a pho
 
 ## Why the limits exist
 
-Every app that wakes the CPU or the radio uses battery. One app that checks a server every minute could halve a phone's battery life. So the systems:
+Every app that wakes the CPU or the radio uses battery. One app that checks a server every minute keeps waking the CPU and radio, and can drain the battery noticeably. So the systems:
 
 - **Suspend** apps soon after they leave the screen.
 - **Batch** background work from many apps together, at times the system chooses.

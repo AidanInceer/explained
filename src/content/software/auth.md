@@ -2,7 +2,7 @@
 minutes: 9
 tech: []
 refs:
-  - owasp: A01, “Broken Access Control”, and A07, “Identification and Authentication Failures”
+  - owasp: A01, “Broken Access Control”, and A07, “Authentication Failures”
   - seceng: Ch. 6, “Access Control”
 ---
 Two questions sit in front of every action in a system. **Authentication**: who are you? **Authorisation**: may you do this? They are different questions, answered by different code, and confusing them is one of the most common causes of security failures.

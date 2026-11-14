@@ -47,7 +47,7 @@ A screen reader cannot see images. Give each meaningful image an `alt` text that
 - Use the keyboard only, for ten minutes.
 - Turn on a screen reader: VoiceOver on macOS and iOS, NVDA on Windows, TalkBack on Android.
 - Zoom the page to 200% and check that nothing is cut off.
-- Run an automated checker, such as the one built into browser developer tools. It finds about a third of problems; the rest need a person.
+- Run an automated checker, such as the one built into browser developer tools. It finds only part of the problems, often well under half; the rest need a person.
 
 ## Remember
 

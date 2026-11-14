@@ -71,7 +71,7 @@ def fib(n):
 - Divide and conquer splits a problem, solves the parts, and combines them.
 
 ::quiz
-? A recursive function to sum a list calls itself on the rest of the list, but has no base case. What happens?
+? A recursive function has no base case and calls itself again with the same list each time. What happens?
 - It returns 0
 + It calls itself until the stack runs out and the program crashes
 - It loops for ever without using memory

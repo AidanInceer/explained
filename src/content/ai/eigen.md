@@ -41,7 +41,7 @@ Eigenvectors only work for square matrices, and not always neatly. The **singula
 - V gives a set of input directions, U a set of output directions, both at right angles to each other.
 - Σ is diagonal: the **singular values**, how much each input direction is stretched into its output direction, sorted from largest to smallest.
 
-Every matrix is a rotation, a stretch along axes, and another rotation.
+Every matrix is a rotation (or reflection), a stretch along axes, and another rotation (or reflection).
 
 ## Keep the big parts
 

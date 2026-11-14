@@ -28,7 +28,7 @@ Use mean squared error from [Loss functions](/lesson/loss-functions): the averag
 
 Two ways:
 
-- **A formula.** For linear regression with squared error, the best weights can be computed directly, in one step, with linear algebra. The problem is [convex](/lesson/convexity), with exactly one best answer.
+- **A formula.** For linear regression with squared error, the best weights can be computed directly, in one step, with linear algebra. The problem is [convex](/lesson/convexity), so every method reaches the same lowest loss. With no two features that always move together, the best weights are also unique.
 - **Gradient descent.** Start with any weights, and repeat: compute the gradient of the loss, step against it, as in [Gradient descent](/lesson/gradient-descent). For very large datasets this is often more practical.
 
 For one input, the gradient for w is the average of `2(ŷ - y) × x`, and for b the average of `2(ŷ - y)`. Each step nudges the line towards the points that it misses most.
@@ -61,8 +61,8 @@ The model can only draw straight lines (or flat planes). If the true relationshi
 - 63
 - 120
 ! 3 × 40 + 20 = 140.
-? Why does linear regression with squared error always find the same best weights?
-+ Its loss is convex, with one minimum
+? Why does linear regression with squared error always reach the same lowest loss?
++ Its loss is convex, so it has one lowest value
 - Its data is always clean
 - It has no weights
 ! A convex loss has a single valley, reached from any start.

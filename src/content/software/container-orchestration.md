@@ -30,7 +30,7 @@ You describe these in YAML files, which are a form of [infrastructure as code](/
 
 Kubernetes is powerful and complicated. Running it well takes real skill and time: upgrades, networking, security, monitoring of the cluster itself.
 
-- **Probably not**, for a small team with a few services. A managed container platform, such as Google Cloud Run, AWS App Runner or a PaaS, runs your containers, scales them and handles HTTPS, with almost nothing to operate.
+- **Probably not**, for a small team with a few services. A managed container platform, such as Google Cloud Run, Azure Container Apps or a PaaS, runs your containers, scales them and handles HTTPS, with almost nothing to operate.
 - **Maybe**, when you run many services across several teams and need fine control.
 - **If you do**, use a managed Kubernetes service from your cloud provider, so you do not run its control plane yourself.
 

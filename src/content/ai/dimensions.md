@@ -9,7 +9,7 @@ Models work in spaces with hundreds or thousands of dimensions. An embedding of 
 
 ## Almost everything is at right angles
 
-Pick two random directions in 3D and they will often be quite close. Pick two random directions in 1,000 dimensions, and they are almost always nearly at a right angle: their [dot product](/lesson/dot-product) is close to zero.
+Pick two random directions in 3D and they can easily point in similar directions. Pick two random directions in 1,000 dimensions, and they are almost always nearly at a right angle: their [dot product](/lesson/dot-product) is close to zero.
 
 This is useful. A high-dimensional space has room for a huge number of directions that barely overlap, so a model can store many different features, each in its own direction, without them interfering much. It is part of why embeddings of 1,000 numbers can represent so many different meanings.
 

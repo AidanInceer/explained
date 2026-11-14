@@ -27,7 +27,7 @@ Use **cross-entropy** (also called log loss), from [Cross-entropy and KL diverge
 - If the true answer is yes: loss = -log p.
 - If it is no: loss = -log(1 - p).
 
-Confident and right gives a loss near zero; confident and wrong gives a large loss. The problem is [convex](/lesson/convexity), and training with gradient descent finds the best weights. The gradient has a clean form: for each example, `(p - y) × x`, where y is 1 or 0.
+Confident and right gives a loss near zero; confident and wrong gives a large loss. The problem is [convex](/lesson/convexity), so gradient descent reaches the lowest loss. (If the classes can be split perfectly, the weights keep growing; regularisation keeps them finite.) The gradient has a clean form: for each example, `(p - y) × x`, where y is 1 or 0.
 
 ## The decision boundary
 

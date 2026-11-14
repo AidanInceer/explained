@@ -10,7 +10,7 @@ export const AI_TERMS: Term[] = [
   { term: 'Cosine similarity', def: 'The dot product divided by both lengths: how alike two vectors are in direction, from -1 to 1.', lesson: 'dot-product' },
   { term: 'Tensor', def: 'A block of numbers with any number of axes, such as batch, sequence and features.', lesson: 'tensors' },
   { term: 'Eigenvector', def: 'A vector that a matrix only stretches or shrinks, without turning.', lesson: 'eigen' },
-  { term: 'Singular value decomposition (SVD)', def: 'Writing any matrix as a rotation, a stretch along axes, and another rotation.', lesson: 'eigen' },
+  { term: 'Singular value decomposition (SVD)', def: 'Writing any matrix as a rotation (or reflection), a stretch along axes, and another rotation (or reflection).', lesson: 'eigen' },
   { term: 'Derivative', def: 'How fast a function’s output changes when its input moves a little: the slope.', lesson: 'derivatives' },
   { term: 'Partial derivative', def: 'The rate of change for one input, with the other inputs held still.', lesson: 'partial-derivatives' },
   { term: 'Chain rule', def: 'Through a chain of functions, rates of change multiply.', lesson: 'chain-rule' },

@@ -20,10 +20,10 @@ For a convex function:
 ## Convex problems in machine learning
 
 - **Linear regression** with squared error: a bowl-shaped loss. It even has an exact formula for the answer.
-- **Logistic regression** with cross-entropy: convex, so training always finds the best weights.
+- **Logistic regression** with cross-entropy: convex, so training always reaches the lowest loss.
 - **Support vector machines**: convex.
 
-For these, a training method either finds the best answer or tells you it has not converged yet. Different runs reach the same weights.
+For these, a training method either finds the best answer or tells you it has not converged yet. Different runs reach the same lowest loss. They also reach the same weights when the problem is **strictly** convex: a bowl with a single lowest point, not a flat-bottomed trough. Two features that always move together, for example, make a trough, where many weight settings give the same loss.
 
 ## Non-convex problems
 
@@ -47,17 +47,17 @@ So the practical goal is not "the global minimum". It is "a low point that works
 
 ## Remember
 
-- Convex: one valley; every local minimum is global; gradient descent finds it.
+- Convex: one valley; every local minimum is global; gradient descent finds the lowest loss. Strictly convex: also the same weights.
 - Linear and logistic regression are convex; neural networks are not.
 - Non-convex training depends on the start and the path, with no guarantee.
 - In high dimensions, most stalls are saddles, and the minima found are usually good.
 
 ::quiz
 ? A logistic regression is trained twice from different random starts. What should you expect?
-+ The same weights, because the problem is convex
++ The same lowest loss, because the problem is convex
 - Very different weights each time
 - Training fails the second time
-! Convex problems have one minimum, reached from any start.
+! A convex problem has one lowest loss, reached from any start. The weights are also the same if the problem is strictly convex.
 ? Why does a neural network trained twice with different seeds give different weights?
 + Its loss is non-convex, so different starts reach different low points
 - Random seeds change the training data

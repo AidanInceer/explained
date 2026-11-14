@@ -13,7 +13,7 @@ Some problems break into smaller problems that **overlap**: the same small probl
 
 Yet there are only 51 different questions: `fib(0)` to `fib(50)`.
 
-## Memoization: remember answers
+## Memoisation: remember answers
 
 Keep a dictionary of answers. Before you compute, look up. After you compute, store.
 
@@ -27,7 +27,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 ```
 
-Now each `fib(k)` is computed once. `fib(50)` takes 51 steps. This top-down approach is called **memoization**. Python's `functools.cache` adds it with one line.
+Now each `fib(k)` is computed once. `fib(50)` takes 51 steps. This top-down approach is called **memoisation** (often spelled memoization). Python's `functools.cache` adds it with one line.
 
 ## Tabulation: fill a table from the bottom
 
@@ -65,7 +65,7 @@ Then write the rule that connects a problem to its smaller ones, decide the orde
 ## Remember
 
 - Dynamic programming solves each overlapping subproblem once and reuses the answer.
-- Memoization caches answers top-down. Tabulation fills a table bottom-up.
+- Memoisation caches answers top-down. Tabulation fills a table bottom-up.
 - It turns exponential work into polynomial work, as with Fibonacci and edit distance.
 - Look for optimal substructure and overlapping subproblems.
 
