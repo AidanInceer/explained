@@ -265,6 +265,70 @@ export const LOGOS2: typeof LOGOS = [
   { name: 'Three chevrons', mark: Chevrons, idea: 'Three transformations in a row, each one a stage.', note: 'Shows direction, which the other marks do not. Light strokes, so check it at small size.' },
 ]
 
+/* ---- round three: from 14, reversed. Columns make the D, rows make the E. ---- */
+const LIGHT = '#7fa6ff'
+
+/** D from vertical bars, E from three horizontal bars, on the 32 grid between y 6 and y 26. */
+function de(o: { heights?: number[]; w?: number; gap?: number; d: string | string[]; e: string | string[]; rx?: number; sliced?: boolean; spine?: boolean }) {
+  const heights = o.heights ?? [20, 20, 13]
+  const w = o.w ?? 3.6
+  const gap = o.gap ?? 0.7
+  const rx = o.rx ?? 1.3
+  const col = (c: string | string[], i: number) => (Array.isArray(c) ? c[i % c.length] : c)
+  return (
+    <>
+      {o.sliced ? (
+        <>
+          <clipPath id="de-d">
+            <path d="M3 6h2a10 10 0 0 1 0 20H3Z" />
+          </clipPath>
+          <g clipPath="url(#de-d)">
+            {[3, 7.4, 11.8].map((x, i) => (
+              <rect key={x} x={x} y="6" width="3.3" height="20" fill={col(o.d, i)} />
+            ))}
+          </g>
+        </>
+      ) : (
+        heights.map((h, i) => <rect key={i} x={3 + i * (w + gap)} y={16 - h / 2} width={w} height={h} rx={rx} fill={col(o.d, i)} />)
+      )}
+      {o.spine && <rect x="18" y="6" width="3.4" height="20" rx={rx} fill={col(o.e, 0)} />}
+      {[6, 13.4, 20.8].map((y, i) => (
+        <rect key={y} x="18" y={y} width={i === 1 && o.spine ? 8.5 : 11} height="5.2" rx={rx} fill={col(o.e, i)} />
+      ))}
+    </>
+  )
+}
+const inTile = (fill: string, inner: ReactNode, stroke?: boolean) => (
+  <>
+    {stroke ? <rect x="2" y="2" width="28" height="28" rx="7.5" fill="none" stroke="currentColor" strokeWidth="2.4" /> : <rect x="1" y="1" width="30" height="30" rx="8" fill={fill} />}
+    <g transform="translate(5.1 5.1) scale(0.68)">{inner}</g>
+  </>
+)
+
+const DE1: Mark = ({ size = 26 }) => svg(size, inTile('#132029', de({ d: LIGHT, e: '#fff' })))
+const DE2: Mark = ({ size = 26 }) => svg(size, de({ d: 'currentColor', e: BLUE }))
+const DE3: Mark = ({ size = 26 }) => svg(size, de({ heights: [20, 20, 16, 9], w: 2.6, gap: 0.65, d: 'currentColor', e: BLUE }))
+const DE4: Mark = ({ size = 26 }) => svg(size, de({ sliced: true, d: 'currentColor', e: BLUE }))
+const DE5: Mark = ({ size = 26 }) => svg(size, inTile('#132029', de({ sliced: true, d: '#fff', e: LIGHT })))
+const DE6: Mark = ({ size = 26 }) => svg(size, de({ sliced: true, spine: true, d: 'currentColor', e: ['currentColor', BLUE, 'currentColor'] }))
+const DE7: Mark = ({ size = 26 }) => svg(size, de({ rx: 2.6, w: 3.7, gap: 0.6, d: GREEN, e: 'currentColor' }))
+const DE8: Mark = ({ size = 26 }) => svg(size, de({ d: [BRONZE, SILVER, GOLD], e: 'currentColor' }))
+const DE9: Mark = ({ size = 26 }) => svg(size, inTile(BLUE, de({ sliced: true, d: '#fff', e: '#fff' })))
+const DE10: Mark = ({ size = 26 }) => svg(size, inTile('', de({ d: BLUE, e: 'currentColor' }), true))
+
+export const LOGOS3: typeof LOGOS = [
+  { name: 'D and E, on a tile', mark: DE1, idea: '14 reversed: three columns make the D, three rows make the E.', note: 'The direct answer to your note. The short third column gives the D its curve.' },
+  { name: 'D and E, open', mark: DE2, idea: 'The same letters with no tile: ink columns, blue rows.', note: 'Lighter in the header. It needs the two colours to keep the letters apart.' },
+  { name: 'D with four columns', mark: DE3, idea: 'Four thin columns that step down, so the D has a rounder side.', note: 'The best D of the bar versions. Thin bars, so it is weaker at browser-tab size.' },
+  { name: 'Sliced D', mark: DE4, idea: 'A true D shape, cut into three columns.', note: 'Reads as “DE” first and as columns and rows second. My pick of this round.' },
+  { name: 'Sliced D, on a tile', mark: DE5, idea: 'The sliced D in white on the dark tile, rows in light blue.', note: 'The same on light and dark, and the strongest at 16 pixels.' },
+  { name: 'Sliced D, E with a spine', mark: DE6, idea: 'The E gets its upright, and its middle row is blue: one row selected.', note: 'The most letter-like. The E is less clearly “rows”.' },
+  { name: 'Soft bars', mark: DE7, idea: 'Rounded bars, green columns and ink rows.', note: 'Friendlier. The round ends make the letters a little less clear.' },
+  { name: 'Bronze, silver, gold columns', mark: DE8, idea: 'The three columns of the D are the three layers.', note: 'Joins this idea with the bronze-to-gold one. Three colours and ink is the limit.' },
+  { name: 'Blue tile', mark: DE9, idea: 'The sliced D and the rows in white on one blue tile.', note: 'One colour and white. Easy to use anywhere, and it stands out in a row of browser tabs.' },
+  { name: 'Outline tile', mark: DE10, idea: 'Blue columns and ink rows inside a thin frame.', note: 'Lighter than a filled tile. The frame is thin at small size.' },
+]
+
 function Word({ hl }: { hl?: boolean }) {
   return hl ? (
     <span className="lg-word">
@@ -317,6 +381,12 @@ function Set({ title, lead, items, from }: { title: string; lead: string; items:
 export default function Logos() {
   return (
     <>
+      <Set
+        title="Round three: D from columns, E from rows"
+        lead="Built on 14, reversed as you asked: the columns come first and form a D, the rows come second and form an E."
+        items={LOGOS3}
+        from={21}
+      />
       <Set
         title="Round two: ten refinements"
         lead="Built on 10, 3 and 8 of the first round, and on the pipeline and bronze-to-gold idea. Numbers continue from the first round."
