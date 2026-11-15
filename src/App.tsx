@@ -7,6 +7,7 @@ import { SUBJECTS, subjectOfPath } from './data/subjects'
 const LessonPage = lazy(() => import('./components/lesson/LessonPage'))
 const Glossary = lazy(() => import('./components/Glossary'))
 const Toolkit = lazy(() => import('./components/Toolkit'))
+const Interviews = lazy(() => import('./components/Interviews'))
 const Sources = lazy(() => import('./components/Sources'))
 const SubjectPlan = lazy(() => import('./components/SubjectPlan'))
 
@@ -65,6 +66,7 @@ export default function App() {
               {s.status === 'planned' && <Route path={s.path} element={<SubjectPlan subject={s} />} />}
               <Route path={`${s.path}/toolkit`} element={<Toolkit subject={s} />} />
               <Route path={`${s.path}/glossary`} element={<Glossary subject={s} />} />
+              <Route path={`${s.path}/interviews`} element={<Interviews subject={s} />} />
               <Route path={`${s.path}/sources`} element={<Sources subject={s} />} />
             </Fragment>
           ))}

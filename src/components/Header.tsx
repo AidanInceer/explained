@@ -122,6 +122,7 @@ export default function Header() {
           <NavLink to={`${subject.path}/toolkit`}>Toolkit</NavLink>
           <NavLink to={`${subject.path}/glossary`}>Glossary</NavLink>
           <NavLink to={`${subject.path}/sources`}>Sources</NavLink>
+          <NavLink to={`${subject.path}/interviews`}>Interviews</NavLink>
           <NavFlow nav={navEl} path={loc.pathname} />
         </nav>
       )}

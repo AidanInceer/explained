@@ -30,8 +30,8 @@ export function splitLessonFile(src: string): LessonFile {
 
 const inline = (s: string) => marked.parseInline(s, { async: false }) as string
 
-/** Lines that start a part: each second-level heading, and the third-level headings of a section that is too long to read in one go. */
-function partStarts(lines: string[]): Set<number> {
+/** Lines that start a section: each second-level heading, and the third-level headings of a section that is too long to read in one go. */
+function sectionStarts(lines: string[]): Set<number> {
   const starts = new Set<number>()
   let fence = false
   let h2 = -1
@@ -56,24 +56,69 @@ function partStarts(lines: string[]): Set<number> {
   return starts
 }
 
+/** A step opens once the step before it has about this many words. A figure counts as FIG words, because it takes time to use. */
+const STEP = 320
+const FIG = 60
+/** A last step shorter than this joins the step before it, so the reader does not click for a few lines. */
+const TAIL = 170
+
+/** Group sections into steps. `words[0]` is the opening. Returns the step of each section. */
+export function groupSteps(words: number[]): number[] {
+  const out: number[] = []
+  let step = 0
+  let acc = 0
+  words.forEach((w, k) => {
+    if (k > 0 && acc >= STEP) {
+      step++
+      acc = 0
+    }
+    out.push(step)
+    acc += w
+  })
+  if (step > 0 && acc < TAIL) return out.map((s) => (s === step ? step - 1 : s))
+  return out
+}
+
+/** Count the words of each section, and the step each section opens in. */
+function stepsOf(lines: string[], starts: Set<number>): number[] {
+  const words = [0]
+  lines.forEach((line, i) => {
+    if (starts.has(i)) words.push(0)
+    else if (line.startsWith('::fig ')) words[words.length - 1] += FIG
+    else words[words.length - 1] += line.split(/\s+/).filter(Boolean).length
+  })
+  return groupSteps(words)
+}
+
 /** Turn the Markdown body of a lesson into parts and segments. Terms are linked later, in the browser (see `link.ts`). */
 export function parseLessonBody(src: string): LessonContent {
   const out: Segment[] = []
-  const parts: string[] = ['']
+  const lines = src.replace(/\r\n/g, '\n').split('\n')
+  const starts = sectionStarts(lines)
+  const stepOf = stepsOf(lines, starts)
+  const parts: string[][] = [[]]
   let part = 0
+  let sec = 0
+  /** True while the buffer starts with the heading of section `sec`. */
+  let head = false
   let buf: string[] = []
   const flush = () => {
     const text = buf.join('\n').trim()
-    if (text) out.push({ type: 'md', part, html: marked.parse(text, { async: false }) as string })
     buf = []
+    if (!text) return
+    const html = marked.parse(text, { async: false }) as string
+    // A section's heading carries its number, so the list of sections can scroll to it.
+    out.push({ type: 'md', part, html: head ? html.replace(/^<h([23])>/, `<h$1 data-sec="${sec}">`) : html })
+    head = false
   }
-  const lines = src.replace(/\r\n/g, '\n').split('\n')
-  const starts = partStarts(lines)
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (starts.has(i)) {
       flush()
-      part = parts.push(line.replace(/^#+\s*/, '').trim()) - 1
+      sec++
+      part = stepOf[sec]
+      ;(parts[part] ??= []).push(line.replace(/^#+\s*/, '').trim())
+      head = true
       buf.push(line)
     } else if (line.startsWith('::fig ')) {
       flush()

@@ -1,5 +1,5 @@
 /**
- * The subjects of the site. Each has a map of lessons, and its own toolkit, glossary and sources pages.
+ * The subjects of the site. Each has a map of lessons, and its own toolkit, glossary, sources and interviews pages.
  *
  * - Data engineering: lessons are the files in src/content, and each file sets its place on the map.
  * - Software engineering and AI: the map comes from the plans in src/data/plans/. A lesson file in
@@ -80,7 +80,7 @@ export const SUBJECTS: Subject[] = [
 export const subjectById = Object.fromEntries(SUBJECTS.map((s) => [s.id, s])) as Record<SubjectId, Subject>
 
 /** Pages that every subject has, after its path: "/data/toolkit". */
-export const SUBJECT_PAGES = ['toolkit', 'glossary', 'sources'] as const
+export const SUBJECT_PAGES = ['toolkit', 'glossary', 'sources', 'interviews'] as const
 
 /**
  * The subject that an address belongs to. The home page ("/") belongs to none. A lesson belongs to its subject.

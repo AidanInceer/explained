@@ -607,6 +607,20 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .parts-nav li button:hover { background: var(--paper); text-decoration: none; color: var(--ink); }
 @media (max-width: 620px) { .parts-nav { padding: 14px 16px 10px; } .parts-nav li button { padding: 8px 6px; } }
 
+/* ---------- lesson steps: a few sections open at a time ---------- */
+.parts-bar { display: flex; gap: 4px; height: 4px; background: none; }
+.parts-bar i { flex: 1; height: 100%; border-radius: 2px; background: var(--rule-soft); transition: background-color 0.35s ease; }
+.parts-bar i.on { background: var(--line); }
+.parts-nav li.step-start { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule); }
+.parts-nav li.locked button span { color: var(--ink-3); }
+.lpart.opened { animation: step-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes step-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.prose .lpart h2 { scroll-margin-top: calc(var(--bar-h) + 18px); }
+.part-next p { display: grid; gap: 1px; min-width: 0; }
+.part-next p span { font-size: 13.5px; color: var(--ink-3); }
+.part-next p b { font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .lpart.opened { animation: none; } .parts-bar i { transition: none; } }
+
 /* ---------- round 1 refinements ---------- */
 .side-lessons > summary { display: none; }
 @media (max-width: 860px) {
@@ -704,6 +718,25 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .fig-body .stat { border-radius: 0 4px 4px 0; border-left: 3px solid var(--line-2); background: var(--surface-2); }
 .fig-body .stat.bad { border-left-color: #b3261e; }
 .fig-body .stat.good { border-left-color: #0a6e5f; }
+
+/* One motion language for every interactive figure.
+   - Controls give the same small press and hover feedback.
+   - Shapes glide to their new place instead of jumping.
+   - The line or number that says what changed flashes once, when the reader caused the change (LessonFigure). */
+.fig-body .act, .fig-body .seg button { transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease; }
+.fig-body .act:hover:not(:disabled) { background: var(--ink-hover); border-color: var(--ink-hover); }
+.fig-body .act.ghost:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); border-color: var(--ink); }
+.fig-body .act:active:not(:disabled), .fig-body .seg button:active { transform: translateY(1px); }
+.fig-body .stat { transition: background-color 0.2s ease, border-color 0.2s ease; }
+.kx svg :is(circle, rect, ellipse, text) {
+  transition: cx 0.22s ease-out, cy 0.22s ease-out, r 0.22s ease-out, x 0.22s ease-out, y 0.22s ease-out,
+    width 0.22s ease-out, height 0.22s ease-out, fill 0.2s ease, opacity 0.2s ease;
+}
+.kx svg path { transition: fill 0.2s ease, stroke 0.2s ease, opacity 0.2s ease; }
+.fig-body .answered { animation: fig-answer 0.6s ease-out; }
+.fig-body .stat.answered { animation-name: fig-answer-stat; }
+@keyframes fig-answer { from { background-color: var(--accent-tint); box-shadow: 0 0 0 3px var(--accent-tint); } }
+@keyframes fig-answer-stat { from { background-color: var(--accent-tint); border-left-color: var(--accent); } }
 .fig-body .tbl th { background: var(--surface-2); }
 .fig-body .tbl th, .fig-body .tbl td { border-color: var(--rule-soft); }
 
@@ -871,48 +904,48 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .top-progress, .top-progress:hover { border: 0; background: none; padding: 6px 2px; font-size: 13.5px; color: var(--ink-3); }
 .top-progress:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
-/* ---------- the logo: four soft bounces, then a jump where the pieces swap places with a flip and land in order ---------- */
-.sm-p { transform-box: fill-box; transform-origin: center; animation: 7s cubic-bezier(0.45, 0, 0.35, 1) infinite; }
-.sm-tl { animation-name: sm-tl; }
-.sm-blue { animation-name: sm-blue, sm-pulse; animation-duration: 7s, 2.4s; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1), ease-in-out; }
-.sm-br { animation-name: sm-br; }
-.sm-bl { animation-name: sm-bl; }
-/* Each piece goes to the next place clockwise (top left, blue, bottom right, bottom left), then comes home. */
-@keyframes sm-tl {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(37px, -14px) rotate(180deg); }
-  84% { transform: translate(0, -6px) rotate(360deg); }
-  92% { transform: translate(0, 1.5px) rotate(360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(360deg); }
-}
-@keyframes sm-blue {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(-4px, 35px) rotate(180deg); }
-  84% { transform: translate(0, -6px) rotate(360deg); }
-  92% { transform: translate(0, 1.5px) rotate(360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(360deg); }
-}
-@keyframes sm-br {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(-33px, -6px) rotate(-180deg); }
-  84% { transform: translate(0, -6px) rotate(-360deg); }
-  92% { transform: translate(0, 1.5px) rotate(-360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
-}
-@keyframes sm-bl {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(0, -39px) rotate(-180deg); }
-  84% { transform: translate(0, -6px) rotate(-360deg); }
-  92% { transform: translate(0, 1.5px) rotate(-360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
-}
+/* ---------- the logo: moved by SiteMark.tsx. CSS only sets the pivot of each piece and the blue piece's pulse. ---------- */
+.sm-p { transform-box: fill-box; transform-origin: center; }
+.sm-blue { animation: sm-pulse 2.4s ease-in-out infinite; }
 @keyframes sm-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
 @media (prefers-reduced-motion: reduce) { .sm-p { animation: none; } }
+
+/* ---------- interviews page: stages drawn as a line with stops, like the lesson maps ---------- */
+.interviews { max-width: 1100px; }
+.interviews > .lead { max-width: 46em; }
+.interviews h2 { font-size: 32px; font-weight: 740; letter-spacing: -0.025em; margin-top: 52px; padding-bottom: 10px; border-bottom: 1px solid var(--line-2); }
+.iv-line { list-style: none; margin: 24px 0 0; padding: 0; position: relative; }
+.iv-line::before { content: ''; position: absolute; left: 11px; top: 14px; bottom: 30px; width: 5px; border-radius: 3px; background: var(--line); }
+.iv-line > li { position: relative; padding: 0 0 26px 48px; max-width: 46em; }
+.iv-line > li::before { content: ''; position: absolute; left: 2px; top: 3px; width: 23px; height: 23px; box-sizing: border-box; border-radius: 50%; background: var(--surface); border: 5px solid var(--line); }
+.iv-line h3 { font-size: 21px; letter-spacing: -0.015em; }
+.iv-line p { margin: 6px 0 0; color: var(--ink-2); }
+.iv-line ul { margin: 8px 0 0; padding-left: 1.1em; }
+.iv-line ul li { margin: 2px 0; }
+.iv-lessons { font-size: 14.5px; color: var(--ink-3); margin: 8px 0 0 !important; }
+.iv-lessons a { color: var(--ink); }
+
+.iv-topic { margin-top: 26px; max-width: 52em; }
+.iv-topic h3 { font-size: 20px; margin-bottom: 8px; }
+.iv-q { border: 1px solid var(--line-2); background: var(--surface); border-radius: 4px; margin-top: -1px; }
+.iv-q:first-of-type { margin-top: 0; }
+.iv-q summary { cursor: pointer; padding: 13px 16px 13px 44px; position: relative; font-weight: 600; list-style: none; }
+.iv-q summary::-webkit-details-marker { display: none; }
+.iv-q summary::before { content: '+'; position: absolute; left: 14px; top: 11px; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--line-2); font-weight: 600; font-size: 15px; line-height: 1; color: var(--ink-2); transition: transform 0.2s ease, background-color 0.2s ease; }
+.iv-q[open] summary::before { content: '−'; background: var(--line); border-color: var(--line); color: #fff; }
+.iv-q summary:hover { background: var(--surface-2); }
+.iv-q > div { padding: 0 16px 14px 44px; animation: iv-open 0.25s ease-out; }
+.iv-q > div p { margin: 0; }
+@keyframes iv-open { from { opacity: 0; transform: translateY(-4px); } }
+
+.iv-gotchas { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; margin-top: 18px; border: 1px solid var(--line-2); background: var(--line-1); }
+.iv-gotchas article { background: var(--surface); padding: 18px 20px; }
+.iv-gotchas h3 { font-size: 19px; letter-spacing: -0.01em; }
+.iv-gotchas p { margin: 8px 0 0; color: var(--ink-2); }
+.iv-instead { color: var(--ink) !important; }
+
+.iv-practice { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; max-width: 46em; }
+.iv-practice li { display: grid; gap: 2px; }
+.iv-practice a { font-weight: 650; }
+.iv-practice span { color: var(--ink-2); }
+@media (max-width: 620px) { .interviews h2 { font-size: 26px; } .iv-gotchas { grid-template-columns: 1fr; } }
