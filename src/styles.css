@@ -166,14 +166,15 @@ button, input { font: inherit; color: inherit; }
   box-shadow: 0 0 0 4px var(--canvas);
   transition: transform 0.12s ease;
 }
-.station.deeper .dot { left: -10px; top: -10px; width: 20px; height: 20px; border-width: 2.5px; border-style: dashed; border-radius: 4px; }
+/* A lesson that goes deeper: a smaller square turned into a diamond. Dashed outlines mean only "not written yet". */
+.station.deeper .dot { left: -8px; top: -8px; width: 16px; height: 16px; border-width: 3px; border-radius: 3px; transform: rotate(45deg); }
 .station.done .dot { background: var(--line); }
 .station.done .dot::after {
   content: ''; position: absolute; left: 50%; top: 46%; width: 9px; height: 5px;
   border-left: 2.5px solid var(--surface); border-bottom: 2.5px solid var(--surface); transform: translate(-50%, -50%) rotate(-45deg);
 }
-.station.deeper.done .dot { border-style: solid; }
-.station.deeper.done .dot::after { width: 7px; height: 4px; border-width: 2px; }
+.station.deeper.done .dot::after { width: 6px; height: 3.5px; border-width: 2px; transform: translate(-50%, -50%) rotate(-90deg); }
+.station.deeper.next .dot::before { inset: 2.5px; border-radius: 1px; }
 .station.done .label small { color: var(--good); font-weight: 650; }
 /* Next lesson: a blue centre in the lesson's square */
 .station.next .dot::before { content: ''; position: absolute; inset: 3px; border-radius: 2px; background: var(--accent); }
@@ -188,7 +189,7 @@ button, input { font: inherit; color: inherit; }
 .map.has-hover .station:not(.hovered):not(.prereq) { opacity: 0.32; }
 .station.hovered .dot { transform: scale(1.18); box-shadow: 0 0 0 4px var(--canvas), 0 0 0 7px color-mix(in srgb, var(--line) 30%, transparent); }
 .station.hovered .label b { color: var(--line-text); }
-.station.deeper.hovered .dot { transform: scale(1.18); }
+.station.deeper.hovered .dot { transform: rotate(45deg) scale(1.18); }
 .station.prereq .label small { color: var(--ink); font-weight: 650; }
 .station.wide .label { width: 172px; }
 .line-name { transition: opacity 0.15s ease; }
@@ -683,7 +684,8 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 @media (max-width: 620px) { .parts-nav li button { font-size: 16px; } }
 
 /* "Goes deeper" reads as a tag, so it looks deliberate when it wraps to a second line. */
-.meta-deeper { border: 1px dashed var(--ink-3); border-radius: 999px; padding: 1px 9px; font-size: 13px; line-height: 1.5; }
+.meta-deeper { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line-1); border-radius: 999px; padding: 1px 10px 1px 9px; font-size: 13px; line-height: 1.5; }
+.meta-deeper::before { content: ''; width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 1.5px; transform: rotate(45deg); }
 @media (max-width: 620px) {
   .lesson-meta { gap: 8px 12px; }
   /* The reading-mode link takes its own row under the title, aligned left. */
@@ -770,7 +772,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 /* lesson-side track list: the same rounded squares as the map */
 .track-line::before { width: 4px; left: 10.5px; border-radius: 2px; }
 .track-line .dot { width: 23px; height: 23px; margin: 1px; border-radius: 5px; background: var(--surface); border-width: 3.5px; }
-.track-line .deeper .dot { width: 19px; height: 19px; margin: 3px; border-width: 2.5px; border-style: dashed; }
+.track-line .deeper .dot { width: 15px; height: 15px; margin: 5px; border-width: 3px; border-radius: 3px; transform: rotate(45deg); }
 .track-line .done .dot { background: var(--line); border-style: solid; }
 .track-line .current .dot { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--line); }
 .wb .wb-steps i { border-radius: 4px; border-width: 1px; }
@@ -804,7 +806,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .plan-line ol::before { content: ''; position: absolute; left: 10px; top: 12px; bottom: 16px; border-left: 4px dashed color-mix(in srgb, var(--line) 55%, var(--surface)); }
 .plan-line li { position: relative; display: flex; gap: 14px; padding: 6px 0; line-height: 1.25; }
 .plan-stop { flex: none; width: 24px; height: 24px; border-radius: 5px; background: var(--surface); border: 3px dashed var(--line); box-shadow: 0 0 0 4px var(--canvas); position: relative; }
-.plan-line li.deeper .plan-stop { width: 18px; height: 18px; margin: 3px; border-width: 2px; }
+.plan-line li.deeper .plan-stop { width: 15px; height: 15px; margin: 4.5px; border-width: 2.5px; border-radius: 3px; transform: rotate(45deg); }
 .plan-line b { display: block; font-size: 15px; font-weight: 620; letter-spacing: -0.01em; }
 .plan-line small { display: block; margin-top: 2px; color: var(--ink-3); font-size: 13px; line-height: 1.35; }
 @media (max-width: 620px) { .plan-frame { padding: 24px 16px 20px; } .plan-line > p { min-height: 0; } }
@@ -822,7 +824,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .plan-head .lead { max-width: 46em; }
 .plan-legend { display: flex; gap: 18px; margin-bottom: 24px; white-space: nowrap; }
 .plan-key { display: inline-block; width: 16px; height: 16px; border-radius: 4px; background: var(--surface); border: 3px solid var(--ink); }
-.plan-key.deeper { width: 14px; height: 14px; border-width: 2px; border-style: dashed; }
+.plan-key.deeper { width: 12px; height: 12px; margin: 0 2px; border-width: 2.5px; border-radius: 2px; transform: rotate(45deg); }
 .station.planned { cursor: default; }
 .station.planned:focus-visible .label b { text-decoration: underline; text-decoration-thickness: 2px; }
 .plan .map-frame { margin-bottom: 20px; }

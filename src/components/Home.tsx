@@ -25,7 +25,7 @@ function KeyIcon({ kind }: { kind: 'core' | 'deeper' | 'done' | 'next' | 'same' 
   return (
     <svg className="key-icon" viewBox="0 0 24 16" width="24" height="16" aria-hidden="true">
       {kind === 'core' && <rect x="5" y="1.5" width="13" height="13" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="2.2" />}
-      {kind === 'deeper' && <rect x="5" y="1.5" width="13" height="13" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="1.6" strokeDasharray="2.6 2" />}
+      {kind === 'deeper' && <rect x="7" y="3.5" width="9" height="9" rx="1.8" transform="rotate(45 11.5 8)" fill="#fff" stroke="var(--ink)" strokeWidth="2" />}
       {kind === 'done' && (
         <>
           <rect x="5" y="1.5" width="13" height="13" rx="3" fill="var(--ink)" stroke="var(--ink)" strokeWidth="2.2" />
