@@ -10,26 +10,26 @@ import Corners from '../Corners'
 import './intro.css'
 
 
-/** A station on the opening map: a rounded square, as on the real lesson maps. */
-type Stop = { x: number; y: number; done?: number; next?: boolean }
+/** A station on the opening map, as on the real lesson maps: a rounded square, or a small diamond for a lesson that goes deeper. */
+type Stop = { x: number; y: number; done?: number; next?: boolean; deeper?: boolean }
 /** Each line runs straight down and changes column with a smooth S-bend. Stops sit on the straight parts only. */
 const LINES: { s: Subject; d: string; stops: Stop[]; delay: number }[] = [
   {
     s: SUBJECTS[0],
     d: 'M100 70V190C100 222 140 213 140 245V400',
-    stops: [{ x: 100, y: 105, done: 0 }, { x: 100, y: 165, done: 1 }, { x: 140, y: 275, next: true }, { x: 140, y: 335 }, { x: 140, y: 395 }],
+    stops: [{ x: 100, y: 105, done: 0 }, { x: 100, y: 165, done: 1 }, { x: 140, y: 275, next: true }, { x: 140, y: 335, deeper: true }, { x: 140, y: 395 }],
     delay: 0.2,
   },
   {
     s: SUBJECTS[1],
     d: 'M260 70V190C260 222 220 213 220 245V400',
-    stops: [{ x: 260, y: 105 }, { x: 260, y: 165 }, { x: 220, y: 275 }, { x: 220, y: 335 }, { x: 220, y: 395 }],
+    stops: [{ x: 260, y: 105 }, { x: 260, y: 165 }, { x: 220, y: 275 }, { x: 220, y: 335 }, { x: 220, y: 395, deeper: true }],
     delay: 0.32,
   },
   {
     s: SUBJECTS[2],
     d: 'M420 70V130C420 162 380 153 380 185V300C380 332 420 323 420 355V400',
-    stops: [{ x: 420, y: 105 }, { x: 380, y: 215 }, { x: 380, y: 275 }, { x: 420, y: 395 }],
+    stops: [{ x: 420, y: 105 }, { x: 380, y: 215 }, { x: 380, y: 275, deeper: true }, { x: 420, y: 395 }],
     delay: 0.44,
   },
 ]
@@ -57,11 +57,15 @@ function OpeningMap() {
           stops.map((p, i) => (
             <g
               key={`${s.id}${i}`}
-              className={['lm-st', s.status, p.done !== undefined && 'done', p.next && 'next'].filter(Boolean).join(' ')}
+              className={['lm-st', p.done !== undefined && 'done', p.next && 'next'].filter(Boolean).join(' ')}
               style={{ ['--c' as string]: s.color, ['--d' as string]: `${reach(delay, p.y) - 0.06}s`, ['--f' as string]: `${reach(delay, p.y) + 0.25}s` }}
             >
               {p.next && <rect x={p.x - 18} y={p.y - 18} width="36" height="36" rx="9" className="lm-ring" />}
-              <rect x={p.x - 11} y={p.y - 11} width="22" height="22" rx="5" pathLength={32} className="lm-box" />
+              {p.deeper ? (
+                <rect x={p.x - 8} y={p.y - 8} width="16" height="16" rx="3" transform={`rotate(45 ${p.x} ${p.y})`} className="lm-box" />
+              ) : (
+                <rect x={p.x - 11} y={p.y - 11} width="22" height="22" rx="5" className="lm-box" />
+              )}
               {p.done !== undefined && <path d={`M${p.x - 5} ${p.y}l3.5 3.5 6.5-7`} className="lm-tick" />}
               {p.next && <rect x={p.x - 5.5} y={p.y - 5.5} width="11" height="11" rx="2" className="lm-core" />}
             </g>
