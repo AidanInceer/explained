@@ -22,8 +22,6 @@
 .lm-st { transform-box: fill-box; transform-origin: center; animation: lm-in 0.4s var(--d) cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 @keyframes lm-in { from { opacity: 0; transform: scale(0.72); } }
 .lm-box { fill: var(--surface); stroke: var(--c); stroke-width: 3.5; }
-/* pathLength 32 on the box: two even dashes on each side, so the corners do not break up. */
-.lm-st.planned .lm-box { stroke-width: 2.5; stroke-dasharray: 2.6 1.4; stroke-dashoffset: 1.9; }
 .lm-st.done .lm-box { animation: lm-fill 0.35s var(--f) ease both; }
 @keyframes lm-fill { to { fill: var(--c); } }
 .lm-tick { fill: none; stroke: var(--surface); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 16; stroke-dashoffset: 16; animation: lm-tick 0.3s calc(var(--f) + 0.2s) ease-out both; }
