@@ -40,26 +40,32 @@ export default function LessonPage() {
   // When the lesson ends with a quiz that is all correct, the quiz box already has the "Mark as understood" button.
   const quizScore = useQuizScores()[id]
   const quizEnds = !!segs && segs.length > 0 && segs[segs.length - 1].type === 'quiz' && !!quizScore && quizScore.correct === quizScore.total
-  // Parts open one at a time. A reader who wants the whole page at once can choose that, and it is remembered.
+  // Sections open in steps of a few at a time (see groupSteps). A reader who wants the whole page at once can choose
+  // that, and it is remembered.
   const [wide, setWide] = useStoredChoice('dee.wide.v1', '1', '0')
   const chooseWide = (v: boolean) => {
     setWide(v)
     setNote(null)
   }
   const [all, chooseAll] = useStoredChoice('dee.read.v1', 'all', 'parts')
-  const [open, setOpen] = useState(1)
-  const shown = all ? last : Math.min(open, last)
-  const reveal = (n: number) => {
+  const [open, setOpen] = useState(0)
+  const shown = all ? last : Math.max(0, Math.min(open, last))
+  const sections = parts.reduce((n, p) => n + p.length, 0)
+  /** Open steps up to `n`, then scroll to section `sec`, or to the start of step `n`. */
+  const reveal = (n: number, sec?: number) => {
     setOpen((o) => Math.max(o, n))
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    requestAnimationFrame(() => document.getElementById(`part-${n}`)?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' }))
+    requestAnimationFrame(() => {
+      const to = (sec && prose.current?.querySelector(`[data-sec="${sec}"]`)) || document.getElementById(`part-${n}`)
+      to?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' })
+    })
   }
 
   // A new lesson starts with no open note and no toolbar.
   useEffect(() => {
     setNote(null)
     setTool(null)
-    setOpen(1)
+    setOpen(0)
   }, [id, setTool])
 
   // Draw the reader's highlights. Each text block is reset to its original HTML first, then painted.
@@ -185,18 +191,13 @@ export default function LessonPage() {
           )}
         </header>
 
-        {last > 1 && <PartsNav parts={parts} shown={shown} all={all} onReveal={reveal} onChooseAll={chooseAll} />}
+        {sections > 2 && <PartsNav parts={parts} shown={shown} all={all} onOpen={reveal} onChooseAll={chooseAll} />}
 
         <div className="prose" ref={prose} onMouseUp={onSelect} onKeyUp={onSelect}>
           {segs ? (
             parts.map((_, n) =>
               n > shown ? null : (
-                <section key={n} id={`part-${n}`} className="lpart">
-                  {n > 0 && last > 1 && (
-                    <p className="part-n">
-                      Part {n} of {last}
-                    </p>
-                  )}
+                <section key={n} id={`part-${n}`} className={n > 0 && !all ? 'lpart opened' : 'lpart'}>
                   {segs.map((s, i) => {
                     if (s.part !== n) return null
                     if (s.type === 'md') return <div key={i} data-seg={i} dangerouslySetInnerHTML={{ __html: s.html }} />
@@ -232,7 +233,10 @@ export default function LessonPage() {
               Continue
             </button>
             <p>
-              Next, part {shown + 1} of {last}: <b>{parts[shown + 1]}</b>
+              <span>
+                Step {shown + 2} of {last + 1}
+              </span>
+              <b>{parts[shown + 1].join(', ')}</b>
             </p>
           </div>
         )}

@@ -31,7 +31,7 @@ export interface ScenarioItem {
   options: { text: string; why: string; verdict: 'best' | 'ok' | 'poor' }[]
 }
 
-/** `part` is the section of the lesson: 0 is the opening, then one for each second-level heading. */
+/** `part` is the step of the lesson the segment is in. A step holds one or more sections (see `groupSteps`). */
 export type Segment = (
   | { type: 'md'; html: string }
   | { type: 'fig'; name: string; caption: string }
@@ -41,6 +41,6 @@ export type Segment = (
 
 export interface LessonContent {
   segs: Segment[]
-  /** Title of each part. The opening has no heading of its own. */
-  parts: string[]
+  /** The section headings in each step. Step 0 starts with the opening, which has no heading of its own. */
+  parts: string[][]
 }
