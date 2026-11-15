@@ -4,7 +4,7 @@ import { LESSONS, lessonsIn } from '../../data/curriculum'
 import { PROPOSE_LESSON_URL, REPO_URL } from '../../data/site'
 import { countsOf, SUBJECTS, type Subject } from '../../data/subjects'
 import { trackById } from '../../data/tracks'
-import { still, useSeen } from '../../lib/motion'
+import { useSeen } from '../../lib/motion'
 import { nextUp, useProgress } from '../../lib/progress'
 import Corners from '../Corners'
 import './intro.css'
@@ -12,28 +12,32 @@ import './intro.css'
 
 /** A station on the opening map: a rounded square, as on the real lesson maps. */
 type Stop = { x: number; y: number; done?: number; next?: boolean }
+/** Each line runs straight down and changes column with a smooth S-bend. Stops sit on the straight parts only. */
 const LINES: { s: Subject; d: string; stops: Stop[]; delay: number }[] = [
   {
     s: SUBJECTS[0],
-    d: 'M90 70V210L140 260V400',
-    stops: [{ x: 90, y: 105, done: 0 }, { x: 90, y: 170, done: 1 }, { x: 140, y: 270, next: true }, { x: 140, y: 335 }, { x: 140, y: 400 }],
-    delay: 0.15,
+    d: 'M100 70V190C100 222 140 213 140 245V400',
+    stops: [{ x: 100, y: 105, done: 0 }, { x: 100, y: 165, done: 1 }, { x: 140, y: 275, next: true }, { x: 140, y: 335 }, { x: 140, y: 395 }],
+    delay: 0.2,
   },
   {
     s: SUBJECTS[1],
-    d: 'M260 70V190L220 230V400',
-    stops: [{ x: 260, y: 105 }, { x: 260, y: 170 }, { x: 220, y: 255 }, { x: 220, y: 325 }, { x: 220, y: 400 }],
-    delay: 0.3,
+    d: 'M260 70V190C260 222 220 213 220 245V400',
+    stops: [{ x: 260, y: 105 }, { x: 260, y: 165 }, { x: 220, y: 275 }, { x: 220, y: 335 }, { x: 220, y: 395 }],
+    delay: 0.32,
   },
   {
     s: SUBJECTS[2],
-    d: 'M430 70V150L380 200V300L430 350V400',
-    stops: [{ x: 430, y: 110 }, { x: 380, y: 220 }, { x: 380, y: 290 }, { x: 430, y: 400 }],
-    delay: 0.45,
+    d: 'M420 70V130C420 162 380 153 380 185V300C380 332 420 323 420 355V400',
+    stops: [{ x: 420, y: 105 }, { x: 380, y: 215 }, { x: 380, y: 275 }, { x: 420, y: 395 }],
+    delay: 0.44,
   },
 ]
-/** Dashed links between lines: a lesson on one subject that helps with a lesson on another. */
-const CROSS = ['M90 170C150 170 220 200 220 255', 'M260 170C320 170 380 180 380 220', 'M220 325C320 325 430 330 430 370']
+/** How long one line takes to draw. A stop appears when the line reaches it. */
+const DRAW = 1.4
+const reach = (delay: number, y: number) => delay + ((y - 70) / 330) * DRAW
+/** Dashed links from a stop on one line to a stop on another: a lesson that helps with a lesson in another subject. */
+const CROSS = ['M111 165C170 165 175 275 209 275', 'M271 165C325 165 330 215 369 215', 'M231 335C330 335 335 395 409 395']
 
 /** The opening drawing: three subjects drawn as lines of lessons, the same as the maps inside. */
 function OpeningMap() {
@@ -43,40 +47,30 @@ function OpeningMap() {
     <div className="lm">
       <Corners />
       <svg viewBox="0 0 520 440" className="lm-svg" aria-hidden="true">
-        {CROSS.map((d, i) => (
-          <path key={d} d={d} className="lm-cross" style={{ animationDelay: `${1.3 + i * 0.12}s` }} />
-        ))}
         {LINES.map(({ s, d, delay }) => (
-          <path key={s.id} id={`lm-${s.id}`} d={d} pathLength={1} className="lm-line" style={{ stroke: s.color, animationDelay: `${delay}s` }} />
+          <path key={s.id} d={d} pathLength={1} className="lm-line" style={{ stroke: s.color, animationDelay: `${delay}s`, animationDuration: `${DRAW}s` }} />
+        ))}
+        {CROSS.map((d, i) => (
+          <path key={d} d={d} className="lm-cross" style={{ animationDelay: `${2.1 + i * 0.15}s` }} />
         ))}
         {LINES.map(({ s, stops, delay }) =>
           stops.map((p, i) => (
             <g
               key={`${s.id}${i}`}
               className={['lm-st', s.status, p.done !== undefined && 'done', p.next && 'next'].filter(Boolean).join(' ')}
-              style={{ ['--c' as string]: s.color, ['--d' as string]: `${delay + 0.25 + (p.y - 70) / 420}s`, ['--f' as string]: `${2 + (p.done ?? 0) * 0.35}s` }}
+              style={{ ['--c' as string]: s.color, ['--d' as string]: `${reach(delay, p.y) - 0.06}s`, ['--f' as string]: `${reach(delay, p.y) + 0.25}s` }}
             >
-              {p.next && <rect x={p.x - 19} y={p.y - 19} width="38" height="38" rx="9" className="lm-ring" />}
-              <rect x={p.x - 11} y={p.y - 11} width="22" height="22" rx="5" className="lm-box" />
+              {p.next && <rect x={p.x - 18} y={p.y - 18} width="36" height="36" rx="9" className="lm-ring" />}
+              <rect x={p.x - 11} y={p.y - 11} width="22" height="22" rx="5" pathLength={32} className="lm-box" />
               {p.done !== undefined && <path d={`M${p.x - 5} ${p.y}l3.5 3.5 6.5-7`} className="lm-tick" />}
               {p.next && <rect x={p.x - 5.5} y={p.y - 5.5} width="11" height="11" rx="2" className="lm-core" />}
             </g>
           )),
         )}
-        {/* One packet on each line, all at the same speed. */}
-        {!still &&
-          LINES.map(({ s }, i) => (
-            <rect key={s.id} x="-4.5" y="-4.5" width="9" height="9" rx="2" className="lm-packet" fill={s.color} opacity="0">
-              <animateMotion dur="4.2s" begin={`${2.4 + i * 0.7}s`} repeatCount="indefinite" calcMode="linear">
-                <mpath href={`#lm-${s.id}`} />
-              </animateMotion>
-              <animate attributeName="opacity" dur="4.2s" begin={`${2.4 + i * 0.7}s`} repeatCount="indefinite" values="0;1;1;0" keyTimes="0;0.08;0.9;1" />
-            </rect>
-          ))}
         {LINES.map(({ s, delay }, i) => (
-          <g key={s.id} className="lm-pill" style={{ animationDelay: `${delay + 0.1}s` }}>
-            <rect x={[90, 260, 430][i] - 44} y="26" width="88" height="28" rx="4" fill={s.color} />
-            <text x={[90, 260, 430][i]} y="45" textAnchor="middle">
+          <g key={s.id} className="lm-pill" style={{ animationDelay: `${delay - 0.1}s` }}>
+            <rect x={[100, 260, 420][i] - 44} y="26" width="88" height="28" rx="4" fill={s.color} />
+            <text x={[100, 260, 420][i]} y="45" textAnchor="middle">
               {s.short}
             </text>
           </g>

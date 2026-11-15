@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { parseLessonBody, splitLessonFile } from './format.ts'
+import { groupSteps, parseLessonBody, splitLessonFile } from './format.ts'
 
 describe('splitLessonFile', () => {
   test('reads the YAML block and returns the rest as the body', () => {
@@ -12,26 +12,68 @@ describe('splitLessonFile', () => {
   })
 })
 
+describe('groupSteps', () => {
+  test('a step closes once it has enough words', () => {
+    expect(groupSteps([100, 250, 100, 200, 200])).toEqual([0, 0, 1, 1, 1])
+  })
+  test('a short last step joins the one before', () => {
+    expect(groupSteps([350, 100])).toEqual([0, 0])
+  })
+})
+
 describe('parseLessonBody', () => {
-  test('second-level headings start parts', () => {
+  test('second-level headings start sections, and short sections share a step', () => {
     const c = parseLessonBody('Intro\n\n## First\n\nA\n\n## Second\n\nB\n')
-    expect(c.parts).toEqual(['', 'First', 'Second'])
+    expect(c.parts).toEqual([['First', 'Second']])
     expect(c.segs.map((s) => [s.type, s.part])).toEqual([
       ['md', 0],
-      ['md', 1],
-      ['md', 2],
+      ['md', 0],
+      ['md', 0],
     ])
+    expect((c.segs[1] as { html: string }).html).toMatch(/^<h2 data-sec="1">First/)
+  })
+
+  test('a long lesson opens in steps', () => {
+    const words = Array(200).fill('word').join(' ')
+    const c = parseLessonBody(`Intro
+
+## A
+
+${words}
+
+## B
+
+${words}
+
+## C
+
+${words}
+
+## D
+
+${words}
+`)
+    expect(c.parts).toEqual([['A', 'B'], ['C', 'D']])
   })
 
   test('long sections are split at their third-level headings', () => {
     const words = Array(300).fill('word').join(' ')
-    const c = parseLessonBody(`## Long\n\n### One\n\n${words}\n\n### Two\n\nMore\n`)
-    expect(c.parts).toEqual(['', 'Long', 'One', 'Two'])
+    const c = parseLessonBody(`## Long
+
+### One
+
+${words}
+
+### Two
+
+More
+`)
+    expect(c.parts.flat()).toEqual(['Long', 'One', 'Two'])
   })
 
-  test('headings inside code blocks do not start parts', () => {
+  test('headings inside code blocks do not start sections', () => {
     const c = parseLessonBody('```\n## not a heading\n```\n')
-    expect(c.parts).toEqual([''])
+    expect(c.parts).toEqual([[]])
   })
 
   test('figures', () => {

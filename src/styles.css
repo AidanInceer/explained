@@ -166,14 +166,15 @@ button, input { font: inherit; color: inherit; }
   box-shadow: 0 0 0 4px var(--canvas);
   transition: transform 0.12s ease;
 }
-.station.deeper .dot { left: -10px; top: -10px; width: 20px; height: 20px; border-width: 2.5px; border-style: dashed; border-radius: 4px; }
+/* A lesson that goes deeper: a smaller square turned into a diamond. Dashed outlines mean only "not written yet". */
+.station.deeper .dot { left: -8px; top: -8px; width: 16px; height: 16px; border-width: 3px; border-radius: 3px; transform: rotate(45deg); }
 .station.done .dot { background: var(--line); }
 .station.done .dot::after {
   content: ''; position: absolute; left: 50%; top: 46%; width: 9px; height: 5px;
   border-left: 2.5px solid var(--surface); border-bottom: 2.5px solid var(--surface); transform: translate(-50%, -50%) rotate(-45deg);
 }
-.station.deeper.done .dot { border-style: solid; }
-.station.deeper.done .dot::after { width: 7px; height: 4px; border-width: 2px; }
+.station.deeper.done .dot::after { width: 6px; height: 3.5px; border-width: 2px; transform: translate(-50%, -50%) rotate(-90deg); }
+.station.deeper.next .dot::before { inset: 2.5px; border-radius: 1px; }
 .station.done .label small { color: var(--good); font-weight: 650; }
 /* Next lesson: a blue centre in the lesson's square */
 .station.next .dot::before { content: ''; position: absolute; inset: 3px; border-radius: 2px; background: var(--accent); }
@@ -188,7 +189,7 @@ button, input { font: inherit; color: inherit; }
 .map.has-hover .station:not(.hovered):not(.prereq) { opacity: 0.32; }
 .station.hovered .dot { transform: scale(1.18); box-shadow: 0 0 0 4px var(--canvas), 0 0 0 7px color-mix(in srgb, var(--line) 30%, transparent); }
 .station.hovered .label b { color: var(--line-text); }
-.station.deeper.hovered .dot { transform: scale(1.18); }
+.station.deeper.hovered .dot { transform: rotate(45deg) scale(1.18); }
 .station.prereq .label small { color: var(--ink); font-weight: 650; }
 .station.wide .label { width: 172px; }
 .line-name { transition: opacity 0.15s ease; }
@@ -607,6 +608,20 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .parts-nav li button:hover { background: var(--paper); text-decoration: none; color: var(--ink); }
 @media (max-width: 620px) { .parts-nav { padding: 14px 16px 10px; } .parts-nav li button { padding: 8px 6px; } }
 
+/* ---------- lesson steps: a few sections open at a time ---------- */
+.parts-bar { display: flex; gap: 4px; height: 4px; background: none; }
+.parts-bar i { flex: 1; height: 100%; border-radius: 2px; background: var(--rule-soft); transition: background-color 0.35s ease; }
+.parts-bar i.on { background: var(--line); }
+.parts-nav li.step-start { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule); }
+.parts-nav li.locked button span { color: var(--ink-3); }
+.lpart.opened { animation: step-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes step-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.prose .lpart h2 { scroll-margin-top: calc(var(--bar-h) + 18px); }
+.part-next p { display: grid; gap: 1px; min-width: 0; }
+.part-next p span { font-size: 13.5px; color: var(--ink-3); }
+.part-next p b { font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .lpart.opened { animation: none; } .parts-bar i { transition: none; } }
+
 /* ---------- round 1 refinements ---------- */
 .side-lessons > summary { display: none; }
 @media (max-width: 860px) {
@@ -669,7 +684,8 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 @media (max-width: 620px) { .parts-nav li button { font-size: 16px; } }
 
 /* "Goes deeper" reads as a tag, so it looks deliberate when it wraps to a second line. */
-.meta-deeper { border: 1px dashed var(--ink-3); border-radius: 999px; padding: 1px 9px; font-size: 13px; line-height: 1.5; }
+.meta-deeper { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line-1); border-radius: 999px; padding: 1px 10px 1px 9px; font-size: 13px; line-height: 1.5; }
+.meta-deeper::before { content: ''; width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 1.5px; transform: rotate(45deg); }
 @media (max-width: 620px) {
   .lesson-meta { gap: 8px 12px; }
   /* The reading-mode link takes its own row under the title, aligned left. */
@@ -704,6 +720,25 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .fig-body .stat { border-radius: 0 4px 4px 0; border-left: 3px solid var(--line-2); background: var(--surface-2); }
 .fig-body .stat.bad { border-left-color: #b3261e; }
 .fig-body .stat.good { border-left-color: #0a6e5f; }
+
+/* One motion language for every interactive figure.
+   - Controls give the same small press and hover feedback.
+   - Shapes glide to their new place instead of jumping.
+   - The line or number that says what changed flashes once, when the reader caused the change (LessonFigure). */
+.fig-body .act, .fig-body .seg button { transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease; }
+.fig-body .act:hover:not(:disabled) { background: var(--ink-hover); border-color: var(--ink-hover); }
+.fig-body .act.ghost:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); border-color: var(--ink); }
+.fig-body .act:active:not(:disabled), .fig-body .seg button:active { transform: translateY(1px); }
+.fig-body .stat { transition: background-color 0.2s ease, border-color 0.2s ease; }
+.kx svg :is(circle, rect, ellipse, text) {
+  transition: cx 0.22s ease-out, cy 0.22s ease-out, r 0.22s ease-out, x 0.22s ease-out, y 0.22s ease-out,
+    width 0.22s ease-out, height 0.22s ease-out, fill 0.2s ease, opacity 0.2s ease;
+}
+.kx svg path { transition: fill 0.2s ease, stroke 0.2s ease, opacity 0.2s ease; }
+.fig-body .answered { animation: fig-answer 0.6s ease-out; }
+.fig-body .stat.answered { animation-name: fig-answer-stat; }
+@keyframes fig-answer { from { background-color: var(--accent-tint); box-shadow: 0 0 0 3px var(--accent-tint); } }
+@keyframes fig-answer-stat { from { background-color: var(--accent-tint); border-left-color: var(--accent); } }
 .fig-body .tbl th { background: var(--surface-2); }
 .fig-body .tbl th, .fig-body .tbl td { border-color: var(--rule-soft); }
 
@@ -737,7 +772,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 /* lesson-side track list: the same rounded squares as the map */
 .track-line::before { width: 4px; left: 10.5px; border-radius: 2px; }
 .track-line .dot { width: 23px; height: 23px; margin: 1px; border-radius: 5px; background: var(--surface); border-width: 3.5px; }
-.track-line .deeper .dot { width: 19px; height: 19px; margin: 3px; border-width: 2.5px; border-style: dashed; }
+.track-line .deeper .dot { width: 15px; height: 15px; margin: 5px; border-width: 3px; border-radius: 3px; transform: rotate(45deg); }
 .track-line .done .dot { background: var(--line); border-style: solid; }
 .track-line .current .dot { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--line); }
 .wb .wb-steps i { border-radius: 4px; border-width: 1px; }
@@ -771,7 +806,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .plan-line ol::before { content: ''; position: absolute; left: 10px; top: 12px; bottom: 16px; border-left: 4px dashed color-mix(in srgb, var(--line) 55%, var(--surface)); }
 .plan-line li { position: relative; display: flex; gap: 14px; padding: 6px 0; line-height: 1.25; }
 .plan-stop { flex: none; width: 24px; height: 24px; border-radius: 5px; background: var(--surface); border: 3px dashed var(--line); box-shadow: 0 0 0 4px var(--canvas); position: relative; }
-.plan-line li.deeper .plan-stop { width: 18px; height: 18px; margin: 3px; border-width: 2px; }
+.plan-line li.deeper .plan-stop { width: 15px; height: 15px; margin: 4.5px; border-width: 2.5px; border-radius: 3px; transform: rotate(45deg); }
 .plan-line b { display: block; font-size: 15px; font-weight: 620; letter-spacing: -0.01em; }
 .plan-line small { display: block; margin-top: 2px; color: var(--ink-3); font-size: 13px; line-height: 1.35; }
 @media (max-width: 620px) { .plan-frame { padding: 24px 16px 20px; } .plan-line > p { min-height: 0; } }
@@ -789,7 +824,7 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .plan-head .lead { max-width: 46em; }
 .plan-legend { display: flex; gap: 18px; margin-bottom: 24px; white-space: nowrap; }
 .plan-key { display: inline-block; width: 16px; height: 16px; border-radius: 4px; background: var(--surface); border: 3px solid var(--ink); }
-.plan-key.deeper { width: 14px; height: 14px; border-width: 2px; border-style: dashed; }
+.plan-key.deeper { width: 12px; height: 12px; margin: 0 2px; border-width: 2.5px; border-radius: 2px; transform: rotate(45deg); }
 .station.planned { cursor: default; }
 .station.planned:focus-visible .label b { text-decoration: underline; text-decoration-thickness: 2px; }
 .plan .map-frame { margin-bottom: 20px; }
@@ -871,48 +906,48 @@ mark.um:hover { outline: 2px solid var(--ink); outline-offset: 1px; border-radiu
 .top-progress, .top-progress:hover { border: 0; background: none; padding: 6px 2px; font-size: 13.5px; color: var(--ink-3); }
 .top-progress:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
-/* ---------- the logo: four soft bounces, then a jump where the pieces swap places with a flip and land in order ---------- */
-.sm-p { transform-box: fill-box; transform-origin: center; animation: 7s cubic-bezier(0.45, 0, 0.35, 1) infinite; }
-.sm-tl { animation-name: sm-tl; }
-.sm-blue { animation-name: sm-blue, sm-pulse; animation-duration: 7s, 2.4s; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1), ease-in-out; }
-.sm-br { animation-name: sm-br; }
-.sm-bl { animation-name: sm-bl; }
-/* Each piece goes to the next place clockwise (top left, blue, bottom right, bottom left), then comes home. */
-@keyframes sm-tl {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(37px, -14px) rotate(180deg); }
-  84% { transform: translate(0, -6px) rotate(360deg); }
-  92% { transform: translate(0, 1.5px) rotate(360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(360deg); }
-}
-@keyframes sm-blue {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(-4px, 35px) rotate(180deg); }
-  84% { transform: translate(0, -6px) rotate(360deg); }
-  92% { transform: translate(0, 1.5px) rotate(360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(360deg); }
-}
-@keyframes sm-br {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(-33px, -6px) rotate(-180deg); }
-  84% { transform: translate(0, -6px) rotate(-360deg); }
-  92% { transform: translate(0, 1.5px) rotate(-360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
-}
-@keyframes sm-bl {
-  0%, 12%, 24%, 36%, 48% { transform: translate(0, 0) rotate(0deg); }
-  6%, 18%, 30%, 42% { transform: translate(0, -4px); }
-  58% { transform: translate(0, -11px) rotate(0deg); }
-  70% { transform: translate(0, -39px) rotate(-180deg); }
-  84% { transform: translate(0, -6px) rotate(-360deg); }
-  92% { transform: translate(0, 1.5px) rotate(-360deg); }
-  96%, 100% { transform: translate(0, 0) rotate(-360deg); }
-}
+/* ---------- the logo: moved by SiteMark.tsx. CSS only sets the pivot of each piece and the blue piece's pulse. ---------- */
+.sm-p { transform-box: fill-box; transform-origin: center; }
+.sm-blue { animation: sm-pulse 2.4s ease-in-out infinite; }
 @keyframes sm-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
 @media (prefers-reduced-motion: reduce) { .sm-p { animation: none; } }
+
+/* ---------- interviews page: stages drawn as a line with stops, like the lesson maps ---------- */
+.interviews { max-width: 1100px; }
+.interviews > .lead { max-width: 46em; }
+.interviews h2 { font-size: 32px; font-weight: 740; letter-spacing: -0.025em; margin-top: 52px; padding-bottom: 10px; border-bottom: 1px solid var(--line-2); }
+.iv-line { list-style: none; margin: 24px 0 0; padding: 0; position: relative; }
+.iv-line::before { content: ''; position: absolute; left: 11px; top: 14px; bottom: 30px; width: 5px; border-radius: 3px; background: var(--line); }
+.iv-line > li { position: relative; padding: 0 0 26px 48px; max-width: 46em; }
+.iv-line > li::before { content: ''; position: absolute; left: 2px; top: 3px; width: 23px; height: 23px; box-sizing: border-box; border-radius: 50%; background: var(--surface); border: 5px solid var(--line); }
+.iv-line h3 { font-size: 21px; letter-spacing: -0.015em; }
+.iv-line p { margin: 6px 0 0; color: var(--ink-2); }
+.iv-line ul { margin: 8px 0 0; padding-left: 1.1em; }
+.iv-line ul li { margin: 2px 0; }
+.iv-lessons { font-size: 14.5px; color: var(--ink-3); margin: 8px 0 0 !important; }
+.iv-lessons a { color: var(--ink); }
+
+.iv-topic { margin-top: 26px; max-width: 52em; }
+.iv-topic h3 { font-size: 20px; margin-bottom: 8px; }
+.iv-q { border: 1px solid var(--line-2); background: var(--surface); border-radius: 4px; margin-top: -1px; }
+.iv-q:first-of-type { margin-top: 0; }
+.iv-q summary { cursor: pointer; padding: 13px 16px 13px 44px; position: relative; font-weight: 600; list-style: none; }
+.iv-q summary::-webkit-details-marker { display: none; }
+.iv-q summary::before { content: '+'; position: absolute; left: 14px; top: 11px; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--line-2); font-weight: 600; font-size: 15px; line-height: 1; color: var(--ink-2); transition: transform 0.2s ease, background-color 0.2s ease; }
+.iv-q[open] summary::before { content: '−'; background: var(--line); border-color: var(--line); color: #fff; }
+.iv-q summary:hover { background: var(--surface-2); }
+.iv-q > div { padding: 0 16px 14px 44px; animation: iv-open 0.25s ease-out; }
+.iv-q > div p { margin: 0; }
+@keyframes iv-open { from { opacity: 0; transform: translateY(-4px); } }
+
+.iv-gotchas { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; margin-top: 18px; border: 1px solid var(--line-2); background: var(--line-1); }
+.iv-gotchas article { background: var(--surface); padding: 18px 20px; }
+.iv-gotchas h3 { font-size: 19px; letter-spacing: -0.01em; }
+.iv-gotchas p { margin: 8px 0 0; color: var(--ink-2); }
+.iv-instead { color: var(--ink) !important; }
+
+.iv-practice { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; max-width: 46em; }
+.iv-practice li { display: grid; gap: 2px; }
+.iv-practice a { font-weight: 650; }
+.iv-practice span { color: var(--ink-2); }
+@media (max-width: 620px) { .interviews h2 { font-size: 26px; } .iv-gotchas { grid-template-columns: 1fr; } }

@@ -4,7 +4,7 @@ import { linkLesson, termsFor } from './link'
 
 test('marks the first mention of a technology group only', () => {
   const html = '<p>An orchestrator runs tasks. Another orchestrator.</p>'
-  const out = linkLesson('idempotency', { parts: [''], segs: [{ type: 'md', part: 0, html }] })
+  const out = linkLesson('idempotency', { parts: [[]], segs: [{ type: 'md', part: 0, html }] })
   const s = (out.segs[0] as { html: string }).html
   expect(s.match(/data-tech="orchestrators"/g)).toHaveLength(1)
 })

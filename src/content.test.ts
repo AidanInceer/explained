@@ -5,6 +5,7 @@ import { readLessonFiles } from '../build/vite-plugin-lessons.ts'
 import { TECH } from './data/tech'
 import { TOOL_URL } from './data/tool-urls'
 import { TOOLKITS } from './data/toolkit'
+import { INTERVIEWS } from './data/interviews'
 import { PLANNED } from './data/tracks'
 import { SUBJECTS } from './data/subjects'
 import { FIGURES } from './figures'
@@ -37,6 +38,15 @@ describe('content', () => {
 
   test('lessons named on the Toolkit pages are written or planned', () => {
     const named = Object.values(TOOLKITS).flatMap((t) => [...t.langs.flatMap((l) => l.lessons ?? []), ...t.skills.flatMap((g) => g.items.flatMap(([, ls]) => ls))])
+    expect(named.filter((id) => !ids.has(id) && !PLANNED.has(id))).toEqual([])
+  })
+
+  test('lessons named on the Interviews pages are written or planned', () => {
+    const named = Object.values(INTERVIEWS).flatMap((g) => [
+      ...g.stages.flatMap((s) => s.lessons),
+      ...g.questions.flatMap((t) => t.items.flatMap((q) => q.lessons)),
+      ...g.gotchas.flatMap((x) => x.lessons),
+    ])
     expect(named.filter((id) => !ids.has(id) && !PLANNED.has(id))).toEqual([])
   })
 
